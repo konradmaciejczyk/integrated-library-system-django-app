@@ -3,6 +3,7 @@
 <html lang="en"> 
     <head>
         <meta charset="=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="author" content="Konrad Maciejczyk">
         <meta name="keywords" content="opac, library, search, books">
         <meta name="description" content="Online library catalog. Order your books online.">
@@ -10,23 +11,39 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;1,300;1,400&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/main.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/main_desktop.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
+        
     </head>
     <body>
         <header>
-            <div id="logo">Online library catalog</div>
-            <div id="loggin">
+            <div id="logo"><a href="#">Online library catalog</a></div>
+            <div id="logging">
                 <span id="user_status">user unsigned</span>
-                <div id="log_in_button">Sign in</div>
+                <div id="log_in_button">log in</div>
             </div>            
-        </header>
-
-        
-            <div id="box">
-                
+        </header> 
+        <main>   
+            <div id="box_searching">
+                <div id="search_tool">
+                    <input type="text" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
+                    <input type="submit" value="&#xe800;" style="font-family:fontello"/> <!--Fontello search icon by Dave Gandy, 2016-->                    
+                </div> 
+                <div id="adv_button">ADVANCED SEARCH</div>            
             </div>
-
+            <div id="box_logging">
+                    <input type="text" id="cos" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
+                    <input type="password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
+                    <input type="submit" value="Log in"/>
+                    <span id="go_back_button">cancel</span>
+            </div>
+        </main>    
+            <footer>2021-2022, by Konrad Maciejczyk, University of Silesia</footer>
     </body>
 </html>
