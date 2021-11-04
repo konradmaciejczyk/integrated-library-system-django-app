@@ -7,7 +7,8 @@
         <meta name="author" content="Konrad Maciejczyk">
         <meta name="keywords" content="opac, library, search, books">
         <meta name="description" content="Online library catalog. Order your books online.">
-        <title>Online Library Catalog - homepage</title>
+        <title>Online Library Catalog</title>
+        <link rel="icon" type="image/png" href="{% static 'user_side/img/favicon.png' %}"/>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,8 +18,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/main_mobile.css' %}" media="screen and (max-width: 500px)">
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/main_desktop.css' %}" media="screen and (min-width: 501px)">
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/main_mobile.css' %}" media="screen and (max-width: 600px)">
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/main_desktop.css' %}" media="screen and (min-width: 601px)">
         
         <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
 
@@ -101,7 +102,7 @@
             <div id="logo"><a href="#">Online library catalog</a></div>
             <div id="logging">
                 <span id="user_status">user unsigned</span>
-                <div id="log_in_button" onclick="toggleDivs('box_searching', 'box_logging', 20)">log in</div>
+                <div id="log_in_button" onclick="toggleDivs('box_searching', 'box_logging', 20)">sign in</div>
             </div>            
         </header> 
         <main>   
@@ -123,6 +124,7 @@
                 <div id="adv_button" onclick="toggleOptions()">ADVANCED SEARCH</div>        
             </div>
             <div id="box_logging">
+                    <span  id="log_in_sign">Sign in</span>
                     <input type="text" id="cos" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
                     <input type="password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
                     <input type="submit" value="Log in"/>
@@ -130,6 +132,6 @@
             </div>
         </main>    
             <footer>2021-2022, by Konrad Maciejczyk, University of Silesia</footer>
-            <script type="text/javascript" src="{% static 'user_side/main.js' %}"></script>
+            <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
     </body>
 </html>
