@@ -252,7 +252,7 @@ fieldset label{
     border-radius: 3px;
     vertical-align: middle; line-height: 30px;
 }
-#box_logging span:hover{
+#box_logging span[id="go_back_button"]:hover{
     color: rgba(48, 81, 110, .95);
     background-color: #FAF3E3;
     cursor: pointer;

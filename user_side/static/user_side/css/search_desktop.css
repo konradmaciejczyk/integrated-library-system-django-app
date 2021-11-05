@@ -1,0 +1,8 @@
+html, body{
+    background-color: #e6f0f5;
+    background: url(../img/background_light.png); /*www.subtlepatterns.com*/
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+    color: #F8F7F2;
+    height: 100%;
+}

@@ -99,7 +99,7 @@
     </head>
     <body>
         <header>
-            <div id="logo"><a href="#">Online library catalog</a></div>
+            <div id="logo"><a href="{% url 'user_side-home' %}">Online library catalog</a></div>
             <div id="logging">
                 <span id="user_status">user unsigned</span>
                 <div id="log_in_button" onclick="toggleDivs('box_searching', 'box_logging', 20)">sign in</div>
@@ -108,7 +108,7 @@
         <main>   
             <div id="box_searching">
                 <div id="search_tool">
-                    <input type="text" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
+                    <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
                     <input type="submit" value="&#xe800;" style="font-family:fontello"/>                   
                 </div> 
                 <div id="adv_options">
@@ -119,14 +119,14 @@
                         <label><input type="checkbox">Images</label>
                         <label><input type="checkbox">Articles</label>
                     </fieldset>
-                    <input type="text" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
+                    <input type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
                 </div>   
                 <div id="adv_button" onclick="toggleOptions()">ADVANCED SEARCH</div>        
             </div>
             <div id="box_logging">
                     <span  id="log_in_sign">Sign in</span>
-                    <input type="text" id="cos" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
-                    <input type="password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
+                    <input type="text" id="cos" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
+                    <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
                     <input type="submit" value="Log in"/>
                     <span id="go_back_button" onclick="toggleDivs('box_logging', 'box_searching', 20)">cancel</span>
             </div>
