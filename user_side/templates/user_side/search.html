@@ -19,13 +19,66 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search_mobile.css' %}" media="screen and (max-width: 600px)">
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search_desktop.css' %}" media="screen and (min-width: 601px)">      
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search_desktop.css' %}" media="screen and (min-width: 601px)">     
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
+
+        <script type="text/javascript">
+            function toggleOptions(flag){                
+
+                if(flag){
+                    const header = document.querySelector("header");
+                    header.style.backgroundColor = "#30516e";
+
+                    toggleDivs("search_tool", "logging_tool", 10);
+                    toggleDivs("search_tool", "logging_buttons", 10);
+                }else{
+                    const header = document.querySelector("header");
+                    header.style.backgroundColor = "#31655A";
+
+                    toggleDivs("logging_tool", "search_tool", 10);
+                    toggleDivs("logging_buttons", "search_tool", 10);
+                }
+            }
+            
+        </script>
     </head>
     <body>
-        <script type="text/javascript">0</script>
         <header>
-                 
+            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}">Online Library Catalog</a></div>
+            <div id="logging">
+                <span id="user_status">user unsigned</span>
+                <div id="log_in_button" onclick="toggleOptions(true)">sign in</div>
+            </div>
+            <div id="search_tool">
+                <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
+                <input type="submit" value="&#xe800;" style="font-family:fontello"/>                     
+            </div> 
+            <div id="logging_tool">                
+                <input type="text" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
+                <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
+                <div id="logging_buttons">
+                    <input type="submit" value="Log in"/>
+                    <span id="go_back_button" onclick="toggleOptions(false)">cancel</span>
+                </div>
+            </div>                    
         </header>
-        
+        <section id="filter">
+            <div id="filter_options">
+                <fieldset>
+                    <label><input type="checkbox">Books</label>
+                    <label><input type="checkbox">Movies/Films</label>
+                    <label><input type="checkbox">Sound Recordings</label>
+                    <label><input type="checkbox">Images</label>
+                    <label><input type="checkbox">Articles</label>
+                </fieldset>
+                <input type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
+            </div>
+            <div id="apply_button">Apply</div>    
+        </section>            
+        <main>
+            
+        </main>
+        <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>         
     </body>
 </html>

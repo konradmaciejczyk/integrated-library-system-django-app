@@ -8,6 +8,7 @@ html, body{
 }
 
 header{
+    position: relative;
     background-color: #31655A;
     margin-left: auto; margin-right: auto;
     height: 50px; width: 100vw;
@@ -17,13 +18,23 @@ header{
 }
 
 #logo{
+    position: absolute;
+    left: 1%;
     font-size: 30px;
     font-weight: 100;
-    height: 54px; width: 300px;
-    float:left;
-    vertical-align: middle; line-height: 60px;
-    margin-left: 15px;
+    height: 54px; width: 500px;
 }
+#logo img{
+    width: 50px; height: 50px;
+    padding-right: 10px; padding-top: 5px;
+
+}
+#logo span{
+    vertical-align: top; line-height: 60px;
+    margin-top: 50px;
+    height: 60px;
+}
+
 #logo a:link{
     text-decoration: none;
     color: #F8F7F2;
@@ -58,28 +69,19 @@ header{
 }
 
 #log_in_button{
-    min-width: 120px;
-    height: 59px;
-    line-height: 60px;
-    float: right;
+    width: 80px;
+    height: 59px;    
+    float: right; line-height: 60px;
     vertical-align: middle;
     text-align: center;
     color: #FAF3E3;
     margin-left:10px;
     font-weight: 300; font-size: 21px;
 }
-#log_in_button:hover{
-    min-width: 120px;
-    height: 59px;    
-    float: right;
-    vertical-align: middle; line-height: 60px;
-    text-align: center; 
-    background-color: #30516E;
+#log_in_button:hover{ 
     color: #F8D872;
-    font-weight: bold;
     cursor: pointer;
-    margin-left:10px;
-    font-weight: 300; font-size: 21px;
+    margin-left: 10px;
     transition: 0.4s;
 }
 
@@ -89,7 +91,7 @@ main{
 }
 
 #box_searching{
-    width: 50vw; height: 250px; margin-top: 20vh;
+    width: 50vw; min-height: 350px; margin-top: 20vh;
     margin-left: auto; margin-right: auto;
     border-radius: 5px;
     background: rgba(49, 101, 90, .75);
@@ -109,8 +111,8 @@ main{
 #search_tool input[type='text']{
     width: 87%; height: 50px;
     font-size: 20px;
-    background-color: #FAF3E3;
     color: #4d4d4d;
+    background-color: white;
     border-radius: 5px 0 0 5px; border: none;    
     font-weight: bold;
     border-right: 0;
@@ -122,9 +124,9 @@ main{
 #search_tool input[type='submit']{
     padding: 0px;
     float: right;
+    background-color: white;
     width: 11%; height: 52px;
     font-size: 20px;
-    background-color: #FAF3E3;
     cursor: pointer;
     text-align: center;
     color: #4d4d4d;
@@ -137,34 +139,17 @@ main{
     transition: 0.4s;
 }
 
-#adv_button{
-    width: 180px; height: 30px;
-    color: #FAF3E3;
-    margin-left: auto; margin-right: auto; transform: translateY(50px);
-    font-weight: bold;
-    vertical-align: middle; line-height: 32px;
-    text-align: center;
-    cursor: pointer; 
-}
-#adv_button:hover{    
-    background-color: #FAF3E3;
-    transition: 0.3s;
-    border-radius: 3px;
-    color: #31655A;
-}
-
 #adv_options{
     width: 65%; height: 1px;
     margin-left: auto; margin-right: auto;
-    display: none;
 }
 
 #adv_options input[type="text"]{
     display: block;
     margin-left: auto; margin-right: auto; margin-top: 3%;
     width: 75%; height: 40px;
-    background-color: #FAF3E3;
     color: #4d4d4d;
+    background-color: white;
     border-radius: 5px 5px 5px 5px; border: none;
     padding-left: 1%;
 }
@@ -210,8 +195,8 @@ fieldset label{
     display: block;
     margin-left: auto; margin-right: auto;
     width: 250px; height: 40px;
-    background-color: #FAF3E3;
     color: #4d4d4d;
+    background-color: white;
     border-radius: 5px 5px 5px 5px; border: none;   
     padding-left: 2%;
 }
@@ -220,8 +205,8 @@ fieldset label{
     display: block;
     margin-left: auto; margin-right: auto;
     width: 250px; height: 40px;
-    background-color: #FAF3E3;
     color: #4d4d4d;
+    background-color: white;
     border-radius: 5px 5px 5px 5px; border: none;  
     padding-left: 2%;
     margin-top: 20px;
@@ -230,15 +215,13 @@ fieldset label{
 #box_logging input[type="submit"]{
     display: block;
     float: right;
-    margin-right: 120px;
+    background-color: white;
+    margin-right: 120px; margin-top: 20px;
     width: 100px; height: 30px;
     font-size: 20px;
-    background-color: #FAF3E3;
     color: rgba(48, 81, 110, .95);
     border-radius: 5px 5px 5px 5px; border: none;    
-    font-weight: bold;
-    font-weight: 300;
-    margin-top: 20px;
+    font-weight: 300;    
     cursor: pointer;
 }
 
@@ -247,17 +230,22 @@ fieldset label{
     margin-top: 20px; margin-left: 120px;
     width: 100px; height: 30px;
     font-size: 20px;
-    color: #FAF3E3;
     font-weight: 300;
     text-align: center;
     border-radius: 3px;
     vertical-align: middle; line-height: 30px;
 }
 #box_logging span[id="go_back_button"]:hover{
-    color: rgba(48, 81, 110, .95);
-    background-color: #FAF3E3;
+    color: #F8D872;
     cursor: pointer;
     transition: 0.4s;
+}
+
+#apply_button{
+    float: right;
+    background-color: rgba(49, 101, 90, 1);
+    color: black;
+    width: 150px; height: 10px;
 }
 
 footer{

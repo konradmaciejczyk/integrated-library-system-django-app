@@ -3,7 +3,7 @@
 <html lang="en"> 
     <head>
         <meta charset="=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
         <meta name="author" content="Konrad Maciejczyk">
         <meta name="keywords" content="opac, library, search, books">
         <meta name="description" content="Online library catalog. Order your books online.">
@@ -18,95 +18,21 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/main_mobile.css' %}" media="screen and (max-width: 600px)">
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/main_desktop.css' %}" media="screen and (min-width: 601px)">
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/home_mobile.css' %}" media="screen and (max-width: 600px)">
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/home_desktop.css' %}" media="screen and (min-width: 601px)">
         
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
-
-        <script type="text/javascript">
-            //Code responsible for expanding search box with additional searching options
-            function toggleOptions(){
-                var div = document.getElementById("adv_options");
-                var is_toggled = window.getComputedStyle(div);
-                
-                if(String(is_toggled.display) == "none"){
-                    console.log("!!");
-                    enlarge()
-                }else{
-                    console.log("??");
-                    shrink();
-                }
-            }
-
-            function enlarge(){
-                intervalId = setInterval(enlarge_procedure, 20);
-            }
-            function shrink(){
-                intervalId = setInterval(shrink_procedure, 20);
-            }
-
-            function enlarge_procedure(){
-                var div_box = document.getElementById("box_searching");
-                var div_box_height = window.getComputedStyle(div_box).getPropertyValue("height")
-                var div_box_height = Number(div_box_height.substring(0, div_box_height.length-2));
-
-                document.getElementById("adv_button").innerHTML = "SIMPLIFIED SEARCH";
-                
-                var div_options_box = document.getElementById("adv_options");
-                var div_option_box_height = window.getComputedStyle(div_options_box).getPropertyValue("height")
-                var div_option_box_height = Number(div_option_box_height.substring(0, div_option_box_height.length-2));
-                
-            
-                if(div_box_height < 400){                   
-                    div_box_height = div_box_height + 40;
-                    div_box.style.height = String(div_box_height + "px");
-
-                    div_option_box_height = div_option_box_height + 40;
-                    div_options_box.style.height = String(div_option_box_height + "px");
-                    
-                }else{
-                    clearInterval(intervalId);
-                    div_options_box.style.display = "block";
-                }
-            }
-
-            function shrink_procedure(){
-                var div_box = document.getElementById("box_searching");
-                var div_box_height = window.getComputedStyle(div_box).getPropertyValue("height")
-                var div_box_height = Number(div_box_height.substring(0, div_box_height.length-2));
-
-                document.getElementById("adv_button").innerHTML = "ADVANCED SEARCH";
-                
-                var div_options_box = document.getElementById("adv_options").style.display = "block";
-                var div_options_box = document.getElementById("adv_options");
-                var div_option_box_height = window.getComputedStyle(div_options_box).getPropertyValue("height")
-                var div_option_box_height = Number(div_option_box_height.substring(0, div_option_box_height.length-2));
-                
-            
-                if(div_box_height > 250){                
-                    div_box_height = div_box_height - 40;
-                    div_box.style.height = String(div_box_height + "px");
-
-                    div_option_box_height = div_option_box_height - 40;
-                    div_options_box.style.height = String(div_option_box_height + "px");
-                    
-                }else{
-                    clearInterval(intervalId);
-                    document.getElementById("adv_options").style.display = "none";
-                }
-            }
-        </script>        
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">    
     </head>
     <body>
         <header>
-            <div id="logo"><a href="{% url 'user_side-home' %}">Online library catalog</a></div>
+            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online Library Catalog</span></a></div>
             <div id="logging">
                 <span id="user_status">user unsigned</span>
                 <div id="log_in_button" onclick="toggleDivs('box_searching', 'box_logging', 20)">sign in</div>
             </div>            
         </header> 
         <main>   
-            <div id="box_searching">
+            <section id="box_searching" role="search">
                 <div id="search_tool">
                     <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
                     <input type="submit" value="&#xe800;" style="font-family:fontello"/>                   
@@ -120,9 +46,8 @@
                         <label><input type="checkbox">Articles</label>
                     </fieldset>
                     <input type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
-                </div>   
-                <div id="adv_button" onclick="toggleOptions()">ADVANCED SEARCH</div>        
-            </div>
+                </div>        
+            </section>
             <div id="box_logging">
                     <span  id="log_in_sign">Sign in</span>
                     <input type="text" id="cos" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
@@ -130,6 +55,7 @@
                     <input type="submit" value="Log in"/>
                     <span id="go_back_button" onclick="toggleDivs('box_logging', 'box_searching', 20)">cancel</span>
             </div>
+            
         </main>    
             <footer>2021-2022, by Konrad Maciejczyk, University of Silesia</footer>
             <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
