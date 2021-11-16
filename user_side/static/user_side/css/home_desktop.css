@@ -77,12 +77,12 @@ header{
     color: #FAF3E3;
     margin-left:10px;
     font-weight: 300; font-size: 21px;
+    transition: color 0.4s;
 }
 #log_in_button:hover{ 
     color: #F8D872;
     cursor: pointer;
     margin-left: 10px;
-    transition: 0.4s;
 }
 
 main{
@@ -239,13 +239,6 @@ fieldset label{
     color: #F8D872;
     cursor: pointer;
     transition: 0.4s;
-}
-
-#apply_button{
-    float: right;
-    background-color: rgba(49, 101, 90, 1);
-    color: black;
-    width: 150px; height: 10px;
 }
 
 footer{

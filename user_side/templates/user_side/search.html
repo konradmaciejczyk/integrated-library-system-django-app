@@ -45,7 +45,7 @@
     </head>
     <body>
         <header>
-            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}">Online Library Catalog</a></div>
+            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}" alt="logo">Online Library Catalog</a></div>
             <div id="logging">
                 <span id="user_status">user unsigned</span>
                 <div id="log_in_button" onclick="toggleOptions(true)">sign in</div>
@@ -77,7 +77,43 @@
             <div id="apply_button">Apply</div>    
         </section>            
         <main>
-            
+            <span id="info_results">Phrase: <span class="bold_text">"Krzyżacy"</span> by <span class="bold_text">Henryk Sienkiewicz</span> in set of <span class="bold_text">books</span> and <span class="bold_text">movies/films</span> has given <span class="bold_text">2</span> results.</span>
+            <div id="result">
+                <span id="no">1.</span>
+                <span style="font-family:fontello" id="item_type" title="Book" >&#xe801;</span>
+                <div id="infos">
+                    <span class="info"><span class="bold_text">Title:</span> Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Full title:</span> Henryk Sienkiewicz Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Author:</span> Henryk Sienkiewicz (1846 - 1916)</span></br>
+                    <span class="info"><span class="bold_text">Publication year:</span> 1998</span></br>
+                    <span class="info"><span class="bold_text">Publisher:</span> Warszawa : PWW [Philip Wilson Warsaw], (Rzesz : RZG)</span></br>
+                    <span class="info"><span class="bold_text">ISBN:</span> 8387571377</span></br>
+                    <span class="info"><span class="bold_text">Description:</span> Lektura kl. VII</span></br>
+                    <span class="info"><span class="bold_text">Condition:</span> Good</span></br>
+                    <span class="info"><span class="bold_text">ID:</span> 000257</span></br>
+                    <span class="info"><span class="bold_text">Status:</span> <span style="color: hsl(130, 69%, 46%);">Available</span></span>                    
+                </div>
+                <div id="picture"><img src="{% static 'user_side/img/example_cover.jpg' %}" alt="cover picture"/></div>
+                <div id="order_button">Log in to order</div>    
+            </div>
+            <div id="result">
+                <span id="no">1.</span>
+                <span style="font-family:fontello" id="item_type" title="Book" >&#xe801;</span>
+                <div id="infos">
+                    <span class="info"><span class="bold_text">Title:</span> Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Full title:</span> Henryk Sienkiewicz Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Author:</span> Henryk Sienkiewicz (1846 - 1916)</span></br>
+                    <span class="info"><span class="bold_text">Publication year:</span> 1998</span></br>
+                    <span class="info"><span class="bold_text">Publisher:</span> Warszawa : PWW [Philip Wilson Warsaw], (Rzesz : RZG)</span></br>
+                    <span class="info"><span class="bold_text">ISBN:</span> 8387571377</span></br>
+                    <span class="info"><span class="bold_text">Description:</span> Lektura kl. VII</span></br>
+                    <span class="info"><span class="bold_text">Condition:</span> Good</span></br>
+                    <span class="info"><span class="bold_text">ID:</span> 000257</span></br>
+                    <span class="info"><span class="bold_text">Status:</span> <span style="color: hsl(130, 69%, 46%);">Available</span></span>                    
+                </div>
+                <div id="picture"><img src="{% static 'user_side/img/example_cover.jpg' %}" alt="cover picture"/></div>
+                <div id="order_button">Log in to order</div>    
+            </div>
         </main>
         <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>         
     </body>

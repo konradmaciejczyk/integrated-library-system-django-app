@@ -1,5 +1,7 @@
+/*Konrad Maciejczyk, 2021-2022*/
 html, body{
-    background-color: #e6f0f5;   
+    background-color: #e6f0f5;  
+    background: url(../img/background_light.png); /*www.subtlepatterns.com*/ 
     margin: 0px;
     font-family: 'Roboto', sans-serif;
     color: #F8F7F2;
@@ -54,6 +56,7 @@ header{
     }
     #log_in_button{
         font-size: 21px;
+        transition: color 0.4s;
     }
     #user_status{
         
@@ -78,13 +81,13 @@ header{
     #log_in_button{
         min-width: 120px;
         height: 59px;
-        line-height: 60px;
-        float: right;
-        vertical-align: middle;
+        vertical-align: middle; line-height: 60px;
+        float: right;        
         text-align: center;
         color: #FAF3E3;
         margin-left:10px;
         font-weight: 300; font-size: 21px;
+        transition: color 0.4s;
     }
     #user_status{
     float: left;
@@ -105,11 +108,8 @@ header{
 }
 
 #log_in_button:hover{
-    background-color: #30516E;
     color: #F8D872;
-    font-weight: bold;
     cursor: pointer;
-    transition: 0.4s;
 }
 #logging_tool{
     display: none;
@@ -140,7 +140,7 @@ header{
 #logging_buttons input[type="submit"]{
     float: right;
     background-color: white;
-    width: 60px; height: 20px;
+    width: 60px; height: 30px;
     font-size: 15px;
     color: rgba(48, 81, 110, .95);
     border-radius: 5px 5px 5px 5px; border: none;    
@@ -153,7 +153,7 @@ header{
     font-size: 20px; font-weight: 300;
     text-align: center;
     border-radius: 3px;
-    vertical-align: middle; line-height: 20px;
+    vertical-align: middle; line-height: 30px;
     
 }
 #logging_buttons span[id="go_back_button"]:hover{
@@ -161,8 +161,6 @@ header{
     cursor: pointer;
     transition: 0.4s;
 }
-
-
 
 #search_tool input[type='text']{
     width: 87%; height: 50px;
@@ -197,10 +195,11 @@ header{
 }
 
 #filter{
-    width: 70vw; height: 100px;
-    background-color: white;
+    position: relative;
+    width: 70vw; min-height: 100px;
+    background-color: rgba(49, 101, 90, .6);
     border-radius: 5px;
-    margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;
+    margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 5px;
     padding-top: 20px;
     border: 3px solid rgba(48, 81, 110, .15)
 }
@@ -214,16 +213,119 @@ header{
     color: rgba(48, 81, 110, 1); margin-right: 7%;
     
 }
+#filter_options input[type="checkbox"]{
+    width: 18px; height: 18px;
+}
 
 #filter_options input[type="text"]{
-    width: 30%; padding: 0; margin-left: 19%;
+    position: absolute;
+    width: 30%; padding: 0;
     display: block; height: 30px;
     color: #4d4d4d;
     background-color: white;
     border-radius: 5px 5px 5px 5px; border: none;
     border: 3px solid rgba(48, 81, 110, .3);
     padding-left: 1%;
+    top: 70px; left: 15%;
 }
+
+#apply_button{
+    position: absolute;
+    background-color: rgba(49, 101, 90, 1);
+    color: white;
+    width: 120px; height: 40px;
+    text-align: center;
+    vertical-align: middle; line-height: 40px;
+    border-radius: 3px;
+    top: 70px; right: 15%;
+    transition: background-color .5s, color .5s;
+}
+#apply_button:hover{
+    background-color: #30516e;
+    color: #F8D872;
+    cursor: pointer;
+}
+
+main{
+    margin-left: auto; margin-right: auto;
+    background-color: white;
+    width: 70vw; height: 1000px;
+    border: 3px solid rgba(48, 81, 110, .15);
+    border-radius: 5px;
+    
+}
+
+#info_results{
+    display: block;
+    font-weight: 300;
+    color: #202020;
+    background-color: rgba(49, 101, 90, .60);
+    border-radius: 3px;
+    width: 97%; min-height: 20px;
+    margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 20px;
+    padding: 1%;
+}
+#result{
+    position: relative;
+    color: black;
+    border: 3px solid rgba(48, 81, 110, .15);
+    width: 98%; height: 250px;
+    margin-left: auto; margin-right: auto; margin-top: 5px; margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+#no{
+    position: absolute;
+    font-weight: 300;
+    top: 10px; left: 1%;
+    font-size: 25px;
+}
+#item_type{
+    position: absolute;
+    font-size: 30px;
+    top: 20%; left: 1%;
+    cursor: default;
+}
+
+.bold_text{
+    font-weight: bold;
+}
+
+#infos{
+    position: absolute;
+    top: 10px; left: 75px;
+    width: 65%;
+}
+.info{
+    line-height: 22px;
+}
+
+#picture{
+    position: absolute;
+    top: 10px; right: 2%;
+    width: 120px; height: 120px;
+}
+
+#picture img{
+    display: block;
+    margin-left: auto; margin-right: auto;
+    max-width: 180px; height: 180px;
+    transition: height .5s, width .5s;
+}
+#picture img:hover{
+    display: block;
+    margin-left: auto; margin-right: auto;
+    max-width: 190px; height: 190px;
+    cursor: pointer;
+}
+
+#order_button{
+    position: absolute;
+    bottom: 5%; right: 3.5%;
+    color:rgb(0, 0, 0);
+    font-weight: 300;
+}
+
 
 /* For styling placeholders and on focus in text inputs*/
 input[type='text']::-webkit-input-placeholder { 
