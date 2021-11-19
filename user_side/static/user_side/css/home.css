@@ -1,0 +1,387 @@
+/* Konrad Maciejczyk, 2021 */
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+html, body {
+  background-color: #e6f0f5;
+  color: #F8F7F2;
+  background: url(../img/background_light.png);
+  font-family: "Roboto", sans-serif;
+}
+
+a, a:active, a:hover, a:visited, a:link {
+  text-decoration: none;
+  color: #F8F7F2;
+}
+input[type=submit] {
+  border: 0px;
+  background-color: #FFFFFF;
+}
+
+input[type=text], input[type=password] {
+  border: 0px;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  padding-left: 2%;
+}
+
+input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 20%;
+  vertical-align: middle;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+input[type=checkbox]:checked {
+  background-color: #F8D872;
+}
+
+label {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+fieldset {
+  border: 0px;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: #31655a;
+  width: 100vw;
+  height: 120px;
+  font-weight: 300;
+}
+header #logo {
+  box-sizing: border-box;
+  width: 225px;
+  height: 120px;
+  padding: 10px;
+  font-size: 27px;
+  float: left;
+}
+header #logo img {
+  margin-right: 10px;
+  width: 100px;
+  height: 100px;
+  float: left;
+}
+header #logging {
+  box-sizing: border-box;
+  height: 100px;
+  min-width: 180px;
+  float: right;
+  padding-top: 25px;
+  margin-right: 5%;
+}
+header #logging #user_status {
+  display: block;
+  font-size: 20px;
+  font-weight: 100;
+}
+header #logging #log_in_button {
+  width: 80px;
+  height: 59px;
+  margin-top: 10px;
+  transition: color, 0.4s;
+  float: right;
+  text-align: right;
+}
+header #logging #log_in_button:hover {
+  color: #F8D872;
+  cursor: pointer;
+}
+
+main {
+  width: 100vw;
+}
+main #box_searching {
+  box-sizing: border-box;
+  width: 800px;
+  height: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #31655a;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 30px -10px #31655a;
+  -moz-box-shadow: 0px 0px 30px -10px #31655a;
+  box-shadow: 0px 0px 30px -10px #31655a;
+  margin-top: 15vh;
+  padding-top: 6vh;
+}
+main #box_searching #search_tool {
+  width: 65%;
+  height: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+main #box_searching #search_tool input[type=text] {
+  width: 87%;
+  height: 100%;
+  float: left;
+  border-radius: 5px 0 0 5px;
+  font-size: 20px;
+}
+main #box_searching #search_tool input[type=submit] {
+  width: 13%;
+  height: 100%;
+  border-radius: 0 5px 5px 0;
+  font-size: 20px;
+  transition: background-color 0.4s, color 0.4s;
+}
+main #box_searching #search_tool input[type=submit]:hover {
+  background-color: #30516e;
+  color: #F8F7F2;
+  cursor: pointer;
+}
+main #box_searching #author_bar {
+  display: block;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  height: 35px;
+  border-radius: 3px 3px 3px 3px;
+}
+main #box_searching fieldset {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 65%;
+  height: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+main #box_logging {
+  display: none;
+  box-sizing: border-box;
+  width: 500px;
+  height: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15vh;
+  background-color: #30516e;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 30px -10px #30516e;
+  -moz-box-shadow: 0px 0px 30px -10px #30516e;
+  box-shadow: 0px 0px 30px -10px #30516e;
+  padding-top: 50px;
+}
+main #box_logging #log_in_sign {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 100;
+}
+main #box_logging input[type=text] {
+  display: block;
+  width: 60%;
+  height: 40px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+main #box_logging input[type=password] {
+  display: block;
+  width: 60%;
+  height: 40px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+main #box_logging input[type=submit] {
+  display: block;
+  float: right;
+  width: 20%;
+  height: 40px;
+  border-radius: 5px;
+  margin-top: 30px;
+  margin-right: 100px;
+  font-size: 18px;
+  transition: background-color 0.4s, color 0.4s;
+}
+main #box_logging input[type=submit]:hover {
+  cursor: pointer;
+  color: #F8D872;
+  background-color: #31655a;
+}
+main #box_logging #go_back_button {
+  float: left;
+  width: 20%;
+  height: 40px;
+  border-radius: 5px;
+  margin-top: 30px;
+  margin-left: 100px;
+  font-size: 18px;
+  text-align: center;
+  vertical-align: center;
+  line-height: 40px;
+  transition: color, 0.4s;
+}
+main #box_logging #go_back_button:hover {
+  cursor: pointer;
+  color: #F8D872;
+}
+
+footer {
+  margin-top: auto;
+  background-color: #31655a;
+  text-align: center;
+  font-size: 12px;
+  height: 30px;
+  vertical-align: middle;
+  line-height: 30px;
+}
+
+@media (max-width: 800px) {
+  main #box_searching {
+    height: 400px;
+    width: 95vw;
+  }
+  main #box_searching fieldset {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  header {
+    height: 10vh;
+  }
+  header #logo {
+    height: 10vh;
+    width: 20vh;
+    padding: 1vh;
+    font-size: 2.2vh;
+  }
+  header #logo img {
+    margin-right: 1vw;
+    width: 8vh;
+    height: 8vh;
+  }
+  header #logging {
+    height: 10vh;
+    min-width: 10%;
+    padding-top: 2vh;
+    margin-right: 2%;
+  }
+  header #logging #user_status {
+    display: block;
+    font-size: 1.5vh;
+    font-weight: 100;
+  }
+  header #logging #log_in_button {
+    width: 80px;
+    height: 59px;
+    font-size: 2.5vh;
+    margin-top: 1vh;
+    transition: color, 0.4s;
+  }
+  header #logging #log_in_button:hover {
+    color: #F8D872;
+    cursor: pointer;
+  }
+
+  main #box_searching {
+    margin-top: 5vh;
+    height: 380px;
+    width: 95vw;
+  }
+  main #box_searching #search_tool {
+    width: 80vw;
+  }
+  main #box_searching #author_bar {
+    width: 60vw;
+  }
+  main #box_searching fieldset {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    width: 50%;
+  }
+  main #box_logging {
+    margin-top: 5vh;
+    width: 85vw;
+  }
+  main #box_logging input[type=text] {
+    width: 85%;
+  }
+  main #box_logging input[type=password] {
+    width: 85%;
+  }
+  main #box_logging #go_back_button {
+    margin-left: 15%;
+  }
+  main #box_logging input[type=submit] {
+    margin-right: 15%;
+  }
+}
+/* For styling placeholders and on focus in text inputs*/
+input[type=text]::-webkit-input-placeholder {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:-moz-placeholder {
+  /*Firefox < 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]::-moz-placeholder {
+  /*Firefox > 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:-ms-input-placeholder {
+  /*Internet Explorer 10*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:focus {
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+/* For styling placeholders and on focus in password inputs*/
+input[type=password]:focus {
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+input[type=password]::-webkit-input-placeholder {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]:-moz-placeholder {
+  /*Firefox < 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]::-moz-placeholder {
+  /*Firefox > 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]:-ms-input-placeholder {
+  /*Internet Explorer 10*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}

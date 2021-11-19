@@ -18,8 +18,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search_mobile.css' %}" media="screen and (max-width: 600px)">
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search_desktop.css' %}" media="screen and (min-width: 601px)">     
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search.css' %}" media="screen">     
         
         <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
 
@@ -45,26 +44,26 @@
     </head>
     <body>
         <header>
-            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}" alt="logo">Online Library Catalog</a></div>
+            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}" alt="logo">Online<br/>Library<br/>Catalog</a></div>
+                <div id="search_tool">
+                    <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
+                    <input type="submit" value="&#xe800;" style="font-family:fontello"/>                     
+                </div> 
             <div id="logging">
-                <span id="user_status">user unsigned</span>
+                <span id="user_status">you are browsing as guest user</span>
                 <div id="log_in_button" onclick="toggleOptions(true)">sign in</div>
-            </div>
-            <div id="search_tool">
-                <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
-                <input type="submit" value="&#xe800;" style="font-family:fontello"/>                     
-            </div> 
-            <div id="logging_tool">                
-                <input type="text" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
-                <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
-                <div id="logging_buttons">
-                    <input type="submit" value="Log in"/>
-                    <span id="go_back_button" onclick="toggleOptions(false)">cancel</span>
-                </div>
-            </div>                    
+            </div>              
         </header>
-        <section id="filter">
-            <div id="filter_options">
+        <!-- <div id="logging_tool">                
+            <input type="text" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
+            <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
+            <div id="logging_buttons">
+                <input type="submit" value="Log in"/>
+                <span id="go_back_button" onclick="toggleOptions(false)">cancel</span>
+            </div>
+        </div>   -->
+        <div="filter_logging_container">
+            <section id="filter">            
                 <fieldset>
                     <label><input type="checkbox">Books</label>
                     <label><input type="checkbox">Movies/Films</label>
@@ -73,9 +72,11 @@
                     <label><input type="checkbox">Articles</label>
                 </fieldset>
                 <input type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
-            </div>
-            <div id="apply_button">Apply</div>    
-        </section>            
+                
+                <div id="apply_button">Apply</div>    
+            </section> 
+        </div>
+        <!--           
         <main>
             <span id="info_results">Phrase: <span class="bold_text">"Krzyżacy"</span> by <span class="bold_text">Henryk Sienkiewicz</span> in set of <span class="bold_text">books</span> and <span class="bold_text">movies/films</span> has given <span class="bold_text">2</span> results.</span>
             <div id="result">
@@ -115,6 +116,6 @@
                 <div id="order_button">Log in to order</div>    
             </div>
         </main>
-        <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>         
+        <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>          -->
     </body>
 </html>

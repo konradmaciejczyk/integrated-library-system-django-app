@@ -1,0 +1,128 @@
+$background-image: url(../img/background_light.png);
+$main-green: rgb(49, 101, 90);
+$main-blue: #30516e;
+$main-yellow: #F8D872;
+$main-font-color: #F8F7F2;
+$search-idle: #FFFFFF;
+$checkbox-checked-color: #00ff22;
+$search-item-background: #eeffd7;
+
+* {
+    margin: 0px; padding: 0px;
+}
+
+html, body{
+    background-color: #e6f0f5;
+    color: $main-font-color;
+    background: $background-image;
+    font-family: 'Roboto', sans-serif;
+}
+
+a{
+    text-decoration: none;
+    color: $main-font-color;
+
+    &:link{
+        @extend a;
+    }
+    &:visited{
+        @extend a;
+    }
+    &:hover{
+        @extend a;
+    }
+    &:active{
+        @extend a;
+    }
+}
+
+input[type="submit"]{
+    border: 0px;
+    background-color: $search-idle;
+    
+}
+
+input[type="text"], input[type="password"]{
+    border: 0px;
+    background-color: $search-idle;
+    box-sizing: border-box;
+    padding-left: 2%;
+}
+
+input[type="checkbox"]{
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 20%;
+    vertical-align: middle;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+
+    &:checked{
+        background-color: $main-yellow;
+    }
+}
+
+label{
+    display: inline-block;
+    white-space: nowrap;
+}
+
+fieldset{
+    border: 0px;
+}
+
+@mixin text_inputs{
+        /* For styling placeholders and on focus in text inputs*/
+    input[type='text']::-webkit-input-placeholder { 
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+    input[type='text']:-moz-placeholder  { /*Firefox < 19*/
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+    input[type='text']::-moz-placeholder { /*Firefox > 19*/
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+    input[type='text']:-ms-input-placeholder { /*Internet Explorer 10*/
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+    input[type='text']:focus{
+        font-family: 'Roboto', sans-serif;
+        outline: none;
+    }
+    /* For styling placeholders and on focus in password inputs*/
+    input[type='password']:focus{
+        font-family: 'Roboto', sans-serif;
+        outline: none;
+    }
+    input[type='password']::-webkit-input-placeholder { 
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+    input[type='password']:-moz-placeholder  { /*Firefox < 19*/
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+    input[type='password']::-moz-placeholder { /*Firefox > 19*/
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+    input[type='password']:-ms-input-placeholder { /*Internet Explorer 10*/
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+}
+
+@mixin shadow($color){
+    -webkit-box-shadow: 0px 0px 30px -10px $color;
+    -moz-box-shadow: 0px 0px 30px -10px $color;
+    box-shadow: 0px 0px 30px -10px $color;
+}

@@ -1,0 +1,288 @@
+/* Konrad Maciejczyk, 2021 */
+@import './defaults.scss';
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header{
+    background-color: $main-green;
+    width: 100vw;
+    height: 120px;
+    font-weight: 300;
+
+    #logo{
+        box-sizing: border-box;
+        width: 225px; height: 120px;
+        padding: 10px;
+        font-size: 27px;
+        float:left;
+
+        img{
+            margin-right: 10px;
+            width: 100px; height: 100px;
+            float:left;
+        }
+
+    } 
+
+    #logging{
+        box-sizing: border-box;
+        height: 100px; min-width: 180px;
+        float: right;
+        padding-top: 25px;
+        margin-right: 5%;
+
+        #user_status{
+            display: block;
+            font-size: 20px; font-weight: 100;            
+        }
+
+        #log_in_button{
+            width: 80px; height: 59px;
+            margin-top: 10px;
+            transition: color, .4s;
+            float: right;
+            text-align: right;
+
+            &:hover{
+                color: $main-yellow;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+
+main{
+    width: 100vw;
+
+    #box_searching{
+        box-sizing: border-box;
+        width: 800px; height: 350px; 
+        margin-left: auto; margin-right: auto;
+        background-color: $main-green;
+        border-radius: 5px;
+        @include shadow($main-green);
+        margin-top: 15vh;
+        padding-top: 6vh;        
+
+        #search_tool{
+            width: 65%; height: 50px;
+            margin-left: auto; margin-right: auto;          
+
+            & input[type="text"]{
+                width: 87%; height: 100%;
+                float:left;
+                border-radius: 5px 0 0 5px;
+                font-size: 20px;
+            }
+
+            & input[type="submit"]{
+                width: 13%; height: 100%;
+                border-radius: 0 5px 5px 0;
+                font-size: 20px;
+                transition: background-color .4s, color .4s;                
+
+                &:hover{
+                    background-color: $main-blue;
+                    color: $main-font-color;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        #author_bar{
+                display: block;
+                margin-top: 20px;
+                margin-left: auto; margin-right: auto;
+                width: 40%; height: 35px;
+                border-radius: 3px 3px 3px 3px;
+
+        }
+
+        fieldset{
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            width: 65%; height: 100px;
+            margin-left: auto; margin-right: auto;
+            margin-top: 50px;      
+        }
+    }
+
+    #box_logging{
+        display:none;
+        box-sizing: border-box;
+        width: 500px; height: 350px;
+        margin-left: auto; margin-right: auto;
+        margin-top: 15vh;
+        background-color: $main-blue;
+        border-radius: 5px;
+        @include shadow($main-blue);
+        padding-top: 50px;
+
+        #log_in_sign{
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 40px; font-weight: 100;    
+        }
+
+        & input[type="text"]{
+            display: block;
+            width: 60%; height: 40px;
+            border-radius: 5px;
+            margin-left: auto; margin-right: auto;
+            margin-top: 30px;
+        }
+
+        & input[type="password"]{
+            display: block;
+            width: 60%; height: 40px;
+            border-radius: 5px;
+            margin-left: auto; margin-right: auto;
+            margin-top: 30px;
+        }
+
+        & input[type="submit"]{
+            display: block;
+            float: right;
+            width: 20%; height: 40px;
+            border-radius: 5px;
+            margin-top: 30px; margin-right: 100px;
+            font-size: 18px;
+            transition: background-color .4s, color .4s;
+
+            &:hover{
+                cursor: pointer;
+                color: $main-yellow;
+                background-color: $main-green;
+            }
+        }
+
+        & #go_back_button{
+            float: left;
+            width: 20%; height: 40px;
+            border-radius: 5px;
+            margin-top: 30px; margin-left: 100px;
+            font-size: 18px;
+            text-align: center;
+            vertical-align: center; line-height: 40px;
+            transition: color, .4s;
+            
+            &:hover{
+                cursor: pointer;
+                color: $main-yellow;
+            }
+        }
+    }
+}
+
+footer{
+    margin-top: auto;
+    background-color: $main-green;
+    text-align: center;
+    font-size: 12px;
+    height: 30px;
+    vertical-align: middle; line-height: 30px;
+}
+
+@media (max-width: 800px){
+    main{
+        #box_searching{
+            height: 400px;
+            width: 95vw;
+
+            fieldset{
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+        }
+    }   
+} 
+
+@media (max-width: 600px){
+    header{
+        height: 10vh;        
+
+        #logo{
+            height: 10vh; width: 20vh;
+            padding: 1vh;
+            font-size: 2.2vh;
+
+            img{
+                margin-right: 1vw;
+                width: 8vh; height: 8vh;
+            }
+        }
+
+        #logging{
+            height: 10vh; min-width: 10%;
+            padding-top: 2vh;
+            margin-right: 2%;            
+    
+            #user_status{
+                display: block;
+                font-size: 1.5vh; 
+                font-weight: 100;           
+            }
+    
+            #log_in_button{
+                width: 80px; height: 59px;
+                font-size: 2.5vh;
+                margin-top: 1vh;
+                transition: color, .4s;
+    
+                &:hover{
+                    color: $main-yellow;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    main{
+        #box_searching{
+            margin-top: 5vh;
+            height: 380px;
+            width: 95vw;
+
+            #search_tool{
+                width: 80vw;
+            }
+
+            #author_bar{
+                width: 60vw;
+            }
+
+            fieldset{
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+                width: 50%;
+            }
+        }
+
+        #box_logging{
+            margin-top: 5vh;
+            width: 85vw;
+
+            & input[type="text"]{
+                width: 85%;
+            }
+
+            & input[type="password"]{
+                width: 85%;
+            }
+
+            & #go_back_button{
+                margin-left: 15%;            
+            }
+
+            & input[type="submit"]{
+                margin-right: 15%;        
+            }
+        }
+    }
+}
+
+@include text_inputs;

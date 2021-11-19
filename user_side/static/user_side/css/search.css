@@ -1,0 +1,197 @@
+/* Konrad Maciejczyk, 2021 */
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+html, body {
+  background-color: #e6f0f5;
+  color: #F8F7F2;
+  background: url(../img/background_light.png);
+  font-family: "Roboto", sans-serif;
+}
+
+a, a:active, a:hover, a:visited, a:link {
+  text-decoration: none;
+  color: #F8F7F2;
+}
+input[type=submit] {
+  border: 0px;
+  background-color: #FFFFFF;
+}
+
+input[type=text], input[type=password] {
+  border: 0px;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  padding-left: 2%;
+}
+
+input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 20%;
+  vertical-align: middle;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+input[type=checkbox]:checked {
+  background-color: #F8D872;
+}
+
+label {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+fieldset {
+  border: 0px;
+}
+
+#header {
+  background-color: #31655a;
+  width: 100vw;
+  height: 120px;
+  display: grid;
+}
+
+@media (max-width: 600px) {
+  header {
+    background-color: #31655a;
+    width: 100vw;
+    height: 20vh;
+    display: grid;
+    grid-template-areas: "logo logging" "search_tool search_tool";
+    grid-template-columns: 54% 46%;
+    grid-template-rows: 12vh 10vh;
+  }
+
+  #logo {
+    grid-area: logo;
+    box-sizing: border-box;
+    padding: 1vh;
+    font-size: 2.2vh;
+    font-weight: 300;
+    float: left;
+    height: 10vh;
+  }
+  #logo img {
+    margin-right: 1vw;
+    width: 8vh;
+    height: 8vh;
+    float: left;
+  }
+
+  #logging {
+    grid-area: logging;
+    box-sizing: border-box;
+    height: 10vh;
+    min-width: 10%;
+    float: right;
+    font-weight: 300;
+    padding-top: 2vh;
+    margin-right: 5%;
+  }
+  #logging #user_status {
+    display: block;
+    font-size: 1.5vh;
+    font-weight: 100;
+    float: right;
+  }
+  #logging #log_in_button {
+    width: 80px;
+    height: 4vh;
+    margin-top: 1vh;
+    transition: color, 0.4s;
+    font-size: 2.5vh;
+    float: right;
+    text-align: right;
+  }
+  #logging #log_in_button:hover {
+    color: #F8D872;
+    cursor: pointer;
+  }
+
+  #search_tool {
+    grid-area: search_tool;
+    width: 85%;
+    height: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #search_tool input[type=text] {
+    width: 87%;
+    height: 5vh;
+    float: left;
+    border-radius: 5px 0 0 5px;
+    font-size: 2vh;
+  }
+  #search_tool input[type=submit] {
+    width: 13%;
+    height: 100%;
+    border-radius: 0 5px 5px 0;
+    font-size: 20px;
+    transition: background-color 0.4s, color 0.4s;
+  }
+  #search_tool input[type=submit]:hover {
+    background-color: #30516e;
+    color: #F8F7F2;
+    cursor: pointer;
+  }
+
+  #filter {
+    box-sizing: border-box;
+    background-color: #F8F7F2;
+    width: 98vw;
+    min-height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1vh;
+    border-radius: 5px;
+    padding: 10px;
+    color: black;
+    border: 2px solid #31655a;
+  }
+  #filter fieldset {
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    font-size: 12px;
+  }
+  #filter fieldset label {
+    width: 150px;
+  }
+  #filter fieldset input[type=checkbox] {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #31655a;
+  }
+  #filter input[type=text] {
+    display: inline-block;
+    width: 50%;
+    height: 30px;
+    border-radius: 3px 3px 3px 3px;
+    font-size: 1.5vh;
+    margin-left: 4%;
+    margin-top: 10px;
+    border: 1px solid #31655a;
+  }
+  #filter #apply_button {
+    background-color: #31655a;
+    display: inline-block;
+    margin-left: 20px;
+    width: 80px;
+    height: 30px;
+    border-radius: 3px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    font-size: 14px;
+    color: white;
+  }
+}

@@ -17,9 +17,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
-
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/home_mobile.css' %}" media="screen and (max-width: 600px)">
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/home_desktop.css' %}" media="screen and (min-width: 601px)">
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/home.css' %}" media="screen">
         
         <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">    
     </head>
@@ -27,7 +25,7 @@
         <header>
             <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online Library Catalog</span></a></div>
             <div id="logging">
-                <span id="user_status">user unsigned</span>
+                <span id="user_status">you are browsing as guest user</span>
                 <div id="log_in_button" onclick="toggleDivs('box_searching', 'box_logging', 20)">sign in</div>
             </div>            
         </header> 
@@ -37,23 +35,21 @@
                     <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
                     <input type="submit" value="&#xe800;" style="font-family:fontello"/>                   
                 </div> 
-                <div id="adv_options">
+                    <input id="author_bar" type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
                     <fieldset>
                         <label><input type="checkbox">Books</label>
                         <label><input type="checkbox">Movies/Films</label>
                         <label><input type="checkbox">Sound Recordings</label>
                         <label><input type="checkbox">Images</label>
                         <label><input type="checkbox">Articles</label>
-                    </fieldset>
-                    <input type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
-                </div>        
+                    </fieldset>     
             </section>
             <div id="box_logging">
                     <span  id="log_in_sign">Sign in</span>
                     <input type="text" id="cos" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
                     <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
                     <input type="submit" value="Log in"/>
-                    <span id="go_back_button" onclick="toggleDivs('box_logging', 'box_searching', 20)">cancel</span>
+                    <div id="go_back_button" onclick="toggleDivs('box_logging', 'box_searching', 20)">cancel</div>
             </div>
             
         </main>    
