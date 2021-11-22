@@ -23,21 +23,19 @@
         <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
 
         <script type="text/javascript">
-            function toggleOptions(flag){                
 
-                if(flag){
-                    const header = document.querySelector("header");
-                    header.style.backgroundColor = "#30516e";
+            function show_item_pop_up(){
+                const div_pop_up = document.getElementById("pop_up");
+                const div_overlay = document.getElementById("overlay");
+                div_pop_up.style.display = 'block';
+                div_overlay.style.display = 'block';
+            }
 
-                    toggleDivs("search_tool", "logging_tool", 10);
-                    toggleDivs("search_tool", "logging_buttons", 10);
-                }else{
-                    const header = document.querySelector("header");
-                    header.style.backgroundColor = "#31655A";
-
-                    toggleDivs("logging_tool", "search_tool", 10);
-                    toggleDivs("logging_buttons", "search_tool", 10);
-                }
+            function close_pop_up(div_name){
+                const div_pop_up = document.getElementById("pop_up");
+                const div_overlay = document.getElementById("overlay");
+                div_pop_up.style.display = 'none';
+                div_overlay.style.display = 'none';
             }
             
         </script>
@@ -50,8 +48,8 @@
                     <input type="submit" value="&#xe800;" style="font-family:fontello"/>                     
                 </div> 
             <div id="logging">
-                <span id="user_status">you are browsing as guest user</span>
-                <div id="log_in_button" onclick="toggleOptions(true)">sign in</div>
+                <span id="user_status">you are browsing as guest user</span></br>
+                <div id="log_in_button">sign in</div>
             </div>              
         </header>
         <!-- <div id="logging_tool">                
@@ -62,20 +60,85 @@
                 <span id="go_back_button" onclick="toggleOptions(false)">cancel</span>
             </div>
         </div>   -->
-        <div="filter_logging_container">
-            <section id="filter">            
-                <fieldset>
-                    <label><input type="checkbox">Books</label>
-                    <label><input type="checkbox">Movies/Films</label>
-                    <label><input type="checkbox">Sound Recordings</label>
-                    <label><input type="checkbox">Images</label>
-                    <label><input type="checkbox">Articles</label>
-                </fieldset>
-                <input type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
+        <section id="filter">            
+            <fieldset>
+                <label><input type="checkbox">Books</label>
+                <label><input type="checkbox">Movies/Films</label>
+                <label><input type="checkbox">Sound Recordings</label>
+                <label><input type="checkbox">Images</label>
+                <label><input type="checkbox">Articles</label>
+            </fieldset>
+            <input type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
+            
+            <div id="apply_button">Apply</div> 
+            
+            <div id="order_status">You need to be logged in to order items</div>
+        </section>
+
+        <main>
+            <span id="search_summary">Phrase: <span class="bold_text">"Krzyżacy"</span> by <span class="bold_text">Henryk Sienkiewicz</span> in set of <span class="bold_text">books</span> and <span class="bold_text">movies/films</span> has given <span class="bold_text">2</span> result(s).</span>
+            <div class="result" id="result_1">
+                <div class="left_margin">
+                    <span class="result_no">1.</span>
+                    <span style="font-family:fontello" class="item_type" title="Book" >&#xe801;</span>
+                </div>
                 
-                <div id="apply_button">Apply</div>    
-            </section> 
-        </div>
+                <div class="result_infos">
+                    <span class="info"><span class="bold_text">Title:</span> Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Author:</span> Henryk Sienkiewicz (1846 - 1916)</span></br>
+                    <span class="info"><span class="bold_text">Publication year:</span> 1998</span></br>
+                    <span class="info"><span class="bold_text">Status:</span> <span style="color: hsl(130, 69%, 46%);">Available</span></span></br>
+                    <span class="show_more_button" onclick="show_item_pop_up()">Show more</span>  
+                </div>
+                <img src="{% static 'user_side/img/example_cover.jpg' %}" alt="cover picture"/>
+            </div>
+            <div class="result" id="result_2">
+                <div class="left_margin">
+                    <span class="result_no">2.</span>
+                    <span style="font-family:fontello" class="item_type" title="Book" >&#xe801;</span>
+                </div>
+                
+                <div class="result_infos">
+                    <span class="info"><span class="bold_text">Title:</span> Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Author:</span> Henryk Sienkiewicz (1846 - 1916)</span></br>
+                    <span class="info"><span class="bold_text">Publication year:</span> 1998</span></br>
+                    <span class="info"><span class="bold_text">Status:</span> <span style="color: hsl(130, 69%, 46%);">Available</span></span></br>
+                    <span class="show_more_button" onclick="show_item_pop_up()">Show more</span>
+                </div>
+                <img src="{% static 'user_side/img/example_cover.jpg' %}" alt="cover picture"/>
+            </div>
+            <div class="result"  id="result_3">
+                <div class="left_margin">
+                    <span class="result_no">3.</span>
+                    <span style="font-family:fontello" class="item_type" title="Book" >&#xe801;</span>
+                </div>
+                
+                <div class="result_infos">
+                    <span class="info"><span class="bold_text">Title:</span> Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Author:</span> Henryk Sienkiewicz (1846 - 1916)</span></br>
+                    <span class="info"><span class="bold_text">Publication year:</span> 1998</span></br>
+                    <span class="info"><span class="bold_text">Status:</span> <span style="color: hsl(130, 69%, 46%);">Available</span></span></br>
+                    <span class="show_more_button" onclick="show_item_pop_up()">Show more</span>  
+                </div>
+                <img src="{% static 'user_side/img/example_cover.jpg' %}" alt="cover picture"/>
+            </div>
+                <!-- <span id="no">1.</span>
+                <span style="font-family:fontello" id="item_type" title="Book" >&#xe801;</span>
+                <div id="infos">
+                    <span class="info"><span class="bold_text">Title:</span> Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Full title:</span> Henryk Sienkiewicz Krzyżacy</span></br>
+                    <span class="info"><span class="bold_text">Author:</span> Henryk Sienkiewicz (1846 - 1916)</span></br>
+                    <span class="info"><span class="bold_text">Publication year:</span> 1998</span></br>
+                    <span class="info"><span class="bold_text">Publisher:</span> Warszawa : PWW [Philip Wilson Warsaw], (Rzesz : RZG)</span></br>
+                    <span class="info"><span class="bold_text">ISBN:</span> 8387571377</span></br>
+                    <span class="info"><span class="bold_text">Description:</span> Lektura kl. VII</span></br>
+                    <span class="info"><span class="bold_text">Condition:</span> Good</span></br>
+                    <span class="info"><span class="bold_text">ID:</span> 000257</span></br>
+                    <span class="info"><span class="bold_text">Status:</span> <span style="color: hsl(130, 69%, 46%);">Available</span></span>                    
+                </div>
+                <div id="picture"><img src="{% static 'user_side/img/example_cover.jpg' %}" alt="cover picture"/></div>    -->
+            </div>
+        </main>
         <!--           
         <main>
             <span id="info_results">Phrase: <span class="bold_text">"Krzyżacy"</span> by <span class="bold_text">Henryk Sienkiewicz</span> in set of <span class="bold_text">books</span> and <span class="bold_text">movies/films</span> has given <span class="bold_text">2</span> results.</span>
@@ -117,5 +180,32 @@
             </div>
         </main>
         <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>          -->
+        <div id="pop_up">
+            <div id="pop_up_header">
+                <span id="pop_up_title">Krzyżacy</span>
+                <div id="pop_up_close" onclick="close_pop_up()">x</div>
+            </div>
+            <div id="pop_up_left_margin">
+                <span class="result_no">1.</span></br></br>
+                <span style="font-family:fontello" class="item_type" title="Book" >&#xe801;</span>
+            </div>
+                <div id="pop_up_main_content">
+                    <span class="pop_up_info"><span class="bold_text">Full title:</span> Henryk Sienkiewicz Krzyżacy</span></br>
+                    <span class="pop_up_info"><span class="bold_text">Author:</span> Henryk Sienkiewicz (1846 - 1916)</span></br>
+                    <span class="pop_up_info"><span class="bold_text">Publication year:</span> 1998</span></br>
+                    <span class="pop_up_info"><span class="bold_text">Publisher:</span> Warszawa : PWW [Philip Wilson Warsaw], (Rzesz : RZG)</span></br>
+                    <span class="pop_up_info"><span class="bold_text">ISBN:</span> 8387571377</span></br>
+                    <span class="pop_up_info"><span class="bold_text">Description:</span> Lektura kl. VII</span></br>
+                    <span class="pop_up_info"><span class="bold_text">Condition:</span> Good</span></br>
+                    <span class="pop_up_info"><span class="bold_text">ID:</span> 000257</span></br>   
+                    <span class="info"><span class="bold_text">Status:</span> <span style="color: hsl(130, 69%, 46%);">Available</span></span>                   
+            </div>
+            <div id="pop_up_bottom">
+                <img src="{% static 'user_side/img/example_cover.jpg' %}" alt="cover picture"/>
+                <div id="pop_up_add_item">Sign in to add this item to your order list</div>
+                
+            </div>
+        </div>
+        <div id="overlay"></div>
     </body>
 </html>

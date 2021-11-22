@@ -53,76 +53,320 @@ fieldset {
   border: 0px;
 }
 
-#header {
+header {
   background-color: #31655a;
-  width: 100vw;
-  height: 120px;
   display: grid;
+}
+header #logo {
+  grid-area: logo;
+  box-sizing: border-box;
+  float: left;
+}
+header #logo img {
+  float: left;
+}
+header #logging {
+  grid-area: logging;
+}
+header #logging #user_status {
+  display: block;
+  font-weight: 100;
+  float: right;
+}
+header #logging #log_in_button {
+  float: right;
+  text-align: right;
+  transition: color, 0.4s;
+}
+header #logging #log_in_button:hover {
+  color: #F8D872;
+  cursor: pointer;
+}
+header #logging #search_tool {
+  grid-area: search_tool;
+}
+header #logging #search_tool input[type=text] {
+  float: left;
+  border-radius: 5px 0 0 5px;
+}
+header #logging #search_tool input[type=submit] {
+  border-radius: 0 5px 5px 0;
+  transition: background-color 0.4s, color 0.4s;
+}
+header #logging #search_tool input[type=submit]:hover {
+  background-color: #30516e;
+  color: #F8F7F2;
+  cursor: pointer;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.bold_text {
+  font-weight: 300;
+}
+
+.show_more_button {
+  display: block;
+  text-decoration: underline;
+  margin-top: 10px;
+  color: #30516e;
+  width: 70px;
+}
+
+.show_more_button:hover {
+  cursor: pointer;
+}
+
+.pop_up_info {
+  font-size: 14px;
+}
+
+.item_type {
+  box-sizing: border-box;
+  display: block;
+  text-align: center;
+}
+
+.result_no {
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+#pop_up {
+  display: none;
+  position: fixed;
+  width: 98vw;
+  height: 470px;
+  background-color: #F8F7F2;
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  z-index: 10;
+}
+#pop_up #pop_up_header {
+  width: 100%;
+  height: 40px;
+  border-bottom: 1px solid lightgray;
+}
+#pop_up #pop_up_title {
+  display: inline-block;
+  width: 70%;
+  height: 100%;
+  margin-left: 10%;
+  vertical-align: middle;
+  line-height: 40px;
+}
+#pop_up #pop_up_close {
+  float: right;
+  margin-right: 20px;
+  margin: 5px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  vertical-align: middle;
+  line-height: 30px;
+  transition: background-color 0.4s;
+}
+#pop_up #pop_up_close:hover {
+  cursor: pointer;
+  background-color: gray;
+}
+#pop_up #pop_up_left_margin {
+  box-sizing: border-box;
+  min-width: 1%;
+  min-height: 40%;
+  display: inline-block;
+  margin-top: 10px;
+  padding-left: 2%;
+  padding-right: 3%;
+}
+#pop_up #pop_up_main_content {
+  display: inline-block;
+  width: 83%;
+  min-height: 40%;
+  vertical-align: top;
+  margin-top: 10px;
+}
+#pop_up #pop_up_bottom {
+  display: block;
+  width: 100%;
+  height: 200px;
+}
+#pop_up #pop_up_bottom img {
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: 10%;
+  width: 100px;
+  border: 2px solid #30516e;
+}
+#pop_up #pop_up_bottom #pop_up_add_item {
+  display: inline-block;
+  padding: 10px;
+  font-size: 10px;
+  margin-left: 10vw;
+  margin-top: 60px;
+  vertical-align: top;
+  width: 70px;
+  border: #31655a;
+  border: 1px solid #31655a;
+}
+
+#filter {
+  box-sizing: border-box;
+  background-color: #F8F7F2;
+  border-radius: 5px;
+  padding: 10px;
+  color: black;
+  border: 1px solid #ddd6b2;
+}
+#filter fieldset {
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+  font-size: 12px;
+}
+#filter fieldset label {
+  width: 150px;
+}
+#filter fieldset input[type=checkbox] {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #31655a;
+}
+#filter input[type=text] {
+  display: inline-block;
+  border-radius: 3px 3px 3px 3px;
+  margin-left: 5vw;
+  margin-top: 10px;
+  border: 1px solid #31655a;
+}
+#filter #apply_button {
+  background-color: #31655a;
+  display: inline-block;
+  margin-left: 20px;
+  width: 80px;
+  height: 30px;
+  border-radius: 3px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;
+  font-size: 14px;
+  color: white;
+}
+#filter #order_status {
+  margin-top: 15px;
+  margin-left: 5vw;
+}
+
+main {
+  box-sizing: border-box;
+  width: 98vw;
+  min-height: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1vh;
+  border-radius: 5px;
+  padding: 5px;
+  color: black;
+}
+main #search_summary {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgba(49, 101, 90, 0.5);
+  border-radius: 3px;
+  padding: 10px;
+  font-weight: 100;
+  font-size: 14px;
+}
+main .result {
+  margin-top: 10px;
+  min-height: 100px;
+  background-color: white;
+  border-radius: 5px;
+}
+main .result .left_margin {
+  width: 10%;
+  height: 80px;
+  margin-top: 5px;
+  display: inline-block;
+  vertical-align: top;
+}
+main .result .left_margin .item_type {
+  box-sizing: border-box;
+  display: block;
+  padding: 10px;
+  text-align: center;
+}
+main .result .result_infos {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 100;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 65%;
+}
+main .result img {
+  width: 50px;
+  float: right;
+  margin-top: 12px;
+  margin-right: 10px;
 }
 
 @media (max-width: 600px) {
   header {
-    background-color: #31655a;
     width: 100vw;
     height: 20vh;
-    display: grid;
     grid-template-areas: "logo logging" "search_tool search_tool";
     grid-template-columns: 54% 46%;
     grid-template-rows: 12vh 10vh;
   }
 
   #logo {
-    grid-area: logo;
-    box-sizing: border-box;
     padding: 1vh;
     font-size: 2.2vh;
     font-weight: 300;
-    float: left;
     height: 10vh;
   }
   #logo img {
     margin-right: 1vw;
     width: 8vh;
     height: 8vh;
-    float: left;
   }
 
   #logging {
-    grid-area: logging;
-    box-sizing: border-box;
     height: 10vh;
     min-width: 10%;
-    float: right;
-    font-weight: 300;
     padding-top: 2vh;
     margin-right: 5%;
   }
   #logging #user_status {
-    display: block;
-    font-size: 1.5vh;
-    font-weight: 100;
-    float: right;
+    font-size: 10px;
   }
   #logging #log_in_button {
     width: 80px;
     height: 4vh;
     margin-top: 1vh;
-    transition: color, 0.4s;
     font-size: 2.5vh;
-    float: right;
-    text-align: right;
-  }
-  #logging #log_in_button:hover {
-    color: #F8D872;
-    cursor: pointer;
   }
 
   #search_tool {
-    grid-area: search_tool;
     width: 85%;
     height: 5vh;
     margin-left: auto;
     margin-right: auto;
+    grid-area: search_tool;
   }
   #search_tool input[type=text] {
     width: 87%;
@@ -138,24 +382,13 @@ fieldset {
     font-size: 20px;
     transition: background-color 0.4s, color 0.4s;
   }
-  #search_tool input[type=submit]:hover {
-    background-color: #30516e;
-    color: #F8F7F2;
-    cursor: pointer;
-  }
 
   #filter {
-    box-sizing: border-box;
-    background-color: #F8F7F2;
     width: 98vw;
     min-height: 150px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 1vh;
-    border-radius: 5px;
-    padding: 10px;
-    color: black;
-    border: 2px solid #31655a;
   }
   #filter fieldset {
     margin-left: auto;
@@ -163,35 +396,42 @@ fieldset {
     width: 95%;
     font-size: 12px;
   }
-  #filter fieldset label {
-    width: 150px;
-  }
-  #filter fieldset input[type=checkbox] {
-    width: 15px;
-    height: 15px;
-    border: 1px solid #31655a;
-  }
   #filter input[type=text] {
-    display: inline-block;
     width: 50%;
     height: 30px;
-    border-radius: 3px 3px 3px 3px;
     font-size: 1.5vh;
-    margin-left: 4%;
-    margin-top: 10px;
-    border: 1px solid #31655a;
   }
-  #filter #apply_button {
-    background-color: #31655a;
-    display: inline-block;
-    margin-left: 20px;
-    width: 80px;
-    height: 30px;
-    border-radius: 3px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 30px;
-    font-size: 14px;
-    color: white;
+
+  main {
+    width: 98vw;
+    min-height: 150px;
+    margin-top: 5px;
+  }
+  main .result {
+    margin-top: 10px;
+    min-height: 100px;
+  }
+  main .result .left_margin {
+    width: 10%;
+    height: 80px;
+  }
+  main .result .left_margin .result_no {
+    padding: 10px;
+    margin-top: 5px;
+  }
+  main .result .left_margin .item_type {
+    padding: 10px;
+  }
+  main .result .result_infos {
+    font-size: 12px;
+    font-weight: 100;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 65%;
+  }
+  main .result img {
+    width: 50px;
+    margin-top: 12px;
+    margin-right: 10px;
   }
 }

@@ -1,22 +1,299 @@
 /* Konrad Maciejczyk, 2021 */
 @import './defaults.scss';
 
-#header{
+$border-color: $main-green;
+$search_summary_color: rgba(49, 101, 90, .5);
+$filter_background_color: #F8F7F2;
+$filter_border_color: #ddd6b2;
+$search_item_background_color: white;
+
+
+//=============HEADER===================///
+header{
     background-color: $main-green;
-    width: 100vw;
-    height: 120px;
-    display: grid;
+    display: grid; 
     
+    #logo{
+        grid-area: logo;
+        box-sizing: border-box;
+        float:left;
+
+        img{
+            float: left;
+        }
+    }
+
+    #logging{
+        grid-area: logging;
+
+        #user_status{
+            display: block;
+            font-weight: 100;
+            float: right;
+        }
+
+        #log_in_button{
+            float: right; 
+            text-align: right;
+            transition: color, .4s;
+
+            &:hover{
+                color: $main-yellow;
+                cursor: pointer;
+            }
+        }
+
+        #search_tool{
+            grid-area: search_tool;
+
+            & input[type="text"]{
+                float:left;
+                border-radius: 5px 0 0 5px;
+            }
+    
+            & input[type="submit"]{
+                border-radius: 0 5px 5px 0;
+                transition: background-color .4s, color .4s;                
+    
+                &:hover{
+                    background-color: $main-blue;
+                    color: $main-font-color;
+                    cursor: pointer;
+                }
+            }             
+        }
+    }
+}
+//=============END HEADER===================//
+
+#overlay{
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0,0,0,.5);
+    display: none;
+
+}
+
+.bold_text{
+    font-weight: 300;
+}
+.show_more_button{
+    display: block;
+    text-decoration: underline;
+    margin-top: 10px;
+    color: $main-blue;
+    width: 70px;
+}
+.show_more_button:hover{
+    cursor: pointer;
+}
+
+.pop_up_info{
+    font-size: 14px;
+}
+
+.item_type{
+    box-sizing: border-box;
+    display: block;
+    text-align: center;  
+}
+
+.result_no{
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+#pop_up{
+    display: none;
+    position: fixed;
+    width: 98vw; height: 470px;
+    background-color: $filter_background_color;
+    border-radius: 10px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    z-index: 10;
+
+    #{&}_header{
+        width: 100%; height: 40px;
+        border-bottom: 1px solid lightgray;
+    }
+
+    #{&}_title{
+        display: inline-block;
+        width: 70%; height: 100%;
+        margin-left: 10%;
+        vertical-align: middle; line-height: 40px;
+    }
+
+    #{&}_close{
+        float: right;
+        margin-right: 20px; margin: 5px;
+        width: 30px; height: 30px;
+        text-align: center;
+        border-radius: 50%;
+        vertical-align: middle; line-height: 30px;
+        transition: background-color .4s;
+    }
+    #{&}_close:hover{
+        cursor: pointer;
+        background-color: gray;
+    }
+
+    #{&}_left_margin{
+        box-sizing: border-box;
+        min-width: 1%; min-height: 40%;
+        display: inline-block;
+        margin-top: 10px;
+        padding-left: 2%; padding-right: 3%;
+    }
+    
+    #{&}_main_content{
+        display: inline-block;
+        width: 83%; min-height: 40%;
+        vertical-align: top;
+        margin-top: 10px;
+    }
+
+    #{&}_bottom{
+        display: block;
+        width: 100%; height: 200px;
+
+        img{
+            display: inline-block;
+            margin-top: 20px; margin-left: 10%;
+            width: 100px;
+            border: 2px solid $main-blue;
+        }
+
+        #pop_up_add_item{
+            display: inline-block;
+            padding: 10px;
+            font-size: 10px;
+            margin-left: 10vw; margin-top: 60px;
+            vertical-align: top;
+            width: 70px;
+            border: $border-color;
+            border: 1px solid $main-green;
+            
+
+        }
+    }
+}
+
+//=============FILTER BOX===================//
+#filter{
+    box-sizing: border-box;
+    background-color: $filter_background_color;
+    border-radius: 5px;
+    padding: 10px;
+    color: black;
+    border: 1px solid #ddd6b2;
+
+    fieldset{
+        margin-left: auto; margin-right: auto;
+        width: 95%; font-size: 12px;
+        
+        
+        & label{
+            width: 150px;
+        }
+
+        & input[type="checkbox"]{
+            width: 15px; height: 15px;
+            border: 1px solid $main-green;
+            
+        }
+    }
+
+    & input[type="text"]{
+        display: inline-block;
+        border-radius: 3px 3px 3px 3px;
+        margin-left: 5vw; margin-top: 10px;
+        border: 1px solid $main-green;
+        
+    }
+
+    #apply_button{
+        background-color: $main-green;
+        display: inline-block;
+        margin-left: 20px;
+        width: 80px; height: 30px;
+        border-radius: 3px;
+        text-align: center;
+        vertical-align: middle; line-height: 30px;
+        font-size: 14px;
+        color: $search_item_background_color;
+    }
+
+    #order_status{
+        margin-top: 15px; margin-left: 5vw;
+    }
+}
+//=============END OF FILTER BOX===================//
+
+main{
+    box-sizing: border-box;
+    width: 98vw; min-height: 150px;
+    margin-left: auto; margin-right: auto;
+    margin-top: 1vh;
+    border-radius: 5px;
+    padding: 5px;
+    color: black;
+
+
+//=============SEARCH SUMMARY==================//
+    #search_summary{
+        display: block;
+        margin-left: auto; margin-right: auto;
+        background-color: $search_summary_color;
+        border-radius: 3px;
+        padding: 10px;
+        font-weight: 100; font-size: 14px;
+    }
+//=============END OF SEARCH SUMMARY==================//
+//=============RESULT==================//
+    .result{
+        margin-top: 10px; min-height: 100px;
+        background-color: white;
+        border-radius: 5px;
+
+        .left_margin{
+            width: 10%; height: 80px;
+            margin-top: 5px;
+            display: inline-block;
+            vertical-align: top;
+
+            .item_type{
+                box-sizing: border-box;
+                display: block;
+                padding: 10px;
+                text-align: center;
+            }    
+
+        }
+
+        
+        .result_infos{
+            display: inline-block;
+            font-size: 12px; font-weight: 100;
+            margin-top: 5px; margin-bottom: 5px;
+            width: 65%;
+
+        }
+
+        & img{
+            width: 50px; float: right;
+            margin-top: 12px; margin-right: 10px;
+        }
+//=============END OF RESULT==================//
+    }   
 }
 
 @media (max-width: 600px){
-    header{
-        background-color: $main-green;
+    header{        
         width: 100vw;
         height: 20vh;
-        
-        
-        display: grid;
         grid-template-areas: "logo logging"
                             "search_tool search_tool";
 
@@ -24,58 +301,38 @@
         grid-template-rows: 12vh 10vh;
     }
 
-    #logo{
-        grid-area: logo;
-        box-sizing: border-box;
+    #logo{      
         padding: 1vh;
-        font-size: 2.2vh; font-weight: 300;
-        float:left;
+        font-size: 2.2vh; font-weight: 300;        
         height: 10vh;
-        
 
         img{
             margin-right: 1vw;
-            width: 8vh; height: 8vh;
-            float:left;
+            width: 8vh; height: 8vh;            
         }
-
     } 
 
-    #logging{
-        grid-area: logging;
-        box-sizing: border-box;
+    #logging{       
         height: 10vh; min-width: 10%;
-        float: right;   font-weight: 300;
-        
         padding-top: 2vh;
         margin-right: 5%;
 
         #user_status{
-            display: block;
-            font-size: 1.5vh; 
-            font-weight: 100; 
-            float: right;           
+            font-size: 10px;         
         }
 
-        #log_in_button{
+        #log_in_button{ 
             width: 80px; height: 4vh;
-            margin-top: 1vh;
-            transition: color, .4s;
+            margin-top: 1vh;            
             font-size: 2.5vh;
-            float: right;
-            text-align: right;
-
-            &:hover{
-                color: $main-yellow;
-                cursor: pointer;
-            }
+            
         }
     }
 
     #search_tool{
-        grid-area: search_tool;
         width: 85%; height: 5vh;
-        margin-left: auto; margin-right: auto;          
+        margin-left: auto; margin-right: auto;  
+        grid-area: search_tool;        
 
         & input[type="text"]{
             width: 87%; height: 5vh;
@@ -88,71 +345,60 @@
             width: 13%; height: 100%;
             border-radius: 0 5px 5px 0;
             font-size: 20px;
-            transition: background-color .4s, color .4s;                
-
-            &:hover{
-                background-color: $main-blue;
-                color: $main-font-color;
-                cursor: pointer;
-            }
+            transition: background-color .4s, color .4s;     
         }      
     }
 
     #filter{
-        box-sizing: border-box;
-        background-color: #F8F7F2;
         width: 98vw; min-height: 150px;
         margin-left: auto; margin-right: auto;
         margin-top: 1vh;
-        border-radius: 5px;
-        padding: 10px;
-        color: black;
-
-        border: 2px solid $main-green;
 
         fieldset{
             margin-left: auto; margin-right: auto;
             width: 95%; font-size: 12px;
-            
-            
-            & label{
-                width: 150px;
-            }
-
-            & input[type="checkbox"]{
-                width: 15px; height: 15px;
-                border: 1px solid $main-green;
-                
-            }
         }
 
         & input[type="text"]{
-            display: inline-block;
             width: 50%; height: 30px;
-            border-radius: 3px 3px 3px 3px;
             font-size: 1.5vh;
-            margin-left: 4%; margin-top: 10px;
-            border: 1px solid $main-green;
             
-        }
+        }      
+    }
 
+    main{
+        width: 98vw; min-height: 150px;
+        margin-top: 5px;       
 
-        #apply_button{
-            background-color: $main-green;
-            display: inline-block;
-            margin-left: 20px;
-            width: 80px; height: 30px;
-            border-radius: 3px;
-            text-align: center;
-            vertical-align: middle; line-height: 30px;
-            font-size: 14px;
-            color: white;
+        .result{
+            margin-top: 10px; min-height: 100px;
 
-            
-            
-            
+            .left_margin{
+                width: 10%; height: 80px;
 
-        }
+                .result_no{
+                    padding: 10px;
+                    margin-top: 5px;
+                }
+
+                .item_type{
+                    padding: 10px;
+                }    
+
+            }
+
+            .result_infos{
+                font-size: 12px; font-weight: 100;
+                margin-top: 5px; margin-bottom: 5px;
+                width: 65%;
+
+            }
+
+            & img{
+                width: 50px;
+                margin-top: 12px; margin-right: 10px;
+            }
+        }   
     }
 }
 
