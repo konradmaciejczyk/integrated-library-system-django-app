@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en"> 
+    <!--Konrad Maciejczyk, 2021-2022-->
+    <head>
+        <meta charset="=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="Konrad Maciejczyk">
+        <meta name="keywords" content="opac, library, search, books">
+        <meta name="description" content="Online library catalog. Order your books online.">
+        <title>{{ title }}</title>
+        <link rel="icon" type="image/png" href="{% static 'user_side/img/favicon.png' %}"/>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
+
+        {% block styles %}{% endblock styles %}       
+        <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
+        {% block scripts %} {% endblock scripts %}
+    </head>
+    <body>
+        <header>
+            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online Library Catalog</span></a></div>
+            <div id="logging">
+                <span id="user_status">you are browsing as guest user</span>
+                {% block log_in %} {% endblock log_in %}
+            </div>            
+        </header> 
+        {% block content %} {% endblock content %}
+    </body>
+</html>

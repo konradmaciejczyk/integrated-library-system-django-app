@@ -1,59 +1,96 @@
+{% extends "user_side/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en"> 
-    <head>
-        <meta charset="=UTF-8">
-        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
-        <meta name="author" content="Konrad Maciejczyk">
-        <meta name="keywords" content="opac, library, search, books">
-        <meta name="description" content="Online library catalog. Order your books online.">
-        <title>Online Library Catalog</title>
-        <link rel="icon" type="image/png" href="{% static 'user_side/img/favicon.png' %}"/>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/home.css' %}" media="screen">
+{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'user_side/css/home.css' %}" media="screen">{% endblock styles %}
+{% block scripts %}
+    <script type="text/javascript">
+        var item_types;
+        var item_length;
+        var isAllSelected = true;
+
+        function findCheckboxes(){
+            item_types = document.querySelectorAll('[name="item_type"]');
+            item_length = item_types.length;
+            selectAll();
+        }
+
         
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">    
-    </head>
-    <body>
-        <header>
-            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online Library Catalog</span></a></div>
-            <div id="logging">
-                <span id="user_status">you are browsing as guest user</span>
-                <div id="log_in_button" onclick="toggleDivs('box_searching', 'box_logging', 20)">sign in</div>
-            </div>            
-        </header> 
-        <main>   
-            <section id="box_searching" role="search">
-                <div id="search_tool">
-                    <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
-                    <input type="submit" value="&#xe800;" style="font-family:fontello"/>                   
-                </div> 
-                    <input id="author_bar" type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
-                    <fieldset>
-                        <label><input type="checkbox">Books</label>
-                        <label><input type="checkbox">Movies/Films</label>
-                        <label><input type="checkbox">Sound Recordings</label>
-                        <label><input type="checkbox">Images</label>
-                        <label><input type="checkbox">Articles</label>
-                    </fieldset>     
-            </section>
-            <div id="box_logging">
-                    <span  id="log_in_sign">Sign in</span>
-                    <input type="text" id="cos" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
-                    <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
-                    <input type="submit" value="Log in"/>
-                    <div id="go_back_button" onclick="toggleDivs('box_logging', 'box_searching', 20)">cancel</div>
-            </div>
-            
-        </main>    
-            <footer>2021-2022, by Konrad Maciejczyk, University of Silesia</footer>
-            <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
-    </body>
-</html>
+        function selectAll(){                
+            item_types.forEach(function(item){
+                item.checked = true;
+            })
+        }
+
+        function deselectAll(){
+            item_types[0].checked = true;
+
+            for(var i = 1; i<item_length; i++){
+                item_types[i].checked = false;
+            }
+        }
+
+        function select_deselect(){
+            if(isAllSelected){
+                deselectAll();
+                isAllSelected = !isAllSelected;
+            }else{
+                selectAll();
+                isAllSelected = !isAllSelected;
+            }
+        }
+
+        function update_checkbox(){
+            var checked_counter = 0;
+
+            for(var i=0; i<item_length - 1; i++){
+                if(item_types[i].checked === true ){
+                    checked_counter++;
+                }
+            }
+            switch(checked_counter){
+                case 5:{
+                    item_types[item_length - 1].checked = true; break;
+                }
+                case 0:{
+                    item_types[0].checked = true; break;
+                }
+                default:{
+                    item_types[item_length-1].checked = false;
+                }
+                
+            }
+        }
+
+        window.onload = findCheckboxes
+    </script>
+{% endblock scripts %}
+{% block log_in %}<div id="log_in_button" onclick="toggleDivs('box_searching', 'box_logging', 20)">sign in</div>{% endblock log_in %}
+{% block content %}
+    <main>   
+        <section id="box_searching" role="search">
+            <div id="search_tool">
+                <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
+                <input type="submit" value="&#xe800;" style="font-family:fontello"/>                   
+            </div> 
+                <input id="author_bar" type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
+                <fieldset>
+                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Books</label>
+                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Movies/Films</label>
+                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Sound Recordings</label>
+                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Images</label>
+                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Articles</label>
+                    <label><input type="checkbox" name="item_type" onclick="select_deselect()">All</label>
+                </fieldset>     
+        </section>
+        <div id="box_logging">
+                <span  id="log_in_sign">Sign in</span>
+                <input type="text" id="cos" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
+                <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
+                <input type="submit" value="Log in"/>
+                <div id="go_back_button" onclick="toggleDivs('box_logging', 'box_searching', 20)">cancel</div>
+        </div>
+        
+    </main>    
+    <footer>2021-2022 by Konrad Maciejczyk, University of Silesia</footer>
+    <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
+{% endblock content %}

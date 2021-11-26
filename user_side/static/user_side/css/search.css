@@ -9,6 +9,7 @@ html, body {
   color: #F8F7F2;
   background: url(../img/background_light.png);
   font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 
 a, a:active, a:hover, a:visited, a:link {
@@ -48,81 +49,76 @@ label {
   display: inline-block;
   white-space: nowrap;
 }
+label:hover {
+  cursor: pointer;
+}
 
 fieldset {
   border: 0px;
 }
 
 header {
+  position: relative;
   background-color: #31655a;
-  display: grid;
+  height: 120px;
+  width: 100vw;
 }
-header #logo {
-  grid-area: logo;
+
+#logo {
   box-sizing: border-box;
+  position: absolute;
+  width: 225px;
+  height: 120px;
+  top: 0px;
+  left: 0px;
+  padding: 10px;
+  font-size: 27px;
+  font-weight: 300;
   float: left;
 }
-header #logo img {
+#logo img {
+  margin-right: 10px;
+  width: 100px;
+  height: 100px;
   float: left;
 }
-header #logging {
-  grid-area: logging;
+
+#logging {
+  position: absolute;
+  top: 20%;
+  right: 2%;
+  box-sizing: border-box;
+  font-weight: 300;
 }
-header #logging #user_status {
+#logging #user_status {
   display: block;
   font-weight: 100;
-  float: right;
+  font-size: 20px;
 }
-header #logging #log_in_button {
+#logging #log_in_button {
   float: right;
   text-align: right;
   transition: color, 0.4s;
+  margin-top: 10px;
 }
-header #logging #log_in_button:hover {
+#logging #log_in_button:hover {
   color: #F8D872;
   cursor: pointer;
 }
-header #logging #search_tool {
-  grid-area: search_tool;
-}
-header #logging #search_tool input[type=text] {
-  float: left;
-  border-radius: 5px 0 0 5px;
-}
-header #logging #search_tool input[type=submit] {
-  border-radius: 0 5px 5px 0;
-  transition: background-color 0.4s, color 0.4s;
-}
-header #logging #search_tool input[type=submit]:hover {
-  background-color: #30516e;
-  color: #F8F7F2;
-  cursor: pointer;
+
+input[type=checkbox] {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #F8D872;
 }
 
-#overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
+label {
+  width: 150px;
+  font-size: 12px;
 }
 
 .bold_text {
-  font-weight: 300;
-}
-
-.show_more_button {
-  display: block;
-  text-decoration: underline;
-  margin-top: 10px;
-  color: #30516e;
-  width: 70px;
-}
-
-.show_more_button:hover {
-  cursor: pointer;
+  font-weight: 400;
 }
 
 .pop_up_info {
@@ -132,20 +128,93 @@ header #logging #search_tool input[type=submit]:hover {
 .item_type {
   box-sizing: border-box;
   display: block;
-  text-align: center;
+  padding: 10px;
+  cursor: default;
 }
 
 .result_no {
   box-sizing: border-box;
   margin-top: 5px;
+  padding: 10px;
+  font-weight: 400;
+}
+
+.left_margin {
+  box-sizing: border-box;
+  min-width: 1%;
+  min-height: 100%;
+  display: inline-block;
+  margin-top: 10px;
+  padding-left: 2%;
+  padding-right: 3%;
+  vertical-align: top;
+}
+
+.pop_up {
+  display: none;
+  position: fixed;
+  min-width: 200px;
+  min-height: 100px;
+  background-color: #F8F7F2;
+  padding: 10px;
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 200ms ease-in-out;
+  color: black;
+  z-index: 10;
+}
+
+.pop_up_close {
+  float: right;
+  margin-right: 20px;
+  margin: 5px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  vertical-align: middle;
+  line-height: 30px;
+  transition: background-color 0.4s;
+  color: black;
+}
+.pop_up_close:hover {
+  cursor: pointer;
+  background-color: gray;
+}
+
+.show_more_button {
+  display: block;
+  text-decoration: underline;
+  margin-top: 50px;
+  color: #30516e;
+  width: 200px;
+  font-weight: 400;
+}
+
+.show_more_button:hover {
+  cursor: pointer;
+}
+
+#overlay {
+  position: fixed;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
 }
 
 #pop_up {
   display: none;
   position: fixed;
-  width: 98vw;
-  height: 470px;
+  width: 800px;
+  min-height: 200px;
   background-color: #F8F7F2;
+  padding-bottom: 20px;
   border-radius: 10px;
   top: 50%;
   left: 50%;
@@ -166,31 +235,6 @@ header #logging #search_tool input[type=submit]:hover {
   vertical-align: middle;
   line-height: 40px;
 }
-#pop_up #pop_up_close {
-  float: right;
-  margin-right: 20px;
-  margin: 5px;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  border-radius: 50%;
-  vertical-align: middle;
-  line-height: 30px;
-  transition: background-color 0.4s;
-}
-#pop_up #pop_up_close:hover {
-  cursor: pointer;
-  background-color: gray;
-}
-#pop_up #pop_up_left_margin {
-  box-sizing: border-box;
-  min-width: 1%;
-  min-height: 40%;
-  display: inline-block;
-  margin-top: 10px;
-  padding-left: 2%;
-  padding-right: 3%;
-}
 #pop_up #pop_up_main_content {
   display: inline-block;
   width: 83%;
@@ -198,63 +242,91 @@ header #logging #search_tool input[type=submit]:hover {
   vertical-align: top;
   margin-top: 10px;
 }
-#pop_up #pop_up_bottom {
+#pop_up #pop_up_add_item {
+  margin-top: 10px;
+  width: 150px;
+  height: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #31655a;
+  vertical-align: middle;
+  line-height: 40px;
+  text-align: center;
+  color: white;
+  border-radius: 3px;
+  transition: background-color 0.4s;
+}
+#pop_up #pop_up_add_item:hover {
+  cursor: pointer;
+  background-color: #30516e;
+}
+
+#pop_up_cover {
+  display: none;
+  z-index: 10;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #F8F7F2;
+  max-width: 800px;
+  min-height: 200px;
+  border-radius: 10px;
+  padding-bottom: 40px;
+}
+#pop_up_cover img {
   display: block;
-  width: 100%;
-  height: 200px;
-}
-#pop_up #pop_up_bottom img {
-  display: inline-block;
-  margin-top: 20px;
-  margin-left: 10%;
-  width: 100px;
+  padding: 2px;
+  margin-left: auto;
+  margin-right: auto;
   border: 2px solid #30516e;
+  max-width: 700px;
+  margin-top: 40px;
 }
-#pop_up #pop_up_bottom #pop_up_add_item {
-  display: inline-block;
-  padding: 10px;
-  font-size: 10px;
-  margin-left: 10vw;
-  margin-top: 60px;
-  vertical-align: top;
-  width: 70px;
-  border: #31655a;
+
+input[type=text] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 3px 3px 3px 3px;
+  margin-top: 10px;
   border: 1px solid #31655a;
+  height: 30px;
+  width: 50%;
+}
+input[type=text]:nth-child(2) {
+  margin-bottom: 20px;
 }
 
 #filter {
   box-sizing: border-box;
+  width: 800px;
   background-color: #F8F7F2;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
   border-radius: 5px;
   padding: 10px;
   color: black;
-  border: 1px solid #ddd6b2;
+  padding: 20px;
 }
 #filter fieldset {
   margin-left: auto;
   margin-right: auto;
   width: 95%;
-  font-size: 12px;
 }
-#filter fieldset label {
-  width: 150px;
-}
-#filter fieldset input[type=checkbox] {
-  width: 15px;
-  height: 15px;
-  border: 1px solid #31655a;
-}
-#filter input[type=text] {
-  display: inline-block;
-  border-radius: 3px 3px 3px 3px;
-  margin-left: 5vw;
+#filter #show_only_available {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
   margin-top: 10px;
-  border: 1px solid #31655a;
+  margin-bottom: 10px;
 }
 #filter #apply_button {
   background-color: #31655a;
-  display: inline-block;
-  margin-left: 20px;
+  margin-left: auto;
+  margin-right: auto;
   width: 80px;
   height: 30px;
   border-radius: 3px;
@@ -263,6 +335,11 @@ header #logging #search_tool input[type=submit]:hover {
   line-height: 30px;
   font-size: 14px;
   color: white;
+  transition: background-color 0.4s;
+}
+#filter #apply_button:hover {
+  cursor: pointer;
+  background-color: #30516e;
 }
 #filter #order_status {
   margin-top: 15px;
@@ -271,85 +348,101 @@ header #logging #search_tool input[type=submit]:hover {
 
 main {
   box-sizing: border-box;
-  width: 98vw;
-  min-height: 150px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 1vh;
+  margin-top: 25px;
   border-radius: 5px;
-  padding: 5px;
   color: black;
+  width: 800px;
 }
-main #search_summary {
+
+#search_summary {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background-color: rgba(49, 101, 90, 0.5);
-  border-radius: 3px;
+  background-color: rgba(49, 101, 90, 0.7);
   padding: 10px;
-  font-weight: 100;
-  font-size: 14px;
-}
-main .result {
-  margin-top: 10px;
-  min-height: 100px;
-  background-color: white;
-  border-radius: 5px;
-}
-main .result .left_margin {
-  width: 10%;
-  height: 80px;
-  margin-top: 5px;
-  display: inline-block;
-  vertical-align: top;
-}
-main .result .left_margin .item_type {
-  box-sizing: border-box;
-  display: block;
-  padding: 10px;
-  text-align: center;
-}
-main .result .result_infos {
-  display: inline-block;
   font-size: 12px;
-  font-weight: 100;
-  margin-top: 5px;
+}
+
+.result {
+  min-height: 180px;
+  background-color: white;
+  border-bottom: 1px solid #6d6d6d;
+}
+
+.cover_image {
+  width: 110px;
+  height: 180px;
+  float: right;
+  position: relative;
+}
+.cover_image img {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #30516e;
+}
+.cover_image span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: white;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 160px;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.cover_image span:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.result_infos {
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 15px;
   margin-bottom: 5px;
   width: 65%;
 }
-main .result img {
-  width: 50px;
-  float: right;
-  margin-top: 12px;
-  margin-right: 10px;
+
+.result:last-child {
+  border-bottom: none;
 }
 
 @media (max-width: 600px) {
   header {
-    width: 100vw;
-    height: 20vh;
-    grid-template-areas: "logo logging" "search_tool search_tool";
-    grid-template-columns: 54% 46%;
-    grid-template-rows: 12vh 10vh;
+    height: 60px;
+  }
+  header #logo {
+    padding: 5px;
+    font-size: 13px;
+    height: 60px;
+    width: 130px;
+  }
+  header #logo img {
+    margin-right: 1vw;
+    width: 50px;
+    height: 50px;
   }
 
-  #logo {
-    padding: 1vh;
-    font-size: 2.2vh;
-    font-weight: 300;
-    height: 10vh;
-  }
-  #logo img {
-    margin-right: 1vw;
-    width: 8vh;
-    height: 8vh;
+  .show_more_button {
+    margin-top: 10px;
+    width: 150px;
   }
 
   #logging {
-    height: 10vh;
-    min-width: 10%;
-    padding-top: 2vh;
-    margin-right: 5%;
+    height: 60px;
+    min-width: 130px;
+    top: 10%;
+    right: 2%;
   }
   #logging #user_status {
     font-size: 10px;
@@ -357,38 +450,22 @@ main .result img {
   #logging #log_in_button {
     width: 80px;
     height: 4vh;
-    margin-top: 1vh;
-    font-size: 2.5vh;
+    margin-top: 5px;
+    font-size: 16px;
   }
 
-  #search_tool {
-    width: 85%;
-    height: 5vh;
-    margin-left: auto;
-    margin-right: auto;
-    grid-area: search_tool;
-  }
-  #search_tool input[type=text] {
-    width: 87%;
-    height: 5vh;
-    float: left;
-    border-radius: 5px 0 0 5px;
-    font-size: 2vh;
-  }
-  #search_tool input[type=submit] {
-    width: 13%;
-    height: 100%;
-    border-radius: 0 5px 5px 0;
-    font-size: 20px;
-    transition: background-color 0.4s, color 0.4s;
+  input[type=text] {
+    width: 80%;
+    height: 35px;
   }
 
   #filter {
-    width: 98vw;
     min-height: 150px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 1vh;
+    width: 95vw;
+    padding-top: 10px;
   }
   #filter fieldset {
     margin-left: auto;
@@ -396,42 +473,126 @@ main .result img {
     width: 95%;
     font-size: 12px;
   }
-  #filter input[type=text] {
-    width: 50%;
-    height: 30px;
-    font-size: 1.5vh;
-  }
 
   main {
-    width: 98vw;
     min-height: 150px;
     margin-top: 5px;
+    width: 100vw;
   }
-  main .result {
-    margin-top: 10px;
+
+  #pop_up {
+    width: 98vw;
+  }
+  #pop_up #pop_up_title {
+    margin-left: 55px;
+    width: 100px;
+  }
+
+  #pop_up_cover {
+    width: 95vw;
+  }
+  #pop_up_cover img {
+    width: 70vw;
+  }
+
+  .result {
     min-height: 100px;
   }
-  main .result .left_margin {
+  .result .left_margin {
     width: 10%;
     height: 80px;
   }
-  main .result .left_margin .result_no {
-    padding: 10px;
-    margin-top: 5px;
-  }
-  main .result .left_margin .item_type {
-    padding: 10px;
-  }
-  main .result .result_infos {
+  .result .result_infos {
     font-size: 12px;
-    font-weight: 100;
+    font-weight: 300;
     margin-top: 5px;
     margin-bottom: 5px;
     width: 65%;
   }
-  main .result img {
-    width: 50px;
-    margin-top: 12px;
-    margin-right: 10px;
+  .result .cover_image {
+    float: right;
+    position: relative;
+    width: 60px;
+    height: 100px;
   }
+  .result .cover_image img {
+    box-sizing: border-box;
+    width: 55px;
+    border: 2px solid #30516e;
+  }
+  .result .cover_image span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    color: white;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 80px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .result .cover_image span:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+}
+/* For styling placeholders and on focus in text inputs*/
+input[type=text]::-webkit-input-placeholder {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:-moz-placeholder {
+  /*Firefox < 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]::-moz-placeholder {
+  /*Firefox > 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:-ms-input-placeholder {
+  /*Internet Explorer 10*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:focus {
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+/* For styling placeholders and on focus in password inputs*/
+input[type=password]:focus {
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+input[type=password]::-webkit-input-placeholder {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]:-moz-placeholder {
+  /*Firefox < 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]::-moz-placeholder {
+  /*Firefox > 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]:-ms-input-placeholder {
+  /*Internet Explorer 10*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }

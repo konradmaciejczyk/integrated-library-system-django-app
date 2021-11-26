@@ -8,6 +8,7 @@ html, body {
   color: #F8F7F2;
   background: url(../img/background_light.png);
   font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 
 a, a:active, a:hover, a:visited, a:link {
@@ -46,6 +47,9 @@ input[type=checkbox]:checked {
 label {
   display: inline-block;
   white-space: nowrap;
+}
+label:hover {
+  cursor: pointer;
 }
 
 fieldset {

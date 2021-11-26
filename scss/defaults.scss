@@ -1,10 +1,10 @@
 $background-image: url(../img/background_light.png);
-$main-green: rgb(49, 101, 90);
+$main-green: rgb(49, 101, 90); 
 $main-blue: #30516e;
 $main-yellow: #F8D872;
 $main-font-color: #F8F7F2;
 $search-idle: #FFFFFF;
-$checkbox-checked-color: #00ff22;
+$checkbox-checked-color: #F8D872;
 $search-item-background: #eeffd7;
 
 * {
@@ -16,6 +16,7 @@ html, body{
     color: $main-font-color;
     background: $background-image;
     font-family: 'Roboto', sans-serif;
+    font-weight: 300;
 }
 
 a{
@@ -63,17 +64,70 @@ input[type="checkbox"]{
     cursor: pointer;
 
     &:checked{
-        background-color: $main-yellow;
+        background-color: $checkbox-checked-color;
     }
 }
 
 label{
     display: inline-block;
     white-space: nowrap;
+
+    &:hover{
+        cursor: pointer;
+    }
 }
 
 fieldset{
     border: 0px;
+}
+
+@mixin _header{
+    header{
+        position: relative;
+        background-color: $main-green;
+        height: 120px; width: 100vw;
+    }
+        
+    #logo{
+        box-sizing: border-box;
+        position: absolute;
+        width: 225px; height: 120px;
+        top: 0px; left: 0px;
+        padding: 10px;
+        font-size: 27px; font-weight: 300;
+        float:left;    
+    
+        img{
+            margin-right: 10px;
+            width: 100px; height: 100px;        
+            float:left;
+        }
+    }
+    
+    #logging{
+        position: absolute;
+        top: 20%; right: 2%;
+        box-sizing: border-box;
+        font-weight: 300;
+    
+        #user_status{
+            display: block;
+            font-weight: 100; font-size: 20px;
+            
+        }
+    
+        #log_in_button{
+            float: right; 
+            text-align: right;
+            transition: color, .4s;
+            margin-top: 10px;        
+    
+            &:hover{
+                color: $main-yellow;
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 @mixin text_inputs{

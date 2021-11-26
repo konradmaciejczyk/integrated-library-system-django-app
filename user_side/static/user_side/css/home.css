@@ -9,6 +9,7 @@ html, body {
   color: #F8F7F2;
   background: url(../img/background_light.png);
   font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 
 a, a:active, a:hover, a:visited, a:link {
@@ -48,6 +49,9 @@ label {
   display: inline-block;
   white-space: nowrap;
 }
+label:hover {
+  cursor: pointer;
+}
 
 fieldset {
   border: 0px;
@@ -60,47 +64,50 @@ body {
 }
 
 header {
+  position: relative;
   background-color: #31655a;
-  width: 100vw;
   height: 120px;
-  font-weight: 300;
+  width: 100vw;
 }
-header #logo {
+
+#logo {
   box-sizing: border-box;
+  position: absolute;
   width: 225px;
   height: 120px;
+  top: 0px;
+  left: 0px;
   padding: 10px;
   font-size: 27px;
+  font-weight: 300;
   float: left;
 }
-header #logo img {
+#logo img {
   margin-right: 10px;
   width: 100px;
   height: 100px;
   float: left;
 }
-header #logging {
+
+#logging {
+  position: absolute;
+  top: 20%;
+  right: 2%;
   box-sizing: border-box;
-  height: 100px;
-  min-width: 180px;
-  float: right;
-  padding-top: 25px;
-  margin-right: 5%;
+  font-weight: 300;
 }
-header #logging #user_status {
+#logging #user_status {
   display: block;
-  font-size: 20px;
   font-weight: 100;
+  font-size: 20px;
 }
-header #logging #log_in_button {
-  width: 80px;
-  height: 59px;
-  margin-top: 10px;
-  transition: color, 0.4s;
+#logging #log_in_button {
   float: right;
   text-align: right;
+  transition: color, 0.4s;
+  margin-top: 10px;
 }
-header #logging #log_in_button:hover {
+#logging #log_in_button:hover {
   color: #F8D872;
   cursor: pointer;
 }
@@ -111,7 +118,7 @@ main {
 main #box_searching {
   box-sizing: border-box;
   width: 800px;
-  height: 350px;
+  height: 330px;
   margin-left: auto;
   margin-right: auto;
   background-color: #31655a;
@@ -140,6 +147,7 @@ main #box_searching #search_tool input[type=submit] {
   height: 100%;
   border-radius: 0 5px 5px 0;
   font-size: 20px;
+  color: #31655a;
   transition: background-color 0.4s, color 0.4s;
 }
 main #box_searching #search_tool input[type=submit]:hover {
@@ -150,8 +158,7 @@ main #box_searching #search_tool input[type=submit]:hover {
 main #box_searching #author_bar {
   display: block;
   margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 17.5%;
   width: 40%;
   height: 35px;
   border-radius: 3px 3px 3px 3px;
@@ -163,7 +170,7 @@ main #box_searching fieldset {
   height: 100px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 main #box_logging {
   display: none;
@@ -251,7 +258,7 @@ footer {
 
 @media (max-width: 800px) {
   main #box_searching {
-    height: 400px;
+    height: 330px;
     width: 95vw;
   }
   main #box_searching fieldset {
@@ -260,38 +267,39 @@ footer {
 }
 @media (max-width: 600px) {
   header {
-    height: 10vh;
+    height: 60px;
   }
-  header #logo {
-    height: 10vh;
-    width: 20vh;
-    padding: 1vh;
-    font-size: 2.2vh;
+
+  #logo {
+    height: 60px;
+    width: 130px;
+    padding: 5px;
+    font-size: 13px;
   }
-  header #logo img {
+  #logo img {
     margin-right: 1vw;
-    width: 8vh;
-    height: 8vh;
+    width: 50px;
+    height: 50px;
   }
-  header #logging {
-    height: 10vh;
+
+  #logging {
+    height: 50px;
     min-width: 10%;
-    padding-top: 2vh;
     margin-right: 2%;
   }
-  header #logging #user_status {
+  #logging #user_status {
     display: block;
-    font-size: 1.5vh;
+    font-size: 10px;
     font-weight: 100;
   }
-  header #logging #log_in_button {
+  #logging #log_in_button {
     width: 80px;
     height: 59px;
-    font-size: 2.5vh;
-    margin-top: 1vh;
+    font-size: 16px;
+    margin-top: 5px;
     transition: color, 0.4s;
   }
-  header #logging #log_in_button:hover {
+  #logging #log_in_button:hover {
     color: #F8D872;
     cursor: pointer;
   }
@@ -303,13 +311,16 @@ footer {
   }
   main #box_searching #search_tool {
     width: 80vw;
+    height: 30px;
   }
   main #box_searching #author_bar {
-    width: 60vw;
+    width: 80vw;
+    margin-left: 8%;
+    height: 25px;
   }
   main #box_searching fieldset {
     grid-template-columns: repeat(1, minmax(0, 1fr));
-    width: 50%;
+    width: 80vw;
   }
   main #box_logging {
     margin-top: 5vh;
@@ -317,15 +328,18 @@ footer {
   }
   main #box_logging input[type=text] {
     width: 85%;
+    height: 35px;
   }
   main #box_logging input[type=password] {
     width: 85%;
+    height: 35px;
   }
   main #box_logging #go_back_button {
     margin-left: 15%;
   }
   main #box_logging input[type=submit] {
     margin-right: 15%;
+    width: 80px;
   }
 }
 /* For styling placeholders and on focus in text inputs*/
