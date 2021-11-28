@@ -64,7 +64,6 @@
         window.onload = findCheckboxes
     </script>
 {% endblock scripts %}
-{% block log_in %}<div id="log_in_button" onclick="toggleDivs('box_searching', 'box_logging', 20)">sign in</div>{% endblock log_in %}
 {% block content %}
     <main>   
         <section id="box_searching" role="search">
@@ -81,15 +80,7 @@
                     <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Articles</label>
                     <label><input type="checkbox" name="item_type" onclick="select_deselect()">All</label>
                 </fieldset>     
-        </section>
-        <div id="box_logging">
-                <span  id="log_in_sign">Sign in</span>
-                <input type="text" id="cos" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
-                <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
-                <input type="submit" value="Log in"/>
-                <div id="go_back_button" onclick="toggleDivs('box_logging', 'box_searching', 20)">cancel</div>
-        </div>
-        
+        </section>        
     </main>    
     <footer>2021-2022 by Konrad Maciejczyk, University of Silesia</footer>
     <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>

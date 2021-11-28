@@ -12,60 +12,6 @@ body{
 main{
     width: 100vw;
 
-    #box_searching{
-        box-sizing: border-box;
-        width: 800px; height: 330px; 
-        margin-left: auto; margin-right: auto;
-        background-color: $main-green;
-        border-radius: 5px;
-        @include shadow($main-green);
-        margin-top: 15vh;
-        padding-top: 6vh;        
-
-        #search_tool{
-            width: 65%; height: 50px;
-            margin-left: auto; margin-right: auto;          
-
-            & input[type="text"]{
-                width: 87%; height: 100%;
-                float:left;
-                border-radius: 5px 0 0 5px;
-                font-size: 20px;
-            }
-
-            & input[type="submit"]{
-                width: 13%; height: 100%;
-                border-radius: 0 5px 5px 0;
-                font-size: 20px;
-                color: $main-green;
-                transition: background-color .4s, color .4s;                
-
-                &:hover{
-                    background-color: $main-blue;
-                    color: $main-font-color;
-                    cursor: pointer;
-                }
-            }
-        }
-
-        #author_bar{
-                display: block;
-                margin-top: 20px;
-                margin-left: 17.5%;
-                width: 40%; height: 35px;
-                border-radius: 3px 3px 3px 3px;
-
-        }
-
-        fieldset{
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            width: 65%; height: 100px;
-            margin-left: auto; margin-right: auto;
-            margin-top: 20px;      
-        }
-    }
-
     #box_logging{
         display:none;
         box-sizing: border-box;
@@ -112,7 +58,6 @@ main{
             &:hover{
                 cursor: pointer;
                 color: $main-yellow;
-                background-color: $main-green;
             }
         }
 
@@ -136,7 +81,7 @@ main{
 
 footer{
     margin-top: auto;
-    background-color: $main-green;
+    background-color: $main-blue;
     text-align: center;
     font-size: 12px;
     height: 30px;
@@ -245,3 +190,5 @@ footer{
 }
 
 @include text_inputs;
+
+

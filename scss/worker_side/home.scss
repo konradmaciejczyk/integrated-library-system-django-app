@@ -1,0 +1,106 @@
+/* Konrad Maciejczyk, 2021-2022 */
+@import 'defaults.scss';
+$user_op_background: #194871;
+$item_op_background: #A3D858;
+$borrows_op_background: #B54C62;
+$catalog_search_background: #4B5498;
+$op_status_background_color: rgba(25, 113, 43, 0.8);
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+@include _header;
+
+.op_status{
+    box-sizing: border-box;
+    color: $main-font-color-light;
+    width: 800px;
+    text-align: center;
+    margin: 10px auto 10px auto;
+    background-color: $op_status_background_color;
+    padding: 10px 0 10px 0;
+    border: 2px solid $user_op_background;
+    border-radius: 3px;
+}
+
+main{
+    margin: 50px auto 0 auto;
+    width: 800px;
+    display: grid;
+    grid-template-areas: "search search search"
+                         "user1 user2 user3"
+                         "item1 item2 item3"
+                         "borrow1 borrow2 borrow3";
+
+    column-gap: 10px; row-gap: 20px;
+}
+
+.option_box{
+    
+    
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    transition: transform .2s;
+
+    &:hover{
+        cursor: pointer;
+        @include shadow($main-blue);
+    }
+
+    a{
+        padding: 10px; 
+        box-sizing: border-box;
+        display: block;
+        width: 100%; height: 100%;
+    }
+}
+
+.option_box.search{
+    grid-area: search;
+    background-color: $catalog_search_background;
+
+    i{
+        font-size: 50px;
+        margin: 20px 0 10px 10px;
+    }
+}
+
+.option_box.user{
+    background-color: $user_op_background;
+
+    i{
+        margin: 20px 0 10px 10px;
+        font-size: 50px;
+    }
+}
+
+.option_box.item{
+    background-color: $item_op_background;
+
+    i{
+        margin: 20px 0 10px 10px;
+        font-size: 50px;
+    }
+}
+
+.option_box.borrows{
+    background-color: $borrows_op_background;
+
+    i{
+        margin: 20px 0 10px 10px;
+        font-size: 50px;
+    }
+}
+
+footer{
+    margin-top: auto;
+    background-color: $main-blue;
+    text-align: center;
+    font-size: 12px;
+    height: 30px;
+    vertical-align: middle; line-height: 30px;
+}

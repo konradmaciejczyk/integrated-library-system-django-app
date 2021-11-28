@@ -20,15 +20,14 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 
         {% block styles %}{% endblock styles %}       
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
         {% block scripts %} {% endblock scripts %}
     </head>
     <body>
         <header>
-            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online Library Catalog</span></a></div>
+            <div id="logo"><a href="{% url 'worker_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online</br>Library</br>Catalog <span style="font-size: 14px">for librarian</span></span></a></div>
             <div id="logging">
-                <span id="user_status">you are browsing as guest user</span>
-                <div id="log_in_button"><a href="{% url 'user_side-log_in' %}">sign in</a></div>
+                <span id="user_status">Hello, Konrad</span>
+                <div id="log_in_button"><a href="{% url 'worker_side-log_in' %}">sign out</a></div>
             </div>            
         </header> 
         {% block content %} {% endblock content %}

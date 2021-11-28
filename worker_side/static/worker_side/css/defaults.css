@@ -1,0 +1,58 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+html, body {
+  background-color: #e6f0f5;
+  color: white;
+  background: url(../img/background_light.png);
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+a, a:active, a:hover, a:visited, a:link {
+  text-decoration: none;
+  color: white;
+  transition: color 0.4s;
+}
+input[type=submit] {
+  border: 0px;
+  background-color: #FFFFFF;
+}
+
+input[type=text], input[type=password] {
+  border: 0px;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  padding-left: 2%;
+}
+
+input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 20%;
+  vertical-align: middle;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+input[type=checkbox]:checked {
+  background-color: #F8D872;
+}
+
+label {
+  display: inline-block;
+  white-space: nowrap;
+}
+label:hover {
+  cursor: pointer;
+}
+
+fieldset {
+  border: 0px;
+}
