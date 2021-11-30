@@ -3,6 +3,11 @@
   padding: 0px;
 }
 
+::selection {
+  background-color: #194973;
+  color: white;
+}
+
 html, body {
   background-color: #e6f0f5;
   color: white;
@@ -16,6 +21,9 @@ a, a:active, a:hover, a:visited, a:link {
   color: white;
   transition: color 0.4s;
 }
+a:hover {
+  color: #F8D872;
+}
 input[type=submit] {
   border: 0px;
   background-color: #FFFFFF;
@@ -25,7 +33,6 @@ input[type=text], input[type=password] {
   border: 0px;
   background-color: #FFFFFF;
   box-sizing: border-box;
-  padding-left: 2%;
 }
 
 input[type=checkbox] {
@@ -43,6 +50,24 @@ input[type=checkbox] {
 }
 input[type=checkbox]:checked {
   background-color: #F8D872;
+}
+
+input[type=radio] {
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border: 1px solid #194973;
+  border-radius: 50%;
+  vertical-align: middle;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+input[type=radio]:checked {
+  background-color: #194973;
 }
 
 label {

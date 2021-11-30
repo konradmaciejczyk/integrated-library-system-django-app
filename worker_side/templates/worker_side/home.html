@@ -1,5 +1,8 @@
 {% extends 'worker_side/base.html' %}
 {% load static %}
+
+{% block title %}Work desktop - Online Library Catalog for librarian{% endblock title %}
+
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/home.css' %}" media="screen"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -8,15 +11,16 @@
 
     {% if messages %}
         {% for message in messages %}
-        <div class="op_status">{{ message }}</div>
+            <div class="op_status">{{ message }}</div>
         {% endfor %}
     {% endif %}
+
     <main>
         <div class="option_box search">
             <a href="#"><i class="fas fa-search"></i></br>Search in resources</a>
         </div>
         <div class="option_box user" style="grid-area: user1">
-            <a href="{% url 'worker_side-register' %}"><i class="fas fa-user-plus"></i><br>Register new user</a>            
+            <a href="{% url 'worker_side-register_user' %}"><i class="fas fa-user-plus"></i><br>Register new user</a>            
         </div>     
         <div class="option_box user" style="grid-area: user2">
              <a href="#"><i class="fas fa-user-edit"></i></br>Change user data</a>            

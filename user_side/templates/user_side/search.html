@@ -1,7 +1,7 @@
 {% extends 'user_side/base.html' %}
 {% load static %}
 
-
+{% block title %}{{ title }}{% endblock title %}
 {% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search.css' %}" media="screen"> {% endblock styles %}
 {% block scripts %}
     <script type="text/javascript">

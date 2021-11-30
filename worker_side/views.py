@@ -1,23 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import  UserRegisterForm
+from .forms import  ClientRegistrationForm
 
 def home(request):
-    context = {'title': 'Work desktop - Online Library Catalog for librarian'}
-    return render(request, 'worker_side/home.html', context)
+    return render(request, 'worker_side/home.html')
 
-def register(request):
+def register_user(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = ClientRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
+            messages.success(request, f'Account successful created!')
             return redirect('worker_side-home')
     else:
-        form = UserRegisterForm()
+        form = ClientRegistrationForm()
 
-    return render(request, 'worker_side/register.html', {'form': form})
+    return render(request, 'worker_side/register_user.html', {'form': form})
 
 def log_in(request):
     return render(request, 'worker_side/log_in.html')

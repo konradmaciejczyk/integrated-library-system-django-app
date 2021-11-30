@@ -1,4 +1,3 @@
-/* Konrad Maciejczyk, 2021 */
 * {
   margin: 0px;
   padding: 0px;
@@ -83,12 +82,6 @@ fieldset {
   border: 0px;
 }
 
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 header {
   position: relative;
   background-color: #194973;
@@ -141,178 +134,111 @@ header {
   cursor: pointer;
 }
 
-main {
-  width: 100vw;
+input[onblur] {
+  border: 0;
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 300px;
+  padding-bottom: 2px;
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
 }
-main #box_logging {
-  display: none;
+input[onblur]:focus {
+  border-bottom: 2px solid #194973;
+}
+
+.single_input:nth-of-type(6) input {
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 149px;
+}
+.single_input:nth-of-type(6) input:focus {
+  border-bottom: 2px solid #194973;
+}
+
+input[type=date] {
+  border: 0;
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 300px;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  padding-bottom: 2px;
+}
+input[type=date]:focus {
+  border-bottom: 2px solid #194973;
+}
+
+label {
+  font-size: 14px;
+}
+
+main {
   box-sizing: border-box;
-  width: 500px;
-  height: 350px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 15vh;
-  background-color: #194973;
-  border-radius: 5px;
+  width: 800px;
+  height: 820px;
+  background-color: white;
+  margin: 50px auto 50px auto;
+  padding: 25px 75px 30px 75px;
   -webkit-box-shadow: 0px 0px 30px -10px #194973;
   -moz-box-shadow: 0px 0px 30px -10px #194973;
   box-shadow: 0px 0px 30px -10px #194973;
-  padding-top: 50px;
+  border-radius: 10px;
 }
-main #box_logging #log_in_sign {
+
+p {
   display: block;
   width: 100%;
   text-align: center;
-  font-size: 40px;
   font-weight: 100;
+  font-size: 50px;
+  margin-bottom: 20px;
+  color: #194973;
 }
-main #box_logging input[type=text] {
-  display: block;
-  width: 60%;
-  height: 40px;
-  border-radius: 5px;
+
+.single_input {
+  width: 100%;
+  height: 50px;
+  margin-top: 10px;
+  font-size: 20px;
+  color: black;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 30px;
 }
-main #box_logging input[type=password] {
+
+.input_label {
+  display: inline-block;
+  width: 340px;
+  color: #194973;
+}
+
+.status_note {
   display: block;
-  width: 60%;
-  height: 40px;
-  border-radius: 5px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 30px;
+  font-size: 10px;
+  margin: 5px 0px 0px 350px;
+  color: black;
 }
-main #box_logging input[type=submit] {
+
+input[type=submit] {
   display: block;
   float: right;
-  width: 20%;
-  height: 40px;
-  border-radius: 5px;
-  margin-top: 30px;
-  margin-right: 100px;
-  font-size: 18px;
-  transition: background-color 0.4s, color 0.4s;
-}
-main #box_logging input[type=submit]:hover {
-  cursor: pointer;
-  color: #F8D872;
-}
-main #box_logging #go_back_button {
-  float: left;
-  width: 20%;
-  height: 40px;
-  border-radius: 5px;
-  margin-top: 30px;
-  margin-left: 100px;
-  font-size: 18px;
-  text-align: center;
-  vertical-align: center;
-  line-height: 40px;
-  transition: color, 0.4s;
-}
-main #box_logging #go_back_button:hover {
-  cursor: pointer;
-  color: #F8D872;
-}
-
-footer {
-  margin-top: auto;
+  margin: 50px auto 0px auto;
   background-color: #194973;
-  text-align: center;
-  font-size: 12px;
-  height: 30px;
-  vertical-align: middle;
-  line-height: 30px;
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  font-weight: 300;
+}
+input[type=submit]:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 30px -10px #194973;
+  -moz-box-shadow: 0px 0px 30px -10px #194973;
+  box-shadow: 0px 0px 30px -10px #194973;
 }
 
-@media (max-width: 800px) {
-  main #box_searching {
-    height: 330px;
-    width: 95vw;
-  }
-  main #box_searching fieldset {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 600px) {
-  header {
-    height: 60px;
-  }
-
-  #logo {
-    height: 60px;
-    width: 130px;
-    padding: 5px;
-    font-size: 13px;
-  }
-  #logo img {
-    margin-right: 1vw;
-    width: 50px;
-    height: 50px;
-  }
-
-  #logging {
-    height: 50px;
-    min-width: 10%;
-    margin-right: 2%;
-  }
-  #logging #user_status {
-    display: block;
-    font-size: 10px;
-    font-weight: 100;
-  }
-  #logging #log_in_button {
-    width: 80px;
-    height: 59px;
-    font-size: 16px;
-    margin-top: 5px;
-    transition: color, 0.4s;
-  }
-  #logging #log_in_button:hover {
-    color: #F8D872;
-    cursor: pointer;
-  }
-
-  main #box_searching {
-    margin-top: 5vh;
-    height: 380px;
-    width: 95vw;
-  }
-  main #box_searching #search_tool {
-    width: 80vw;
-    height: 30px;
-  }
-  main #box_searching #author_bar {
-    width: 80vw;
-    margin-left: 8%;
-    height: 25px;
-  }
-  main #box_searching fieldset {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    width: 80vw;
-  }
-  main #box_logging {
-    margin-top: 5vh;
-    width: 85vw;
-  }
-  main #box_logging input[type=text] {
-    width: 85%;
-    height: 35px;
-  }
-  main #box_logging input[type=password] {
-    width: 85%;
-    height: 35px;
-  }
-  main #box_logging #go_back_button {
-    margin-left: 15%;
-  }
-  main #box_logging input[type=submit] {
-    margin-right: 15%;
-    width: 80px;
-  }
-}
 /* For styling placeholders and on focus in text inputs*/
 input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list]::-webkit-input-placeholder {
   font-family: "Roboto", sans-serif;

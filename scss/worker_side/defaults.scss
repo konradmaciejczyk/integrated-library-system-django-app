@@ -12,6 +12,11 @@ $item-background: #eeffd7;
     margin: 0px; padding: 0px;
 }
 
+::selection{
+    background-color: $main-blue;
+    color: $main-font-color-light;
+}
+
 html, body{
     background-color: #e6f0f5;
     color: $main-font-color-light;
@@ -33,6 +38,7 @@ a{
     }
     &:hover{
         @extend a;
+        color: $main-yellow;
     }
     &:active{
         @extend a;
@@ -49,7 +55,6 @@ input[type="text"], input[type="password"]{
     border: 0px;
     background-color: $search-idle;
     box-sizing: border-box;
-    padding-left: 2%;
 }
 
 input[type="checkbox"]{
@@ -68,6 +73,25 @@ input[type="checkbox"]{
     &:checked{
         background-color: $checkbox-checked-color;
     }
+}
+
+input[type="radio"]{
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border: 1px solid $main-blue; 
+    border-radius: 50%;
+    vertical-align: middle;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+
+    &:checked{
+        background-color: $main-blue;;
+    }    
 }
 
 label{
@@ -104,6 +128,10 @@ fieldset{
             width: 100px; height: 100px;        
             float:left;
         }
+
+        a:hover{
+            color: white;
+        }
     }
     
     #logging{
@@ -134,23 +162,23 @@ fieldset{
 
 @mixin text_inputs{
         /* For styling placeholders and on focus in text inputs*/
-    input[type='text']::-webkit-input-placeholder { 
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]::-webkit-input-placeholder { 
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text']:-moz-placeholder  { /*Firefox < 19*/
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]:-moz-placeholder  { /*Firefox < 19*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text']::-moz-placeholder { /*Firefox > 19*/
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]::-moz-placeholder { /*Firefox > 19*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text']:-ms-input-placeholder { /*Internet Explorer 10*/
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]:-ms-input-placeholder { /*Internet Explorer 10*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text']:focus{
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]:focus{
         font-family: 'Roboto', sans-serif;
         outline: none;
     }

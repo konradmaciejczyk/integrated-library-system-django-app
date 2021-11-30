@@ -1,0 +1,93 @@
+{% extends 'worker_side/base.html' %}
+{% load static %}
+
+{% block title %}User Registration - Online Library Catalog (for librarian){% endblock title %}
+
+{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/register_user.css' %}" media="screen">{% endblock styles %}
+{% block content %}
+    <main>
+        <p>Register new user</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="single_input">
+                <span class="input_label">first name</span>
+                    <input class="input_text" name="first_name" type="text" placeholder="Enter first name" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter first name';" required autofocus>
+                    <span class="status_note">*necessary information</span>
+            </div>
+
+            <div class="single_input">
+                <span class="input_label">last name</span>
+                    <input class="input_text" name="last_name" type="text" placeholder="Enter last name" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter last name';" required maxlength="50">
+                    <span class="status_note">*necessary information</span>
+            </div>
+
+            <!-- <div class="single_input">
+                <span class="input_label">gender</span>
+                    <label><input class="input_radio" type="radio" name="gender" value="Male">male</label>
+                    <label><input class="input_radio" type="radio" name="gender" value="Female">female</label>
+                    <label><input class="input_radio" type="radio" name="gender" value="Diverse">diverse</label>
+                    <span class="status_note">*necessary information</span>
+            </div>
+
+            <div class="single_input">
+                <span class="input_label">date of birth</span>
+                    <input class="input_text" name="date_of_birth" type="date" required>
+                    <span class="status_note">*necessary information</span>
+            </div>
+
+            <div class="single_input">
+                <span class="input_label">citizenship</span>
+                    <input class="input_text" name="citizenship" list="citizenships" placeholder="Select citizenship" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Select citizenship';" required>
+                    <datalist id="citizenships">
+                        <option>polish</option>
+                        <option>english</option>
+                        <option>german</option>
+                        <option>portugese</option>
+                    </datalist>
+                    <span class="status_note">*necessary information</span>
+            </div>
+            
+            <div class="single_input">
+                <span class="input_label">identity document number</span>
+                    <input class="input_text" list="id_type" name="id_card_type" placeholder="Select ID type" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Select ID type';" required>
+                    <datalist id="id_type">
+                        <option>passport</option>
+                        <option>ID card</option>
+                    </datalist>
+                    <input class="input_text" type="text" name="id_card" placeholder="Enter ID number" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter ID number';" required>
+                    <span class="status_note">*necessary information</span>
+            </div> 
+
+            <div class="single_input">
+                <span class="input_label">e-mail address</span>
+                    <input class="input_text" type="e-mail" name="email" placeholder="Enter e-mail address" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter e-mail address';" autocomplete="off">
+                    <span class="status_note">*necessary information</span>
+            </div>
+
+            <div class="single_input">
+                <span class="input_label">phone number</span>
+                    <input class="input_text" type="tel" name="phone_num" placeholder="Enter phone number" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter phone number';" required>
+                    <span class="status_note">*necessary information</span>
+            </div>
+
+            <div class="single_input">
+                <span class="input_label">correspondance address</span>
+                    <input class="input_text" type="e-mail" name="corr_address" placeholder="Enter correspondance address" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter correspondance address';", required>
+                    <span class="status_note">*necessary information</span>
+            </div>
+
+            <div class="single_input">
+                <span class="input_label">occupation</span>
+                    <input class="input_text" list="occupation_type" name="occupation" type="text" placeholder="Enter occupation" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter occupation';", required>
+                    <datalist id="occupation_type">
+                        <option>student</option>
+                        <option>academic teacher</option>
+                        <option>other</option>
+                    </datalist>
+                    <span class="status_note">*necessary information</span>
+            </div>-->
+            <input type="submit" value="Submit"> 
+        </form>
+    </main>
+{% endblock content %}
