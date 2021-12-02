@@ -13,6 +13,13 @@ $label_color: $main_blue;
     @return ($a + $b);
 }
 
+.message{
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
 input[onblur]{
     border: 0;
     border-bottom: 2px solid silver;
@@ -28,7 +35,7 @@ input[onblur]{
 }
 
 .single_input:nth-of-type(6){
-    input{
+    input, select{
         border-bottom: 2px solid silver;
         transition: border-bottom .5s;
         width: math.div($text-input-width, 2px) - 1px;
@@ -40,6 +47,7 @@ input[onblur]{
 }
 
 input[type="date"]{
+    background: white;
     border: 0;
     border-bottom: 2px solid silver;
     transition: border-bottom .5s;
@@ -52,6 +60,16 @@ input[type="date"]{
     &:focus{
         border-bottom: 2px solid $main_blue;
     }
+}
+
+select{
+    border: 0;
+    border-bottom: 2px solid silver;
+    transition: border-bottom .5s;
+    width: $text_input_width;
+    padding-bottom: 2px;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
 }
 
 label{
@@ -107,6 +125,8 @@ input[type="submit"]{
     border-radius: 10px;
     color: $main-font-color-light;
     font-size: 20px; font-weight: 300;
+    opacity: .2;
+    pointer-events: none;
 
     &:hover{
         cursor: pointer;

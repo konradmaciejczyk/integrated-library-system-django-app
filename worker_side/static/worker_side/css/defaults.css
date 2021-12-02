@@ -24,6 +24,15 @@ a, a:active, a:hover, a:visited, a:link {
 a:hover {
   color: #F8D872;
 }
+.nav {
+  margin: 10px 0px 0px 10px;
+  color: #194973;
+}
+.nav a {
+  text-decoration: underline;
+  color: #194973;
+}
+
 input[type=submit] {
   border: 0px;
   background-color: #FFFFFF;

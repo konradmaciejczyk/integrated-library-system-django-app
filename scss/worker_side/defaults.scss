@@ -45,6 +45,16 @@ a{
     }
 }
 
+.nav{
+    margin: 10px 0px 0px 10px;
+    color: $main-blue;
+
+    a{
+        text-decoration: underline;
+        color: $main-blue;
+    }
+}
+
 input[type="submit"]{
     border: 0px;
     background-color: $search-idle;

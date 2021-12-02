@@ -25,6 +25,15 @@ a, a:active, a:hover, a:visited, a:link {
 a:hover {
   color: #F8D872;
 }
+.nav {
+  margin: 10px 0px 0px 10px;
+  color: #194973;
+}
+.nav a {
+  text-decoration: underline;
+  color: #194973;
+}
+
 input[type=submit] {
   border: 0px;
   background-color: #FFFFFF;
@@ -166,13 +175,11 @@ main {
   border-radius: 5px;
   text-align: center;
   display: inline-block;
-  transition: transform 0.2s;
+  transition: filter 0.4s;
 }
 .option_box:hover {
   cursor: pointer;
-  -webkit-box-shadow: 0px 0px 30px -10px #194973;
-  -moz-box-shadow: 0px 0px 30px -10px #194973;
-  box-shadow: 0px 0px 30px -10px #194973;
+  filter: brightness(130%);
 }
 .option_box a {
   padding: 10px;

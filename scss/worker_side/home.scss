@@ -42,11 +42,11 @@ main{
     border-radius: 5px;
     text-align: center;
     display: inline-block;
-    transition: transform .2s;
+    transition: filter .4s;
 
     &:hover{
         cursor: pointer;
-        @include shadow($main-blue);
+        filter: brightness(130%);
     }
 
     a{
@@ -70,7 +70,7 @@ main{
     }
 
     &:hover{
-        @include shadow($catalog_search_background)
+        @include shadow($catalog_search_background);
     }
 }
 

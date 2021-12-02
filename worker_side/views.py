@@ -1,6 +1,10 @@
+from time import time
+from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import  ClientRegistrationForm
+from datetime import datetime, timedelta
+from user_side.models import Citizenship
 
 def home(request):
     return render(request, 'worker_side/home.html')
@@ -15,7 +19,14 @@ def register_user(request):
     else:
         form = ClientRegistrationForm()
 
-    return render(request, 'worker_side/register_user.html', {'form': form})
+    five_years_ago = (datetime.today() - timedelta(6*365))
+    context = {
+        'form': form,
+        'max_date': five_years_ago.date().strftime("%Y-%m-%d"),
+        'citizenships': Citizenship.objects.all()
+    }
+    
+    return render(request, 'worker_side/register_user.html', context)
 
 def log_in(request):
     return render(request, 'worker_side/log_in.html')

@@ -4,90 +4,343 @@
 {% block title %}User Registration - Online Library Catalog (for librarian){% endblock title %}
 
 {% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/register_user.css' %}" media="screen">{% endblock styles %}
+{% block scripts %}
+{% endblock scripts %}
+
 {% block content %}
+    <div class="nav">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > New User Registration</div>
+    {% for err in form.name.errors %}
+        <div class="message"> {{ err }} </div>
+    {% endfor %}
     <main>
         <p>Register new user</p>
         
-        <form method="POST">
+        <form method="POST" id="form">
             {% csrf_token %}
             <div class="single_input">
                 <span class="input_label">first name</span>
-                    <input class="input_text" name="first_name" type="text" placeholder="Enter first name" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter first name';" required autofocus>
-                    <span class="status_note">*necessary information</span>
+                    <input class="input_text" name="first_name" id="first_name" type="text" placeholder="Enter first name" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter first name';" autocomplete="off" autofocus>
+                    <span class="status_note" id="first_name_status">*necessary information</span>
             </div>
 
             <div class="single_input">
                 <span class="input_label">last name</span>
-                    <input class="input_text" name="last_name" type="text" placeholder="Enter last name" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter last name';" required maxlength="50">
-                    <span class="status_note">*necessary information</span>
+                    <input class="input_text" name="last_name" id="last_name" type="text" placeholder="Enter last name" oninput="" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter last name';" maxlength="50" autocomplete="off">
+                    <span class="status_note" id="last_name_status">*necessary information</span>
             </div>
 
-            <!-- <div class="single_input">
+            <div class="single_input">
                 <span class="input_label">gender</span>
-                    <label><input class="input_radio" type="radio" name="gender" value="Male">male</label>
-                    <label><input class="input_radio" type="radio" name="gender" value="Female">female</label>
-                    <label><input class="input_radio" type="radio" name="gender" value="Diverse">diverse</label>
-                    <span class="status_note">*necessary information</span>
+                    <label><input class="input_radio" type="radio" name="gender" value="1">male</label>
+                    <label><input class="input_radio" type="radio" name="gender" value="2">female</label>
+                    <label><input class="input_radio" type="radio" name="gender" value="3">diverse</label>
+                    <span class="status_note" id="gender_status">*necessary information</span>
             </div>
 
+            
             <div class="single_input">
                 <span class="input_label">date of birth</span>
-                    <input class="input_text" name="date_of_birth" type="date" required>
-                    <span class="status_note">*necessary information</span>
-            </div>
-
-            <div class="single_input">
-                <span class="input_label">citizenship</span>
-                    <input class="input_text" name="citizenship" list="citizenships" placeholder="Select citizenship" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Select citizenship';" required>
-                    <datalist id="citizenships">
-                        <option>polish</option>
-                        <option>english</option>
-                        <option>german</option>
-                        <option>portugese</option>
-                    </datalist>
-                    <span class="status_note">*necessary information</span>
+                    <input class="input_text" id="date_of_birth" max="{{ max_date }}" name="date_of_birth" type="date">
+                    <span class="status_note" id="date_of_birth_status">*necessary information</span>
             </div>
             
             <div class="single_input">
-                <span class="input_label">identity document number</span>
-                    <input class="input_text" list="id_type" name="id_card_type" placeholder="Select ID type" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Select ID type';" required>
-                    <datalist id="id_type">
-                        <option>passport</option>
-                        <option>ID card</option>
-                    </datalist>
-                    <input class="input_text" type="text" name="id_card" placeholder="Enter ID number" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter ID number';" required>
-                    <span class="status_note">*necessary information</span>
-            </div> 
+                <span class="input_label">citizenship</span>
+                    <select id="citizenship" name="citizenship">
+                        {% for citizenship in citizenships %}
+                            <option value="{{ citizenship.id }}"> {{ citizenship }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="status_note" id="citizenship_status">*necessary information</span>
+            </div>
 
+            
+            <div class="single_input">
+                <span class="input_label">identity document number</span>
+                <select name="id_doc_type" id="id_doc_type">
+                    <option value="1">ID Card</option>
+                    <option value="2">Passport</option>
+                </select>
+                    <input class="input_text" id="id_doc_number" type="text" name="id_card" placeholder="Enter ID number" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter ID number';">
+                    <span class="status_note" id="id_status">*necessary information</span>
+            </div> 
+            
             <div class="single_input">
                 <span class="input_label">e-mail address</span>
-                    <input class="input_text" type="e-mail" name="email" placeholder="Enter e-mail address" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter e-mail address';" autocomplete="off">
-                    <span class="status_note">*necessary information</span>
+                    <input class="input_text" type="e-mail" id="email" name="email" placeholder="Enter e-mail address" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter e-mail address';" autocomplete="off">
+                    <span class="status_note" id="email_status">*necessary information</span>
             </div>
-
+            
             <div class="single_input">
                 <span class="input_label">phone number</span>
-                    <input class="input_text" type="tel" name="phone_num" placeholder="Enter phone number" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter phone number';" required>
-                    <span class="status_note">*necessary information</span>
+                    <input class="input_text" id="phone_num" type="tel" name="phone_num" placeholder="Enter phone number" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter phone number';">
+                    <span class="status_note" id="phone_num_status">*necessary information</span>
             </div>
-
+    
             <div class="single_input">
                 <span class="input_label">correspondance address</span>
-                    <input class="input_text" type="e-mail" name="corr_address" placeholder="Enter correspondance address" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter correspondance address';", required>
-                    <span class="status_note">*necessary information</span>
+                    <input class="input_text" id="corr_address" type="e-mail" name="corr_address" placeholder="Enter correspondance address" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter correspondance address';">
+                    <span class="status_note" id="corr_address_status">*necessary information</span>
             </div>
 
             <div class="single_input">
                 <span class="input_label">occupation</span>
-                    <input class="input_text" list="occupation_type" name="occupation" type="text" placeholder="Enter occupation" onfocus="this.placeholder = '';" onblur="this.placeholder = 'Enter occupation';", required>
-                    <datalist id="occupation_type">
-                        <option>student</option>
-                        <option>academic teacher</option>
-                        <option>other</option>
-                    </datalist>
-                    <span class="status_note">*necessary information</span>
-            </div>-->
-            <input type="submit" value="Submit"> 
+                <select name="occupation" id="occupation">
+                    <option value="1">Student</option>
+                    <option value="2">Academic teacher</option>
+                    <option value="3">Other</option>
+                </select>
+                    <span class="status_note" id="occupation_status">*necessary information</span>
+            </div>
+
+            <input type="submit" value="Submit" id="submit_button"> 
         </form>
     </main>
+    <script type="text/javascript">
+        const color_correct = "green"; const color_incorrect = "firebrick"; const color_standard = "black";
+
+
+        //========================OCCUPATION VALIDATION============================//
+        const occupation = document.getElementById('occupation'); const occupation_status = document.getElementById('occupation_status');
+        is_occupation_selected = false;
+
+        occupation.addEventListener('input', function(){
+            is_occupation_selected = true;
+            occupation_status.innerHTML = "*valid information";
+            occupation_status.style.color = color_correct;
+            validate_form();
+        })
+        
+
+        //========================ID VALIDATION============================//
+        const id_doc_type = document.getElementById('id_doc_type');
+        const id_doc_number = document.getElementById('id_doc_number'); const id_status = document.getElementById('id_status');
+        var is_id_doc_type_selected = false; var is_id_doc_number_valid = false; var is_id_valid = false;
+
+        function validate_id(){
+            console.log("!!!");
+            if(id_doc_type.value == "1"){
+                console.log("Dowód osobisty")
+                if(id_doc_number.value.length < 5){
+                    id_status.innerHTML = "*invalid information";
+                    id_status.style.color = color_incorrect;
+                    return false;                    
+                }else{
+                    id_status.innerHTML = "*valid information";
+                    id_status.style.color = color_correct;
+                    return true;
+                }
+            }else{
+                let regex = new RegExp('^(?!^0+$)[a-zA-Z0-9]{3,20}$');
+                if(regex.test(id_doc_number.value)){
+                    id_status.innerHTML = "*valid information";
+                    id_status.style.color = color_correct;
+                    return true
+                }else{
+                    id_status.innerHTML = "*invalid information";
+                    id_status.style.color = color_incorrect;
+                    return false;     
+                }
+            }
+        }
+
+        id_doc_type.addEventListener('input', function(){
+            is_id_doc_type_selected = true;
+            is_id_valid = validate_id();
+            validate_form();
+        })
+
+        id_doc_number.addEventListener('input', function(){
+            is_id_doc_number_valid = true;
+            is_id_valid = validate_id();
+            validate_form();
+        })
+
+        //========================RADIO VALIDATION============================//
+        var is_gender_checked = false;
+        const gender = document.getElementsByName('gender'); gender_status = document.getElementById('gender_status');
+
+        gender.forEach(item => {
+            item.addEventListener('click', event =>
+            {
+                is_gender_checked = true;
+                gender_status.innerHTML = "*valid information";
+                gender_status.style.color = color_correct;
+                validate_form();
+            })
+        })
+
+        //========================DATE OF BIRTH VALIDATION============================//
+        var is_date_entered = false;
+        const date_of_birth = document.getElementById('date_of_birth'); const date_of_birth_status = document.getElementById('date_of_birth_status');
+
+        date_of_birth.addEventListener('input', function(){
+            if (date_of_birth.value === ""){
+                is_date_entered = false;
+                date_of_birth_status.innerHTML = "*necessary information";
+                date_of_birth_status.style.color = color_standard;
+                
+            }else{
+                is_date_entered = true;
+                date_of_birth_status.innerHTML = "*valid information";
+                date_of_birth_status.style.color = color_correct;
+            }
+            
+            validate_form();
+        })
+
+        //========================CITIZENSHIP VALIDATION============================//
+        var is_citizenship_selected = false;
+        const citizenship = document.getElementById('citizenship'); const citizenship_status = document.getElementById('citizenship_status');
+
+        citizenship.addEventListener('input', function(){
+            is_citizenship_selected = true;
+            citizenship_status.innerHTML = "valid information";
+            citizenship_status.style.color = color_correct;
+            
+            validate_form();
+        })
+        
+        //========================LAST NAME VALIDATION============================//
+        var is_last_name_valid = false;
+        const last_name = document.getElementById('last_name'); const last_name_status = document.getElementById('last_name_status');
+
+        last_name.addEventListener('input', function(){
+            is_last_name_valid = check_for_alphabetical_string(last_name, last_name_status);
+            validate_form();
+        });
+
+        //========================FIRST NAME VALIDATION============================//
+        var is_first_name_valid = false;
+        const first_name = document.getElementById('first_name'); const first_name_status = document.getElementById('first_name_status');
+        
+        first_name.addEventListener('input', function(){
+            is_first_name_valid = check_for_alphabetical_string(first_name, first_name_status, is_first_name_valid);
+            validate_form();
+        });
+
+        function check_for_alphabetical_string(subject, result){
+            if(subject.value === ""){
+                result.innerHTML = "*necessary information";
+                result.style.color = color_standard;
+                return false;
+            }
+            else if(/^[a-zA-Z()]+$/.test(subject.value)){
+                result.innerHTML = "*valid information";
+                result.style.color = color_correct;
+                return true;
+            }else{
+                result.innerHTML = "*invalid information";
+                result.style.color = color_incorrect;
+                return false;
+            }
+        }
+
+        //========================E-MAIL VALIDATION============================//
+        var is_email_valid = false;
+        const email = document.getElementById('email'); const email_status = document.getElementById('email_status');
+
+        email.addEventListener('input', function(){
+            is_email_valid = check_email(email, email_status);
+            validate_form();
+        })
+
+        function check_email(subject, result){
+            let regex = new RegExp();
+            if(subject.value === ""){
+                result.innerHTML = "*necessary information";
+                result.style.color = color_standard;
+                return false;
+            }
+            else if(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(subject.value)){
+                result.innerHTML = "*valid information";
+                result.style.color = color_correct;
+                return true;
+            }else{
+                result.innerHTML = "*invalid information";
+                result.style.color = color_incorrect;
+                return false;
+            }
+        }
+
+        //========================PHONE NUMBER VALIDATION============================//
+        var is_phone_num_valid = false;
+        const phone_num = document.getElementById('phone_num'); const phone_num_status = document.getElementById('phone_num_status');
+
+        phone_num.addEventListener('input', function(){
+            is_phone_num_valid = check_phone_number(phone_num, phone_num_status);
+            validate_form();
+        })
+
+        function check_phone_number(subject, result){
+            let regex = new RegExp('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$');
+
+            if(subject.value === ""){
+                result.innerHTML = "*necessary information";
+                result.style.color = color_standard;
+                return false;
+            }
+            else if(regex.test(subject.value)){
+                result.innerHTML = "*valid information";
+                result.style.color = color_correct;
+                return true;
+            }else{
+                result.innerHTML = "*invalid information";
+                result.style.color = color_incorrect;
+                return false;
+            }
+        }
+
+        //========================CORRESPONDANCE ADDRESS VALIDATION============================//
+        var is_corr_valid = false;
+        const corr_address = document.getElementById('corr_address'); const corr_address_status = document.getElementById('corr_address_status');
+
+        corr_address.addEventListener('input', function(){
+            is_corr_valid = check_corr_address(corr_address, corr_address_status);
+            validate_form();
+        })
+
+        function check_corr_address(subject, result){
+            if(subject.value === ""){
+                result.innerHTML = "*necessary information";
+                result.style.color = color_standard;
+                return false;
+            }
+            else if(subject.value.length < 10){
+                result.innerHTML = "*invalid information";
+                result.style.color = color_incorrect;
+                return false;
+            }else{
+                result.innerHTML = "*valid information";
+                result.style.color = color_correct;
+                return true;
+            }
+        }
+
+        //========================FORM VALIDATION============================//
+        const submit_button = document.getElementById('submit_button');
+
+        function validate_form(){
+            console.log(is_first_name_valid, is_last_name_valid, is_gender_checked, is_date_entered,
+               is_citizenship_selected, is_id_valid, is_email_valid, is_phone_num_valid, is_corr_valid, is_occupation_selected);
+
+            if(is_first_name_valid && is_last_name_valid && is_gender_checked && is_date_entered &&
+               is_citizenship_selected && is_id_valid && is_email_valid  && is_phone_num_valid && is_corr_valid && is_occupation_selected){
+                activate_submit_button();
+            }else{
+                deactivate_submit_button();
+            }
+        }
+
+        function activate_submit_button(){
+            submit_button.style.opacity = "1";
+            submit_button.style.pointerEvents = "auto";
+        }
+
+        function deactivate_submit_button(){
+            submit_button.style.opacity = ".2";
+            submit_button.style.pointerEvents = "none";
+        }
+        //========================END FORM VALIDATION============================//       
+    </script>
 {% endblock content %}

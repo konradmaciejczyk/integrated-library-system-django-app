@@ -1,4 +1,3 @@
-from django.db.models.base import Model
 from django.forms import ModelForm
 from user_side.models import Client
 
@@ -19,4 +18,5 @@ class ClientRegistrationForm(ModelForm):
         model = Client
         # fields = ['first_name', 'last_name', 'gender', 'date_of_birth', 'citizenship',
         # 'id_card_type', 'id_card', 'email', 'phone_num', 'corr_address', 'occupation']
-        fields = ['first_name', 'last_name']
+        fields = ['first_name', 'last_name', 'gender', 'date_of_birth', 'citizenship', 
+        'id_doc_type', 'id_card', 'email', 'phone_num', 'corr_address', 'occupation']
