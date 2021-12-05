@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
+    'accounts.apps.AccountsConfig',
     'user_side.apps.UserSideConfig',
     'worker_side.apps.WorkerSideConfig'
 ]
@@ -126,5 +127,5 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'user_side.User'
+AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = 'user_side-home'

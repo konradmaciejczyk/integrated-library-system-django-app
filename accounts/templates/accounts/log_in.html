@@ -8,8 +8,8 @@
         <div id="box_logging" style="display: block;">
                 <span  id="log_in_sign">Sign in</span>
                 <form method="POST">
-                    <input type="text" id="cos" autocomplete="email" placeholder="Enter your email address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your email address'"/>
-                    <input type="password" autocomplete="current-password" placeholder="Enter your password" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your password'"/>
+                    {% csrf_token %}
+                    {{ form }}
                     <input type="submit"  value="Log in"/>
                 </form>
         </div>            

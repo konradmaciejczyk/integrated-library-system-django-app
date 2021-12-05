@@ -35,12 +35,12 @@ a:hover {
 
 input[type=submit] {
   border: 0px;
-  background-color: #FFFFFF;
+  background-color: #eeffd7;
 }
 
 input[type=text], input[type=password] {
   border: 0px;
-  background-color: #FFFFFF;
+  background-color: white;
   box-sizing: border-box;
 }
 

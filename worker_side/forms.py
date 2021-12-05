@@ -2,7 +2,8 @@
 from django import forms
 from django.db.models import fields
 from django.forms import ModelForm
-from user_side.models import Citizenship, Client, Gender, IDType, Occupation, User
+from accounts.models import Citizenship, Gender, IDType, Occupation, User
+from user_side.models import Client
 from django.db import transaction
 import string, random
 

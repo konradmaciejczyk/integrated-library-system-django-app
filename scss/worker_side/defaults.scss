@@ -58,13 +58,13 @@ a{
 
 input[type="submit"]{
     border: 0px;
-    background-color: $search-idle;
+    background-color: $item-background;
     
 }
 
 input[type="text"], input[type="password"]{
     border: 0px;
-    background-color: $search-idle;
+    background-color: white;
     box-sizing: border-box;
 }
 

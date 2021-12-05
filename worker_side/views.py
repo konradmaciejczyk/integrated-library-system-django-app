@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import  ClientRegistrationForm
 from datetime import datetime, timedelta
-from user_side.models import Citizenship
+from accounts.models import Citizenship
 
 def home(request):
     return render(request, 'worker_side/home.html')
@@ -15,23 +15,20 @@ def register_user(request):
         form = ClientRegistrationForm(request.POST)
         if form.is_valid():
             password = form.save()
-            messages.success(request, f'Account successful created! {password}')
+            messages.success(request, f'Account created successfully! {password}')
             return redirect('worker_side-home')
         else:
             messages.error(request, f'Form filled with invalid informations!')
-            print(form.errors) 
             return redirect('worker_side-register_user')
     else:
-       form = ClientRegistrationForm()
-
-    five_years_ago = (datetime.today() - timedelta(6*365))
-    context = {
-        #'form': form,
-        'max_date': five_years_ago.date().strftime("%Y-%m-%d"),
-        'citizenships': Citizenship.objects.all()
-    }
-    
-    return render(request, 'worker_side/register_user.html', context)
+        five_years_ago = (datetime.today() - timedelta(6*365))
+        context = {
+            #'form': form,
+            'max_date': five_years_ago.date().strftime("%Y-%m-%d"),
+            'citizenships': Citizenship.objects.all()
+        }
+        
+        return render(request, 'worker_side/register_user.html', context)
 
 def log_in(request):
     return render(request, 'worker_side/log_in.html')
