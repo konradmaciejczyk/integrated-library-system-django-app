@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=30, verbose_name="E-mail address", unique=True, primary_key=True)
     phone_number = models.CharField(max_length=15, verbose_name="Phone number")
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
 
     USERNAME_FIELD = 'email'

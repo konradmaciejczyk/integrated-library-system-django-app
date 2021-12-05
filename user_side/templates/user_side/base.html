@@ -28,7 +28,7 @@
             <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online Library Catalog</span></a></div>
             <div id="logging">
                 <span id="user_status">you are browsing as guest user</span>
-                <div id="log_in_button"><a href="{% url 'user_side-log_in' %}">sign in</a></div>
+                <div id="log_in_button"><a href="{% url 'log_in' %}">sign in</a></div>
             </div>            
         </header> 
         {% block content %} {% endblock content %}
