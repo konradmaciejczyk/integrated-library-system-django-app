@@ -1,54 +1,81 @@
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.db.models.deletion import SET, SET_NULL
-from django.utils.timezone import now
+from django.db.models.deletion import CASCADE
+from django.db.models.fields import CharField
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, first_name, last_name, phone_number, password, **other_fields):
+        email = self.normalize_email(email)
+        user = self.model(email=email, first_name=first_name, last_name=last_name, phone_number=phone_number, **other_fields)
+        user.set_password(password)
+        user.save()
+
+        return user
+
+    def create_superuser(self, email, first_name, last_name, phone_number, password, **other_fields):
+        other_fields.setdefault('is_staff', True)
+        other_fields.setdefault('is_superuser', True)
+        other_fields.setdefault('is_active', True)
+
+        return self.create_user(email=email, first_name=first_name, last_name=last_name, phone_number=phone_number, password=password, **other_fields)
+
+
 
 class Gender(models.Model):
-    name = models.CharField(max_length=7, default="Male")
+    name = CharField(max_length=7, verbose_name="Gender/Sex")
 
     def __str__(self):
         return self.name
 
-class IDDocumentType(models.Model):
-    name = models.CharField(max_length=8, default="ID Card")
-
-    def __str__(self):
-        return self.name
-    
 class Citizenship(models.Model):
-    name = models.CharField(max_length=33, verbose_name="Citizenship", default="Polish")
+    name = CharField(max_length=33, verbose_name="Citizenship")
+
+    def __str__(self):
+        return self.name
+
+class IDType(models.Model):
+    name = CharField(max_length=8, verbose_name="Identity document type")
 
     def __str__(self):
         return self.name
 
 class Occupation(models.Model):
-    name = models.CharField(max_length=16, verbose_name="Occupation", default='Other')
+    name = CharField(max_length=16, verbose_name="Occupation")
 
     def __str__(self):
         return self.name
 
 
-class Client(models.Model):
-    first_name = models.CharField(max_length=40, verbose_name="First name", default="Jan")
-    last_name = models.CharField(max_length=40, verbose_name="Last name/Surname", default="Kowalski")
-    gender = models.ForeignKey(Gender, verbose_name="Sex/Gender", default=1, null=True, on_delete=SET_NULL)
-    date_of_birth = models.DateField(verbose_name="Date of birth", default=now)
-    citizenship = models.ForeignKey(Citizenship, verbose_name="Citizenship", default=300, null=True, on_delete=SET_NULL)
-    id_doc_type = models.ForeignKey(IDDocumentType, default=1, null=True, on_delete=SET_NULL, verbose_name="Type of ID document")
-    id_card = models.CharField(max_length=30, null=True, default=1, verbose_name="ID document number")
-    email = models.EmailField(verbose_name="E-mail address", default="unknown@unknow.com")
-    phone_num = models.CharField(max_length=15, verbose_name="Phone number", default="+48 123456789")
-    corr_address = models.CharField(max_length=50, verbose_name="Correspondance address", default="221B Baker St., London, U.K.")
-    occupation = models.ForeignKey(Occupation, default=3, null=True, on_delete=SET_NULL, verbose_name="Occupation")   
-    # borrows_limit = models.PositiveSmallIntegerField(verbose_name="User's maximum borrows at the same time")
-    # borrows_left = models.PositiveSmallIntegerField(verbose_name="Current amount of borrowed items by user")
-    # date_of_join = models.DateTimeField(auto_now_add=True, verbose_name="Date of account created")
-    # account_locked = models.BooleanField(default=False, verbose_name="Is user's account suspended?")
-    # is_password_default = models.BooleanField(default=False, verbose_name="Has user changed it's auto generated password?")
+class User(AbstractBaseUser, PermissionsMixin):
+    first_name = models.CharField(max_length=40, verbose_name="First name")
+    last_name = models.CharField(max_length=40, verbose_name="Last name")
+    email = models.EmailField(max_length=30, verbose_name="E-mail address", unique=True, primary_key=True)
+    phone_number = models.CharField(max_length=15, verbose_name="Phone number")
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+    
+
+    USERNAME_FIELD = 'email'
+
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
+
+    objects = CustomUserManager()
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name 
+        return f'{self.first_name} {self.last_name}'
 
+class Client(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    borrows_max = models.SmallIntegerField(verbose_name="Max amount of borrowed items")
+    current_borrows = models.SmallIntegerField(verbose_name="Current amount of borrowed items", default=0)
+    date_of_birth = models.DateField(verbose_name="Date of birth")
+    citizenship = models.ForeignKey(Citizenship, default=226, verbose_name="Citizenship", on_delete=models.CASCADE)
+    occupation = models.ForeignKey(Occupation, default=4, on_delete=models.CASCADE, verbose_name="Occupation")
+    corr_address = models.CharField(max_length=50, verbose_name="Correspondence address")
+    id_type = models.ForeignKey(IDType, on_delete=models.CASCADE, verbose_name="ID type")
+    id_number = models.CharField(max_length=15, verbose_name="ID number")
+    gender = models.ForeignKey(Gender, default=4, verbose_name="Gender", on_delete=models.CASCADE)    
 
-
-
-
+    def __str__(self):
+        return f'{self.user}'

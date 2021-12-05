@@ -11,7 +11,7 @@
     <div class="nav">You are here: Work desktop</div>
     {% if messages %}
         {% for message in messages %}
-            <div class="op_status">{{ message }}</div>
+            <div class="op_status {{ message.tags }}"><i class="fas fa-info"></i>{{ message }}</div>
         {% endfor %}
     {% endif %}
     <main>

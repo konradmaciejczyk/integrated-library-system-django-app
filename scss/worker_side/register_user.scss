@@ -13,13 +13,6 @@ $label_color: $main_blue;
     @return ($a + $b);
 }
 
-.message{
-    width: 100%;
-    background-color: black;
-    color: white;
-    text-align: center;
-}
-
 input[onblur]{
     border: 0;
     border-bottom: 2px solid silver;
@@ -125,8 +118,6 @@ input[type="submit"]{
     border-radius: 10px;
     color: $main-font-color-light;
     font-size: 20px; font-weight: 300;
-    opacity: .2;
-    pointer-events: none;
 
     &:hover{
         cursor: pointer;

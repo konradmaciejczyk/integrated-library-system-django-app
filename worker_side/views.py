@@ -10,18 +10,23 @@ def home(request):
     return render(request, 'worker_side/home.html')
 
 def register_user(request):
+    password = None
     if request.method == 'POST':
         form = ClientRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, f'Account successful created!')
+            password = form.save()
+            messages.success(request, f'Account successful created! {password}')
             return redirect('worker_side-home')
+        else:
+            messages.error(request, f'Form filled with invalid informations!')
+            print(form.errors) 
+            return redirect('worker_side-register_user')
     else:
-        form = ClientRegistrationForm()
+       form = ClientRegistrationForm()
 
     five_years_ago = (datetime.today() - timedelta(6*365))
     context = {
-        'form': form,
+        #'form': form,
         'max_date': five_years_ago.date().strftime("%Y-%m-%d"),
         'citizenships': Citizenship.objects.all()
     }

@@ -92,6 +92,29 @@ fieldset {
   border: 0px;
 }
 
+.op_status {
+  box-sizing: border-box;
+  color: white;
+  width: 800px;
+  text-align: center;
+  margin: 10px auto 10px auto;
+  padding: 10px 0 10px 0;
+  border-radius: 3px;
+}
+.op_status i {
+  margin-right: 20px;
+}
+
+.op_status.success {
+  background-color: #10b346;
+  border: 2px solid #0c8434;
+}
+
+.op_status.error {
+  background-color: #b31010;
+  border: 2px solid #840c0c;
+}
+
 body {
   min-height: 100vh;
   display: flex;

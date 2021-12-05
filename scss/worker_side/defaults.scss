@@ -4,9 +4,10 @@ $main-red: #EF5D24;
 $main-yellow: #F8D872;
 $main-font-color: #202321;
 $main-font-color-light: white;
-$search-idle: #FFFFFF;
 $checkbox-checked-color: #F8D872;
 $item-background: #eeffd7;
+$op_success_background: #10b346;
+$op_error_background: #b31010;
 
 * {
     margin: 0px; padding: 0px;
@@ -115,6 +116,30 @@ label{
 
 fieldset{
     border: 0px;
+}
+
+.op_status{
+    box-sizing: border-box;
+    color: $main-font-color-light;
+    width: 800px;
+    text-align: center;
+    margin: 10px auto 10px auto;
+    padding: 10px 0 10px 0;
+    border-radius: 3px;
+
+    i{
+        margin-right: 20px;
+    }
+}
+
+.op_status.success{
+    background-color: $op_success_background;
+    border: 2px solid darken($op_success_background, 10%);
+}
+
+.op_status.error{
+    background-color: $op_error_background;
+    border: 2px solid darken($op_error_background, 10%);
 }
 
 @mixin _header{
