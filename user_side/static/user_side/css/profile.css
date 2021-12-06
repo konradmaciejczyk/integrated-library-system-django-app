@@ -59,3 +59,59 @@ label:hover {
 fieldset {
   border: 0px;
 }
+
+header {
+  position: relative;
+  background-color: #31655a;
+  height: 120px;
+  width: 100vw;
+}
+
+#logo {
+  box-sizing: border-box;
+  position: absolute;
+  width: 225px;
+  height: 120px;
+  top: 0px;
+  left: 0px;
+  padding: 10px;
+  font-size: 27px;
+  font-weight: 300;
+  float: left;
+}
+#logo img {
+  margin-right: 10px;
+  width: 100px;
+  height: 100px;
+  float: left;
+}
+#logo a:hover {
+  color: #F8F7F2;
+}
+
+#logging {
+  position: absolute;
+  top: 20%;
+  right: 2%;
+  box-sizing: border-box;
+  font-weight: 300;
+}
+#logging #user_status {
+  display: block;
+  font-weight: 100;
+  font-size: 20px;
+}
+#logging #log_in_button {
+  float: right;
+  text-align: right;
+  transition: color, 0.4s;
+  margin-top: 10px;
+  transition: color 0.4s;
+}
+
+h1 {
+  color: black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  margin: 20px 0px 0px 40px;
+}

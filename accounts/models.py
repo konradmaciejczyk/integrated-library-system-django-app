@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from re import match
 
 class Gender(models.Model):
     name = models.CharField(max_length=7, verbose_name="Gender/Sex")
@@ -27,7 +28,29 @@ class Occupation(models.Model):
         return self.name
 
 class CustomUserManager(BaseUserManager):
+
+    def validate(self, data):
+        """Function that validates registration form.
+
+        Parameters:
+        data: (dict) dictionary of values from form
+
+        Returns:
+        None (Asserts ValidationError when form is invalid)
+        """
+
+        try:#citizenship, occupation, gender, id_type
+            #first_name, last_name
+            assert(data['first_name'].isalpha() and data['last_name'].isalpha())
+            #phone_number
+            assert(match(r'\+[1-9]{1}[0-9]{7,14}$', data['phone_number']))  
+        except:
+            raise ValueError("Invalid information!")
+            
     def create_user(self, email, first_name, last_name, phone_number, password, **other_fields):
+
+        self.validate({'first_name': first_name, "last_name": last_name, "phone_number": phone_number})
+
         email = self.normalize_email(email)
         user = self.model(email=email, first_name=first_name, last_name=last_name, phone_number=phone_number, **other_fields)
         user.set_password(password)
@@ -45,7 +68,7 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=40, verbose_name="First name")
     last_name = models.CharField(max_length=40, verbose_name="Last name")
-    email = models.EmailField(max_length=30, verbose_name="E-mail address", unique=True, primary_key=True)
+    email = models.EmailField(max_length=50, verbose_name="E-mail address", unique=True, primary_key=True)
     phone_number = models.CharField(max_length=15, verbose_name="Phone number")
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

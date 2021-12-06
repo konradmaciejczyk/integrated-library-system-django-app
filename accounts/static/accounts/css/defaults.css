@@ -1,0 +1,66 @@
+/* Konrad Maciejczyk, 2021-2022 */
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+::selection {
+  background-color: #194973;
+  color: white;
+}
+
+html, body {
+  background-color: #e6f0f5;
+  color: white;
+  background: url(../img/background_light.png);
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+a, a:active, a:hover, a:visited, a:link {
+  text-decoration: none;
+  color: white;
+  transition: color 0.4s;
+}
+a:hover {
+  color: #F8D872;
+}
+input[type=submit] {
+  border: 0px;
+  background-color: #eeffd7;
+  transition: background-color 0.4s, color 0.4s;
+}
+input[type=submit]:hover {
+  background-color: #F8D872;
+  color: #194973;
+}
+
+input[type=email], input[type=password] {
+  border: 0px;
+  background-color: white;
+  box-sizing: border-box;
+  padding-left: 10px;
+}
+
+.op_status {
+  box-sizing: border-box;
+  color: white;
+  width: 800px;
+  text-align: center;
+  margin: 10px auto 10px auto;
+  padding: 10px 0 10px 0;
+  border-radius: 3px;
+}
+.op_status i {
+  margin-right: 20px;
+}
+
+.op_status.success {
+  background-color: #10b346;
+  border: 2px solid #0c8434;
+}
+
+.op_status.error {
+  background-color: #b31010;
+  border: 2px solid #840c0c;
+}

@@ -289,7 +289,10 @@
     })
 
     function check_phone_number(subject, result){
-        let regex = new RegExp('^\\+(?:[0-9] ?){6,14}[0-9]$');
+        //let regex = new RegExp('^\\+(?:[0-9] ?){6,14}[0-9]$');
+        let regex = new RegExp('^\\+[1-9]{1}[0-9]{7,14}$');
+        
+        
 
         if(subject.value === ""){
             result.innerHTML = "*necessary information";
@@ -333,9 +336,6 @@
     const submit_button = document.getElementById('submit_button');
 
     function validate_form(){
-        console.log(is_first_name_valid , is_last_name_valid , is_gender_checked , is_date_entered ,
-            is_citizenship_selected , is_id_valid , is_email_valid  , is_phone_num_valid , is_corr_valid ,is_occupation_selected)
-
         if(is_first_name_valid && is_last_name_valid && is_gender_checked && is_date_entered &&
             is_citizenship_selected && is_id_valid && is_email_valid  && is_phone_num_valid && is_corr_valid && is_occupation_selected){
             activate_submit_button();

@@ -15,6 +15,10 @@ html, body {
 a, a:active, a:hover, a:visited, a:link {
   text-decoration: none;
   color: #F8F7F2;
+  transition: color 0.4s;
+}
+a:hover {
+  color: #F8D872;
 }
 input[type=submit] {
   border: 0px;
@@ -82,6 +86,9 @@ header {
   height: 100px;
   float: left;
 }
+#logo a:hover {
+  color: #F8F7F2;
+}
 
 #logging {
   position: absolute;
@@ -100,10 +107,7 @@ header {
   text-align: right;
   transition: color, 0.4s;
   margin-top: 10px;
-}
-#logging #log_in_button:hover {
-  color: #F8D872;
-  cursor: pointer;
+  transition: color 0.4s;
 }
 
 input[type=checkbox] {

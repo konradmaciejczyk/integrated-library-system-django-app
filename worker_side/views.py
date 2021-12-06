@@ -23,7 +23,6 @@ def register_user(request):
     else:
         five_years_ago = (datetime.today() - timedelta(6*365))
         context = {
-            #'form': form,
             'max_date': five_years_ago.date().strftime("%Y-%m-%d"),
             'citizenships': Citizenship.objects.all()
         }

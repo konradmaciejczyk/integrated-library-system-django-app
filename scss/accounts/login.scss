@@ -30,7 +30,7 @@ main{
             font-size: 40px; font-weight: 100;    
         }
 
-        & input[type="text"]{
+        & input[type="email"]{
             display: block;
             width: 60%; height: 40px;
             border-radius: 5px;
@@ -57,23 +57,8 @@ main{
 
             &:hover{
                 cursor: pointer;
-                color: $main-yellow;
-            }
-        }
-
-        & #go_back_button{
-            float: left;
-            width: 20%; height: 40px;
-            border-radius: 5px;
-            margin-top: 30px; margin-left: 100px;
-            font-size: 18px;
-            text-align: center;
-            vertical-align: center; line-height: 40px;
-            transition: color, .4s;
-            
-            &:hover{
-                cursor: pointer;
-                color: $main-yellow;
+                color: $main-blue;
+                background-color: $main-yellow;
             }
         }
     }
@@ -81,25 +66,12 @@ main{
 
 footer{
     margin-top: auto;
-    background-color: $main-blue;
+    background-color: $main-green;
     text-align: center;
     font-size: 12px;
     height: 30px;
     vertical-align: middle; line-height: 30px;
 }
-
-@media (max-width: 800px){
-    main{
-        #box_searching{
-            height: 330px;
-            width: 95vw;
-
-            fieldset{
-                grid-template-columns: repeat(2, minmax(0, 1fr))
-            }
-        }
-    }   
-} 
 
 @media (max-width: 600px){
     header{
@@ -141,33 +113,11 @@ footer{
     }
 
     main{
-        #box_searching{
-            margin-top: 5vh;
-            height: 380px;
-            width: 95vw;
-
-            #search_tool{
-                width: 80vw;
-                height: 30px;
-            }
-
-            #author_bar{
-                width: 80vw;
-                margin-left: 8%;
-                height: 25px;
-            }
-
-            fieldset{
-                grid-template-columns: repeat(1, minmax(0, 1fr));
-                width: 80vw;
-            }
-        }
-
         #box_logging{
             margin-top: 5vh;
             width: 85vw;
 
-            & input[type="text"]{
+            & input[type="email"]{
                 width: 85%;
                 height: 35px;
             }
@@ -175,10 +125,6 @@ footer{
             & input[type="password"]{
                 width: 85%;
                 height: 35px;
-            }
-
-            & #go_back_button{
-                margin-left: 15%;            
             }
 
             & input[type="submit"]{

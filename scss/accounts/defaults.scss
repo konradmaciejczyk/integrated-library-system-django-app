@@ -1,19 +1,28 @@
+/* Konrad Maciejczyk, 2021-2022 */
 $background-image: url(../img/background_light.png);
+$main-blue: #194973; 
 $main-green: rgb(49, 101, 90); 
-$main-blue: #30516e;
+$main-red: #EF5D24;
 $main-yellow: #F8D872;
-$main-font-color: #F8F7F2;
-$search-idle: #FFFFFF;
+$main-font-color: #202321;
+$main-font-color-light: white;
 $checkbox-checked-color: #F8D872;
-$search-item-background: #eeffd7;
+$item-background: #eeffd7;
+$op_success_background: #10b346;
+$op_error_background: #b31010;
 
 * {
     margin: 0px; padding: 0px;
 }
 
+::selection{
+    background-color: $main-blue;
+    color: $main-font-color-light;
+}
+
 html, body{
     background-color: #e6f0f5;
-    color: $main-font-color;
+    color: $main-font-color-light;
     background: $background-image;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
@@ -21,7 +30,7 @@ html, body{
 
 a{
     text-decoration: none;
-    color: $main-font-color;
+    color: $main-font-color-light;
     transition: color .4s;
 
     &:link{
@@ -41,46 +50,45 @@ a{
 
 input[type="submit"]{
     border: 0px;
-    background-color: $search-idle;
+    background-color: $item-background;
+    transition: background-color .4s, color .4s;
+
+    &:hover{
+        background-color: $main-yellow;
+        color: $main-blue
+    }
     
 }
 
-input[type="text"], input[type="password"]{
+input[type="email"], input[type="password"]{
     border: 0px;
-    background-color: $search-idle;
-    box-sizing: border-box;
-    padding-left: 2%;
-}
-
-input[type="checkbox"]{
-    width: 20px;
-    height: 20px;
     background-color: white;
-    border-radius: 20%;
-    vertical-align: middle;
-    appearance: none;
-    -webkit-appearance: none;
-    outline: none;
-    margin: 5px;
-    display: inline-block;
-    cursor: pointer;
+    box-sizing: border-box;
+    padding-left: 10px;
+}
 
-    &:checked{
-        background-color: $checkbox-checked-color;
+.op_status{
+    box-sizing: border-box;
+    color: $main-font-color-light;
+    width: 800px;
+    text-align: center;
+    margin: 10px auto 10px auto;
+    padding: 10px 0 10px 0;
+    border-radius: 3px;
+
+    i{
+        margin-right: 20px;
     }
 }
 
-label{
-    display: inline-block;
-    white-space: nowrap;
-
-    &:hover{
-        cursor: pointer;
-    }
+.op_status.success{
+    background-color: $op_success_background;
+    border: 2px solid darken($op_success_background, 10%);
 }
 
-fieldset{
-    border: 0px;
+.op_status.error{
+    background-color: $op_error_background;
+    border: 2px solid darken($op_error_background, 10%);
 }
 
 @mixin _header{
@@ -93,7 +101,7 @@ fieldset{
     #logo{
         box-sizing: border-box;
         position: absolute;
-        width: 225px; height: 120px;
+        width: 380px; height: 120px;
         top: 0px; left: 0px;
         padding: 10px;
         font-size: 27px; font-weight: 300;
@@ -106,7 +114,7 @@ fieldset{
         }
 
         a:hover{
-            color:$main-font-color;
+            color: white;
         }
     }
     
@@ -126,31 +134,35 @@ fieldset{
             float: right; 
             text-align: right;
             transition: color, .4s;
-            margin-top: 10px;
-            transition: color .4s;        
+            margin-top: 10px;        
+    
+            &:hover{
+                color: $main-yellow;
+                cursor: pointer;
+            }
         }
     }
 }
 
 @mixin text_inputs{
         /* For styling placeholders and on focus in text inputs*/
-    input[type='text']::-webkit-input-placeholder { 
+    input[type='text'], input[type='tel'], input[type='email'], input[type="date"], input[list]::-webkit-input-placeholder { 
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text']:-moz-placeholder  { /*Firefox < 19*/
+    input[type='text'], input[type='tel'], input[type='email'], input[type="date"], input[list]:-moz-placeholder  { /*Firefox < 19*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text']::-moz-placeholder { /*Firefox > 19*/
+    input[type='text'], input[type='tel'], input[type='email'], input[type="date"], input[list]::-moz-placeholder { /*Firefox > 19*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text']:-ms-input-placeholder { /*Internet Explorer 10*/
+    input[type='text'], input[type='tel'], input[type='email'], input[type="date"], input[list]:-ms-input-placeholder { /*Internet Explorer 10*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text']:focus{
+    input[type='text'], input[type='tel'], input[type='email'], input[type="date"], input[list]:focus{
         font-family: 'Roboto', sans-serif;
         outline: none;
     }

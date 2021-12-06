@@ -1,0 +1,9 @@
+{% extends 'user_side/base.html' %}
+{% load static %}
+
+{% block title %} {{ user.first_name }}'s informations page - Online Library Catalog{% endblock title %}
+{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'user_side/css/profile.css' %}" media="screen">{% endblock styles %}
+
+{% block content %} 
+    <h1>{{ user.first_name }}'s informations page</h1>
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block title %}Sign in to Online Library Catalog{% endblock title %}
+{% block styles %} <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/login.css' %}" media="screen"> {% endblock styles %} 
+{% block content %}
+    <main>   
+        <div id="box_logging" style="display: block;">
+                <span  id="log_in_sign">Sign in</span>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="email" placeholder="E-mail address" onfocus="this.placeholder = '';" onblur="this.placeholder='E-mail address'" name="username">
+                    <input type="password" placeholder="Password" onfocus="this.placeholder = '';" onblur="this.placeholder='Password'" name="password">
+                    <input type="submit"  value="Sign in"/>
+                </form>
+        </div>            
+    </main>    
+    <footer>2021-2022 by <a href="https://www.github.com/konradmaciejczyk" rel="author" target="_blank" title="github profile">Konrad Maciejczyk</a>, University of Silesia</footer>
+        <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
+{% endblock content %}

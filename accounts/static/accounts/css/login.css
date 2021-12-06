@@ -1,12 +1,18 @@
+/* Konrad Maciejczyk, 2021 */
 /* Konrad Maciejczyk, 2021-2022 */
 * {
   margin: 0px;
   padding: 0px;
 }
 
+::selection {
+  background-color: #194973;
+  color: white;
+}
+
 html, body {
   background-color: #e6f0f5;
-  color: #F8F7F2;
+  color: white;
   background: url(../img/background_light.png);
   font-family: "Roboto", sans-serif;
   font-weight: 300;
@@ -14,7 +20,7 @@ html, body {
 
 a, a:active, a:hover, a:visited, a:link {
   text-decoration: none;
-  color: #F8F7F2;
+  color: white;
   transition: color 0.4s;
 }
 a:hover {
@@ -22,43 +28,42 @@ a:hover {
 }
 input[type=submit] {
   border: 0px;
-  background-color: #FFFFFF;
+  background-color: #eeffd7;
+  transition: background-color 0.4s, color 0.4s;
 }
-
-input[type=text], input[type=password] {
-  border: 0px;
-  background-color: #FFFFFF;
-  box-sizing: border-box;
-  padding-left: 2%;
-}
-
-input[type=checkbox] {
-  width: 20px;
-  height: 20px;
-  background-color: white;
-  border-radius: 20%;
-  vertical-align: middle;
-  appearance: none;
-  -webkit-appearance: none;
-  outline: none;
-  margin: 5px;
-  display: inline-block;
-  cursor: pointer;
-}
-input[type=checkbox]:checked {
+input[type=submit]:hover {
   background-color: #F8D872;
+  color: #194973;
 }
 
-label {
-  display: inline-block;
-  white-space: nowrap;
-}
-label:hover {
-  cursor: pointer;
-}
-
-fieldset {
+input[type=email], input[type=password] {
   border: 0px;
+  background-color: white;
+  box-sizing: border-box;
+  padding-left: 10px;
+}
+
+.op_status {
+  box-sizing: border-box;
+  color: white;
+  width: 800px;
+  text-align: center;
+  margin: 10px auto 10px auto;
+  padding: 10px 0 10px 0;
+  border-radius: 3px;
+}
+.op_status i {
+  margin-right: 20px;
+}
+
+.op_status.success {
+  background-color: #10b346;
+  border: 2px solid #0c8434;
+}
+
+.op_status.error {
+  background-color: #b31010;
+  border: 2px solid #840c0c;
 }
 
 body {
@@ -77,7 +82,7 @@ header {
 #logo {
   box-sizing: border-box;
   position: absolute;
-  width: 225px;
+  width: 380px;
   height: 120px;
   top: 0px;
   left: 0px;
@@ -93,7 +98,7 @@ header {
   float: left;
 }
 #logo a:hover {
-  color: #F8F7F2;
+  color: white;
 }
 
 #logging {
@@ -113,68 +118,70 @@ header {
   text-align: right;
   transition: color, 0.4s;
   margin-top: 10px;
-  transition: color 0.4s;
+}
+#logging #log_in_button:hover {
+  color: #F8D872;
+  cursor: pointer;
 }
 
 main {
   width: 100vw;
 }
-main #box_searching {
+main #box_logging {
+  display: none;
   box-sizing: border-box;
-  width: 800px;
-  height: 330px;
+  width: 500px;
+  height: 350px;
   margin-left: auto;
   margin-right: auto;
-  background-color: #31655a;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 30px -10px #31655a;
-  -moz-box-shadow: 0px 0px 30px -10px #31655a;
-  box-shadow: 0px 0px 30px -10px #31655a;
   margin-top: 15vh;
-  padding-top: 6vh;
+  background-color: #194973;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 30px -10px #194973;
+  -moz-box-shadow: 0px 0px 30px -10px #194973;
+  box-shadow: 0px 0px 30px -10px #194973;
+  padding-top: 50px;
 }
-main #box_searching #search_tool {
-  width: 65%;
-  height: 50px;
+main #box_logging #log_in_sign {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 100;
+}
+main #box_logging input[type=email] {
+  display: block;
+  width: 60%;
+  height: 40px;
+  border-radius: 5px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 30px;
 }
-main #box_searching #search_tool input[type=text] {
-  width: 87%;
-  height: 100%;
-  float: left;
-  border-radius: 5px 0 0 5px;
-  font-size: 20px;
+main #box_logging input[type=password] {
+  display: block;
+  width: 60%;
+  height: 40px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
 }
-main #box_searching #search_tool input[type=submit] {
-  width: 13%;
-  height: 100%;
-  border-radius: 0 5px 5px 0;
-  font-size: 20px;
-  color: #31655a;
+main #box_logging input[type=submit] {
+  display: block;
+  float: right;
+  width: 20%;
+  height: 40px;
+  border-radius: 5px;
+  margin-top: 30px;
+  margin-right: 100px;
+  font-size: 18px;
   transition: background-color 0.4s, color 0.4s;
 }
-main #box_searching #search_tool input[type=submit]:hover {
-  background-color: #30516e;
-  color: #F8F7F2;
+main #box_logging input[type=submit]:hover {
   cursor: pointer;
-}
-main #box_searching #author_bar {
-  display: block;
-  margin-top: 20px;
-  margin-left: 17.5%;
-  width: 40%;
-  height: 35px;
-  border-radius: 3px 3px 3px 3px;
-}
-main #box_searching fieldset {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  width: 65%;
-  height: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
+  color: #194973;
+  background-color: #F8D872;
 }
 
 footer {
@@ -187,15 +194,6 @@ footer {
   line-height: 30px;
 }
 
-@media (max-width: 800px) {
-  main #box_searching {
-    height: 330px;
-    width: 95vw;
-  }
-  main #box_searching fieldset {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
 @media (max-width: 600px) {
   header {
     height: 60px;
@@ -235,29 +233,11 @@ footer {
     cursor: pointer;
   }
 
-  main #box_searching {
-    margin-top: 5vh;
-    height: 380px;
-    width: 95vw;
-  }
-  main #box_searching #search_tool {
-    width: 80vw;
-    height: 30px;
-  }
-  main #box_searching #author_bar {
-    width: 80vw;
-    margin-left: 8%;
-    height: 25px;
-  }
-  main #box_searching fieldset {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    width: 80vw;
-  }
   main #box_logging {
     margin-top: 5vh;
     width: 85vw;
   }
-  main #box_logging input[type=text] {
+  main #box_logging input[type=email] {
     width: 85%;
     height: 35px;
   }
@@ -265,39 +245,36 @@ footer {
     width: 85%;
     height: 35px;
   }
-  main #box_logging #go_back_button {
-    margin-left: 15%;
-  }
   main #box_logging input[type=submit] {
     margin-right: 15%;
     width: 80px;
   }
 }
 /* For styling placeholders and on focus in text inputs*/
-input[type=text]::-webkit-input-placeholder {
+input[type=text], input[type=tel], input[type=email], input[type=date], input[list]::-webkit-input-placeholder {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text]:-moz-placeholder {
+input[type=text], input[type=tel], input[type=email], input[type=date], input[list]:-moz-placeholder {
   /*Firefox < 19*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text]::-moz-placeholder {
+input[type=text], input[type=tel], input[type=email], input[type=date], input[list]::-moz-placeholder {
   /*Firefox > 19*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text]:-ms-input-placeholder {
+input[type=text], input[type=tel], input[type=email], input[type=date], input[list]:-ms-input-placeholder {
   /*Internet Explorer 10*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text]:focus {
+input[type=text], input[type=tel], input[type=email], input[type=date], input[list]:focus {
   font-family: "Roboto", sans-serif;
   outline: none;
 }

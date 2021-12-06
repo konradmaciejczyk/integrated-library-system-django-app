@@ -1,4 +1,5 @@
 /* Konrad Maciejczyk, 2021 */
+/* Konrad Maciejczyk, 2021-2022 */
 * {
   margin: 0px;
   padding: 0px;
@@ -198,7 +199,7 @@ main #box_logging #log_in_sign {
   font-size: 40px;
   font-weight: 100;
 }
-main #box_logging input[type=text] {
+main #box_logging input[type=email] {
   display: block;
   width: 60%;
   height: 40px;

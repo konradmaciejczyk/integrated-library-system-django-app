@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 #from .models import Clients
 
 def home(request):
@@ -13,3 +14,7 @@ def search(request):
 
 def log_in(request):
     return render(request, "user_side/log_in.html")
+
+@login_required
+def profile(request):
+    return render(request, "user_side/profile.html")

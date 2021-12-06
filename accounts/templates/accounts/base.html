@@ -9,7 +9,7 @@
         <meta name="keywords" content="opac, library, search, books">
         <meta name="description" content="Online library catalog. Order your books online.">
         <title>{% block title %}{% endblock title %}</title>
-        <link rel="icon" type="image/png" href="{% static 'user_side/img/favicon.png' %}"/>
+        <link rel="icon" type="image/png" href="{% static 'worker_side/img/favicon.png' %}"/>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,20 +20,13 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 
         {% block styles %}{% endblock styles %}       
-        <link rel="stylesheet" type="text/css" href="{% static 'user_side/fontello/css/fontello.css' %}">
         {% block scripts %} {% endblock scripts %}
     </head>
     <body>
         <header>
-            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online Library Catalog</span></a></div>
+            <div id="logo"><a href="{% url 'user_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online</br>Library</br>Catalog</span></a></div>
             <div id="logging">
-                {% if user.is_authenticated %}
-                    <span id="user_status">Hello, <a href="{% url 'user_side-profile' %}" title="{{ user.first_name }}'s information page"> {{ user.first_name }}</span>
-                    <div id="log_in_button"><a href="{% url 'log_out' %}">sign out</a></div>
-                {% else %}
-                    <span id="user_status">you are browsing as guest user</span>
-                    <div id="log_in_button"><a href="{% url 'log_in' %}">sign in</a></div>
-                {% endif %}
+                <span id="user_status">you are browsing as guest user</span>
             </div>            
         </header> 
         {% block content %} {% endblock content %}
