@@ -64,6 +64,16 @@ main{
     }
 }
 
+.error{
+    display: block;
+    background-color: $op_error_background;
+    padding: 5px;
+    margin: 10px auto 0px auto;
+    max-width: 85vw;
+    border-radius: 3px;
+    text-align: center;
+}
+
 footer{
     margin-top: auto;
     background-color: $main-green;
@@ -128,7 +138,7 @@ footer{
             }
 
             & input[type="submit"]{
-                margin-right: 15%;     
+                margin-right: 8%;     
                 width: 80px;   
             }
         }

@@ -1,0 +1,73 @@
+{% extends 'worker_side/base.html' %}
+{% load static %}
+{% block title %}Add new item to Catalog{% endblock title %}
+{% block styles %}<link rel="stylesheet" href="{% static 'worker_side/css/add_item.css' %}" type="text/css">{% endblock styles %}
+{% block content %}
+    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Add new item to catalog</div>
+    <main>
+        <nav>
+            <div class="option">add a book</div>
+            <div class="option">add a movie/film</div>
+            <div class="option active">add a sound recording</div>
+            <div class="option">add an image</div>
+            <div class="option">add an document</div>
+        </nav>
+        <section>
+            <form>
+                <div class="input_item">
+                    <span class="input_label">ISBN</span>
+                    <input type="text" name="isbn" autocomplete="off" placeholder="Enter ISBN" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter ISBN'"><div class="fetch_button">Fetch</div>
+                    <label><input type="checkbox">No ISBN available</label>                    
+                </div>
+                <div class="input_item">
+                    <span class="input_label">title</span>
+                    <input type="text" name="title"autocomplete="off" placeholder="Enter title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter title'">                    
+                </div>
+                <div class="input_item">
+                    <span class="input_label">full title</span>
+                    <input type="text" name="full_tSitle" autocomplete="off" placeholder="Enter full title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter full title'">                    
+                </div>
+                <div class="input_item">
+                    <span class="input_label">author</span>
+                    <input type="text" name="author" autocomplete="off"  placeholder="Enter author's name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter author\'s name'">
+                    <label><input type="checkbox">Author unknow</label>                       
+                </div>
+                <div class="input_item">
+                    <span class="input_label">publication year</span>
+                    <input type="number" name="pub_year" min="0" placeholder="Enter publication year" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter publication year'">
+                    <label><input type="checkbox">Publication year unknown</label>                     
+                </div>
+                <div class="input_item">
+                    <span class="input_label">publisher</span>
+                    <input type="text" name="publisher" autocomplete="off" placeholder="Enter publisher" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter publisher'"> 
+                    <label><input type="checkbox">Publisher unknow</label>                    
+                </div>
+                <div class="input_item">
+                    <span class="input_label">description</span>
+                    <input type="text" name="description" autocomplete="off" placeholder="Enter description" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter description'">                    
+                </div>
+                <div class="input_item">
+                    <span class="input_label">condition</span>
+                    <select>
+                        <option>---Describe book condition---</option>
+                        <option value="1">Good</option>
+                        <option value="2">Damaged</option>
+                    </select>                   
+                </div>
+                <div class="input_item">
+                    <span class="input_label">status</span>
+                    <select>
+                        <option>---Describe availability--</option>
+                        <option value="1">Available</option>
+                        <option value="2">Available only at place</option>
+                    </select>                   
+                </div>
+                <div class="input_item">
+                    <span class="input_label">cover image</span>
+                    <input type="file" >                    
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </section>        
+    </main>
+{% endblock content %}

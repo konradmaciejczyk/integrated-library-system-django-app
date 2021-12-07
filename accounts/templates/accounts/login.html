@@ -4,13 +4,18 @@
 {% block title %}Sign in to Online Library Catalog{% endblock title %}
 {% block styles %} <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/login.css' %}" media="screen"> {% endblock styles %} 
 {% block content %}
-    <main>   
+
+{% for error in form.non_field_errors %}
+    <span class="error">{{ error }}</span>
+{% endfor %}
+
+    <main>
         <div id="box_logging" style="display: block;">
                 <span  id="log_in_sign">Sign in</span>
                 <form method="POST">
                     {% csrf_token %}
-                    <input type="email" placeholder="E-mail address" onfocus="this.placeholder = '';" onblur="this.placeholder='E-mail address'" name="username">
-                    <input type="password" placeholder="Password" onfocus="this.placeholder = '';" onblur="this.placeholder='Password'" name="password">
+                    <input type="email" placeholder="E-mail address" onfocus="this.placeholder = '';" onblur="this.placeholder='E-mail address'" name="username" required>
+                    <input type="password" placeholder="Password" onfocus="this.placeholder = '';" onblur="this.placeholder='Password'" name="password" required>
                     <input type="submit"  value="Sign in"/>
                 </form>
         </div>            

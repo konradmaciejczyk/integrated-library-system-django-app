@@ -1,5 +1,4 @@
 /* Konrad Maciejczyk, 2021-2022 */
-/* Konrad Maciejczyk, 2021-2022 */
 * {
   margin: 0px;
   padding: 0px;
@@ -158,12 +157,6 @@ fieldset {
   border: 2px solid #840c0c;
 }
 
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 header {
   position: relative;
   background-color: #194973;
@@ -216,107 +209,162 @@ header {
   cursor: pointer;
 }
 
-.op_status {
+main {
+  margin: 40px auto 0px auto;
+  width: 900px;
+  height: 700px;
+  background-color: white;
+  border-radius: 10px;
+  color: #194973;
+  display: flex;
+  -webkit-box-shadow: 0px 0px 30px -10px #194973;
+  -moz-box-shadow: 0px 0px 30px -10px #194973;
+  box-shadow: 0px 0px 30px -10px #194973;
+}
+
+nav {
+  padding: 10px 0px 10px 0px;
+  border-right: 2px solid rgba(25, 73, 115, 0.15);
+}
+
+section {
+  padding: 30px;
+}
+
+.option {
   box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  padding: 20px;
+  vertical-align: middle;
+  line-height: 20px;
+  transition: background-color 0.5s;
+}
+.option:hover {
+  cursor: pointer;
+  background-color: rgba(25, 73, 115, 0.15);
+}
+
+.option.active {
   color: white;
-  width: 800px;
+  background-color: #194973;
+}
+
+.input_item {
+  box-sizing: border-box;
+  height: 60px;
+}
+
+.input_label {
+  display: inline-block;
+  margin-right: 50px;
+  width: 150px;
+}
+
+input[type=text], input[type=number] {
+  border: 0;
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 300px;
+  padding-bottom: 2px;
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
+}
+input[type=text]:focus, input[type=number]:focus {
+  border-bottom: 2px solid #194973;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 500;
+}
+
+input[type=checkbox] {
+  margin: 0px 5px 0px 210px;
+}
+
+input[type=submit] {
+  margin-top: 0px;
+}
+
+select {
+  width: 300px;
+}
+
+.fetch_button {
+  display: inline-block;
+  background-color: #194973;
+  color: white;
+  width: 70px;
+  height: 25px;
   text-align: center;
-  margin: 10px auto 10px auto;
-  background-color: rgba(25, 113, 43, 0.8);
-  padding: 10px 0 10px 0;
-  border: 2px solid #194871;
+  vertical-align: middle;
+  line-height: 25px;
+  margin-left: 20px;
   border-radius: 3px;
 }
-
-main {
-  margin: 50px auto 0 auto;
-  width: 800px;
-  display: grid;
-  grid-template-areas: "search search search" "user1 user2 user3" "item1 item2 item3" "borrow1 borrow2 borrow3";
-  column-gap: 10px;
-  row-gap: 20px;
-}
-
-.option_box {
-  border-radius: 5px;
-  text-align: center;
-  display: inline-block;
-  transition: filter 0.4s;
-}
-.option_box:hover {
+.fetch_button:hover {
   cursor: pointer;
   filter: brightness(130%);
 }
-.option_box a {
-  padding: 10px;
-  box-sizing: border-box;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-.option_box a:hover {
-  color: white;
+
+/* For styling placeholders and on focus in text inputs*/
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]::-webkit-input-placeholder {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 
-.option_box.search {
-  grid-area: search;
-  background-color: #006E63;
-}
-.option_box.search i {
-  font-size: 50px;
-  margin: 20px 0 10px 10px;
-}
-.option_box.search:hover {
-  -webkit-box-shadow: 0px 0px 30px -10px #006E63;
-  -moz-box-shadow: 0px 0px 30px -10px #006E63;
-  box-shadow: 0px 0px 30px -10px #006E63;
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:-moz-placeholder {
+  /*Firefox < 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 
-.option_box.user {
-  background-color: #194871;
-}
-.option_box.user i {
-  margin: 20px 0 10px 10px;
-  font-size: 50px;
-}
-.option_box.user:hover {
-  -webkit-box-shadow: 0px 0px 30px -10px #194871;
-  -moz-box-shadow: 0px 0px 30px -10px #194871;
-  box-shadow: 0px 0px 30px -10px #194871;
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]::-moz-placeholder {
+  /*Firefox > 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 
-.option_box.item {
-  background-color: #A76C28;
-}
-.option_box.item i {
-  margin: 20px 0 10px 10px;
-  font-size: 50px;
-}
-.option_box.item:hover {
-  -webkit-box-shadow: 0px 0px 30px -10px #A76C28;
-  -moz-box-shadow: 0px 0px 30px -10px #A76C28;
-  box-shadow: 0px 0px 30px -10px #A76C28;
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:-ms-input-placeholder {
+  /*Internet Explorer 10*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 
-.option_box.borrows {
-  background-color: #961750;
-}
-.option_box.borrows i {
-  margin: 20px 0 10px 10px;
-  font-size: 50px;
-}
-.option_box.borrows:hover {
-  -webkit-box-shadow: 0px 0px 30px -10px #961750;
-  -moz-box-shadow: 0px 0px 30px -10px #961750;
-  box-shadow: 0px 0px 30px -10px #961750;
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:focus {
+  font-family: "Roboto", sans-serif;
+  outline: none;
 }
 
-footer {
-  margin-top: auto;
-  background-color: #194973;
-  text-align: center;
-  font-size: 12px;
-  height: 30px;
-  vertical-align: middle;
-  line-height: 30px;
+/* For styling placeholders and on focus in password inputs*/
+input[type=password]:focus {
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+input[type=password]::-webkit-input-placeholder {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]:-moz-placeholder {
+  /*Firefox < 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]::-moz-placeholder {
+  /*Firefox > 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]:-ms-input-placeholder {
+  /*Internet Explorer 10*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }

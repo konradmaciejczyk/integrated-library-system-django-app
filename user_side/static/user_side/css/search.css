@@ -450,6 +450,8 @@ main {
   }
   #logging #user_status {
     font-size: 10px;
+    text-align: right;
+    width: 100%;
   }
   #logging #log_in_button {
     width: 80px;

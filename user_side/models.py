@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import User, Citizenship, Occupation, IDType, Gender
 
 class Client(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     borrows_max = models.SmallIntegerField(verbose_name="Max amount of borrowed items")
     current_borrows = models.SmallIntegerField(verbose_name="Current amount of borrowed items", default=0)
     date_of_birth = models.DateField(verbose_name="Date of birth")

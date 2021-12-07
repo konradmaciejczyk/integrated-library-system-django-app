@@ -1,10 +1,10 @@
-from time import time
-from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import  ClientRegistrationForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
+
+
 
 def home(request):
     return render(request, 'worker_side/home.html')
@@ -29,7 +29,9 @@ def register_user(request):
         
         return render(request, 'worker_side/register_user.html', context)
 
-def log_in(request):
-    return render(request, 'worker_side/log_in.html')
+def add_item(request):
+    return render(request, 'worker_side/add_item.html')
+
+
 
 

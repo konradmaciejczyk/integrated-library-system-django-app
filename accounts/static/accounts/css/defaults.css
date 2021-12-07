@@ -27,7 +27,7 @@ a:hover {
 }
 input[type=submit] {
   border: 0px;
-  background-color: #eeffd7;
+  background-color: white;
   transition: background-color 0.4s, color 0.4s;
 }
 input[type=submit]:hover {

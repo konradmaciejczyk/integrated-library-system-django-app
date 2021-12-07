@@ -25,18 +25,49 @@ a, a:active, a:hover, a:visited, a:link {
 a:hover {
   color: #F8D872;
 }
-.nav {
+.path {
   margin: 10px 0px 0px 10px;
   color: #194973;
 }
-.nav a {
+.path a {
   text-decoration: underline;
   color: #194973;
 }
 
 input[type=submit] {
-  border: 0px;
-  background-color: #eeffd7;
+  display: block;
+  float: right;
+  margin: 50px auto 0px auto;
+  background-color: #194973;
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  font-weight: 300;
+  opacity: 0.2;
+  pointer-events: none;
+}
+input[type=submit]:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 30px -10px #194973;
+  -moz-box-shadow: 0px 0px 30px -10px #194973;
+  box-shadow: 0px 0px 30px -10px #194973;
+}
+
+input[type=date] {
+  background: white;
+  border: 0;
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 200px;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  padding-bottom: 2px;
+}
+input[type=date]:focus {
+  border-bottom: 2px solid #194973;
 }
 
 input[type=text], input[type=password] {
@@ -46,20 +77,21 @@ input[type=text], input[type=password] {
 }
 
 input[type=checkbox] {
-  width: 20px;
-  height: 20px;
+  width: 12px;
+  height: 12px;
   background-color: white;
+  border-color: #194973;
   border-radius: 20%;
   vertical-align: middle;
   appearance: none;
   -webkit-appearance: none;
-  outline: none;
+  border: 1px solid #194973;
   margin: 5px;
   display: inline-block;
   cursor: pointer;
 }
 input[type=checkbox]:checked {
-  background-color: #F8D872;
+  background-color: #194973;
 }
 
 input[type=radio] {
@@ -78,6 +110,16 @@ input[type=radio] {
 }
 input[type=radio]:checked {
   background-color: #194973;
+}
+
+select {
+  border: 0;
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 200px;
+  padding-bottom: 2px;
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
 }
 
 label {
@@ -189,31 +231,6 @@ input[onblur]:focus {
   border-bottom: 2px solid #194973;
 }
 
-input[type=date] {
-  background: white;
-  border: 0;
-  border-bottom: 2px solid silver;
-  transition: border-bottom 0.5s;
-  width: 300px;
-  text-align: center;
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  padding-bottom: 2px;
-}
-input[type=date]:focus {
-  border-bottom: 2px solid #194973;
-}
-
-select {
-  border: 0;
-  border-bottom: 2px solid silver;
-  transition: border-bottom 0.5s;
-  width: 300px;
-  padding-bottom: 2px;
-  font-weight: 300;
-  font-family: "Roboto", sans-serif;
-}
-
 label {
   font-size: 14px;
 }
@@ -264,52 +281,31 @@ p {
   color: black;
 }
 
-input[type=submit] {
-  display: block;
-  float: right;
-  margin: 50px auto 0px auto;
-  background-color: #194973;
-  width: 150px;
-  height: 40px;
-  border-radius: 10px;
-  color: white;
-  font-size: 20px;
-  font-weight: 300;
-  opacity: 0.2;
-  pointer-events: none;
-}
-input[type=submit]:hover {
-  cursor: pointer;
-  -webkit-box-shadow: 0px 0px 30px -10px #194973;
-  -moz-box-shadow: 0px 0px 30px -10px #194973;
-  box-shadow: 0px 0px 30px -10px #194973;
-}
-
 /* For styling placeholders and on focus in text inputs*/
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list]::-webkit-input-placeholder {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]::-webkit-input-placeholder {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list]:-moz-placeholder {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:-moz-placeholder {
   /*Firefox < 19*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list]::-moz-placeholder {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]::-moz-placeholder {
   /*Firefox > 19*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list]:-ms-input-placeholder {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:-ms-input-placeholder {
   /*Internet Explorer 10*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list]:focus {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:focus {
   font-family: "Roboto", sans-serif;
   outline: none;
 }

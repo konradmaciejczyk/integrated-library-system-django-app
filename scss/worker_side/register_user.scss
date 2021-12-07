@@ -39,31 +39,7 @@ input[onblur]{
     }
 }
 
-input[type="date"]{
-    background: white;
-    border: 0;
-    border-bottom: 2px solid silver;
-    transition: border-bottom .5s;
-    width: $text_input_width;
-    text-align: center;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
-    padding-bottom: 2px;
 
-    &:focus{
-        border-bottom: 2px solid $main_blue;
-    }
-}
-
-select{
-    border: 0;
-    border-bottom: 2px solid silver;
-    transition: border-bottom .5s;
-    width: $text_input_width;
-    padding-bottom: 2px;
-    font-weight: 300;
-    font-family: 'Roboto', sans-serif;
-}
 
 label{
     font-size: 14px;
@@ -109,23 +85,6 @@ p{
     color: black;
 }
 
-input[type="submit"]{
-    display: block;
-    float:right;
-    margin: 50px auto 0px auto;
-    background-color: $main_blue;
-    width: 150px; height: 40px;
-    border-radius: 10px;
-    color: $main-font-color-light;
-    font-size: 20px; font-weight: 300;
-    opacity: .2;
-    pointer-events: none;
 
-    &:hover{
-        cursor: pointer;
-        @include shadow($main-blue);
-    }
-
-}
 
 @include text_inputs;

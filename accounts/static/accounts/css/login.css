@@ -28,7 +28,7 @@ a:hover {
 }
 input[type=submit] {
   border: 0px;
-  background-color: #eeffd7;
+  background-color: white;
   transition: background-color 0.4s, color 0.4s;
 }
 input[type=submit]:hover {
@@ -184,6 +184,16 @@ main #box_logging input[type=submit]:hover {
   background-color: #F8D872;
 }
 
+.error {
+  display: block;
+  background-color: #b31010;
+  padding: 5px;
+  margin: 10px auto 0px auto;
+  max-width: 85vw;
+  border-radius: 3px;
+  text-align: center;
+}
+
 footer {
   margin-top: auto;
   background-color: #31655a;
@@ -246,7 +256,7 @@ footer {
     height: 35px;
   }
   main #box_logging input[type=submit] {
-    margin-right: 15%;
+    margin-right: 8%;
     width: 80px;
   }
 }

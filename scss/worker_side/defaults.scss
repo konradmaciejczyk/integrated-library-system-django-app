@@ -5,10 +5,16 @@ $main-red: #EF5D24;
 $main-yellow: #F8D872;
 $main-font-color: #202321;
 $main-font-color-light: white;
-$checkbox-checked-color: #F8D872;
 $item-background: #eeffd7;
 $op_success_background: #10b346;
 $op_error_background: #b31010;
+$text_input_width: 200px;
+
+@mixin shadow($color){
+    -webkit-box-shadow: 0px 0px 30px -10px $color;
+    -moz-box-shadow: 0px 0px 30px -10px $color;
+    box-shadow: 0px 0px 30px -10px $color;
+}
 
 * {
     margin: 0px; padding: 0px;
@@ -47,7 +53,7 @@ a{
     }
 }
 
-.nav{
+.path{
     margin: 10px 0px 0px 10px;
     color: $main-blue;
 
@@ -58,9 +64,36 @@ a{
 }
 
 input[type="submit"]{
-    border: 0px;
-    background-color: $item-background;
-    
+    display: block;
+    float:right;
+    margin: 50px auto 0px auto;
+    background-color: $main_blue;
+    width: 150px; height: 40px;
+    border-radius: 10px;
+    color: $main-font-color-light;
+    font-size: 20px; font-weight: 300;
+    opacity: .2;
+    pointer-events: none;
+
+    &:hover{
+        cursor: pointer;
+        @include shadow($main-blue);
+    }
+}
+input[type="date"]{
+    background: white;
+    border: 0;
+    border-bottom: 2px solid silver;
+    transition: border-bottom .5s;
+    width: $text_input_width;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    padding-bottom: 2px;
+
+    &:focus{
+        border-bottom: 2px solid $main_blue;
+    }
 }
 
 input[type="text"], input[type="password"]{
@@ -70,20 +103,21 @@ input[type="text"], input[type="password"]{
 }
 
 input[type="checkbox"]{
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     background-color: white;
+    border-color: $main-blue;
     border-radius: 20%;
     vertical-align: middle;
     appearance: none;
     -webkit-appearance: none;
-    outline: none;
+    border: 1px solid $main-blue;
     margin: 5px;
     display: inline-block;
     cursor: pointer;
 
     &:checked{
-        background-color: $checkbox-checked-color;
+        background-color: $main-blue;
     }
 }
 
@@ -104,6 +138,16 @@ input[type="radio"]{
     &:checked{
         background-color: $main-blue;;
     }    
+}
+
+select{
+    border: 0;
+    border-bottom: 2px solid silver;
+    transition: border-bottom .5s;
+    width: $text_input_width;
+    padding-bottom: 2px;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
 }
 
 label{
@@ -198,23 +242,23 @@ fieldset{
 
 @mixin text_inputs{
         /* For styling placeholders and on focus in text inputs*/
-    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]::-webkit-input-placeholder { 
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list], input[type="number"]::-webkit-input-placeholder { 
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]:-moz-placeholder  { /*Firefox < 19*/
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list], input[type="number"]:-moz-placeholder  { /*Firefox < 19*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]::-moz-placeholder { /*Firefox > 19*/
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list], input[type="number"]::-moz-placeholder { /*Firefox > 19*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]:-ms-input-placeholder { /*Internet Explorer 10*/
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list], input[type="number"]:-ms-input-placeholder { /*Internet Explorer 10*/
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list]:focus{
+    input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list], input[type="number"]:focus{
         font-family: 'Roboto', sans-serif;
         outline: none;
     }
@@ -239,10 +283,4 @@ fieldset{
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
-}
-
-@mixin shadow($color){
-    -webkit-box-shadow: 0px 0px 30px -10px $color;
-    -moz-box-shadow: 0px 0px 30px -10px $color;
-    box-shadow: 0px 0px 30px -10px $color;
 }
