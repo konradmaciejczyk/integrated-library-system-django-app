@@ -17,6 +17,7 @@ main{
 nav{
     padding: 10px 0px 10px 0px;
     border-right: 2px solid $border-color;
+    width: 300px;
 }
 section{
     padding: 30px;
@@ -70,10 +71,16 @@ label{
     font-size: 12px;
     line-height: 12px;
     font-weight: 500;
+    display: inline-block;
 }
+
 input[type="checkbox"]{
     margin: 0px 5px 0px 210px;
 }
+#copy_author{
+    margin-left: 20px;
+}
+
 input[type="submit"]{
     margin-top: 0px;
 }

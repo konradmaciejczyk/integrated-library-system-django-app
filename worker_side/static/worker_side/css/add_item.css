@@ -60,7 +60,7 @@ input[type=date] {
   border: 0;
   border-bottom: 2px solid silver;
   transition: border-bottom 0.5s;
-  width: 200px;
+  width: 300px;
   text-align: center;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
@@ -225,6 +225,7 @@ main {
 nav {
   padding: 10px 0px 10px 0px;
   border-right: 2px solid rgba(25, 73, 115, 0.15);
+  width: 300px;
 }
 
 section {
@@ -280,10 +281,15 @@ label {
   font-size: 12px;
   line-height: 12px;
   font-weight: 500;
+  display: inline-block;
 }
 
 input[type=checkbox] {
   margin: 0px 5px 0px 210px;
+}
+
+#copy_author {
+  margin-left: 20px;
 }
 
 input[type=submit] {

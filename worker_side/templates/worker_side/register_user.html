@@ -11,7 +11,7 @@
 {% endblock scripts %}
 
 {% block content %}
-    <div class="nav">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > New User Registration</div>
+    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > New User Registration</div>
     {% for message in messages %}
         <div class="op_status {{ message.tags }}"><i class="fas fa-info"></i> {{ message }} </div>
     {% endfor %}
@@ -295,7 +295,7 @@
         
 
         if(subject.value === ""){
-            result.innerHTML = "*necessary information";
+            result.innerHTML = "*information needed";
             result.style.color = color_standard;
             return false;
         }
@@ -303,8 +303,7 @@
             correct(subject.id)
             return true;
         }else{
-            result.innerHTML = "*invalid information";
-            result.style.color = color_incorrect;
+            invalid(subject.id)
             return false;
         }
     }

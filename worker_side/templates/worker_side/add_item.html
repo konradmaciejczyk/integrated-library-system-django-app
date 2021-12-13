@@ -6,49 +6,51 @@
     <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Add new item to catalog</div>
     <main>
         <nav>
-            <div class="option">add a book</div>
+            <div class="option active">add a book</div>
             <div class="option">add a movie/film</div>
-            <div class="option active">add a sound recording</div>
+            <div class="option">add a sound recording</div>
             <div class="option">add an image</div>
             <div class="option">add an document</div>
         </nav>
         <section>
-            <form>
+            <form method="POST">
                 <div class="input_item">
                     <span class="input_label">ISBN</span>
-                    <input type="text" name="isbn" autocomplete="off" placeholder="Enter ISBN" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter ISBN'"><div class="fetch_button">Fetch</div>
-                    <label><input type="checkbox">No ISBN available</label>                    
-                </div>
-                <div class="input_item">
-                    <span class="input_label">title</span>
-                    <input type="text" name="title"autocomplete="off" placeholder="Enter title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter title'">                    
-                </div>
-                <div class="input_item">
-                    <span class="input_label">full title</span>
-                    <input type="text" name="full_tSitle" autocomplete="off" placeholder="Enter full title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter full title'">                    
+                    <input type="text" id="isbn" name="isbn" autocomplete="off" placeholder="Enter ISBN" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter ISBN'" autofocus><div class="fetch_button">Fetch</div>
+                    <label><input type="checkbox" name="no_isbn" id="no_isbn">No ISBN available</label>                    
                 </div>
                 <div class="input_item">
                     <span class="input_label">author</span>
-                    <input type="text" name="author" autocomplete="off"  placeholder="Enter author's name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter author\'s name'">
-                    <label><input type="checkbox">Author unknow</label>                       
+                    <input type="text" id="author" name="author" autocomplete="off"  placeholder="Enter author's name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter author\'s name'">
+                    <label><input type="checkbox" id="no_author" name="no_author">Author unknow</label>                       
+                </div>
+                <div class="input_item">
+                    <span class="input_label">title</span>
+                    <input type="text" id="title" name="title"autocomplete="off" placeholder="Enter title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter title'">                    
+                </div>
+                <div class="input_item">
+                    <span class="input_label">full title</span>
+                    <input type="text" id="full_title"name="full_title" autocomplete="off" placeholder="Enter full title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter full title'">
+                    <label><input type="checkbox" id="copy_title" checked>Copy title</label>     
+                    <label><input type="checkbox" id="copy_author">Copy author</label>                  
                 </div>
                 <div class="input_item">
                     <span class="input_label">publication year</span>
-                    <input type="number" name="pub_year" min="0" placeholder="Enter publication year" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter publication year'">
-                    <label><input type="checkbox">Publication year unknown</label>                     
+                    <input type="number" id="pub_year" name="pub_year" min="0" placeholder="Enter publication year" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter publication year'">
+                    <label><input type="checkbox" id="no_pub_year" name="no_pub_year">Publication year unknown</label>                     
                 </div>
                 <div class="input_item">
                     <span class="input_label">publisher</span>
-                    <input type="text" name="publisher" autocomplete="off" placeholder="Enter publisher" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter publisher'"> 
-                    <label><input type="checkbox">Publisher unknow</label>                    
+                    <input type="text" id="pub" name="pub" autocomplete="off" placeholder="Enter publisher" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter publisher'"> 
+                    <label><input type="checkbox" id="no_pub" name="no_pub">Publisher unknow</label>                    
                 </div>
                 <div class="input_item">
                     <span class="input_label">description</span>
-                    <input type="text" name="description" autocomplete="off" placeholder="Enter description" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter description'">                    
+                    <input type="text" id="description" name="description" autocomplete="off" placeholder="Enter description" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter description'">                    
                 </div>
                 <div class="input_item">
                     <span class="input_label">condition</span>
-                    <select>
+                    <select id="condition" name="condition">
                         <option>---Describe book condition---</option>
                         <option value="1">Good</option>
                         <option value="2">Damaged</option>
@@ -56,18 +58,20 @@
                 </div>
                 <div class="input_item">
                     <span class="input_label">status</span>
-                    <select>
+                    <select id="status" name="status">
                         <option>---Describe availability--</option>
-                        <option value="1">Available</option>
-                        <option value="2">Available only at place</option>
+                        <option value="1">Available to borrow</option>
+                        <option value="2">Library use only</option>
                     </select>                   
                 </div>
                 <div class="input_item">
                     <span class="input_label">cover image</span>
-                    <input type="file" >                    
+                    <input type="file" id="cover" name="cover">
+                    <label><input type="checkbox" id="no_cover" name="no_cover">No cover available</label>                    
                 </div>
-                <input type="submit" value="Submit">
+                <input id="submit" type="submit" value="Submit">
             </form>
         </section>        
     </main>
+    <script type="text/javascript" src="{% static 'worker_side/forms.js' %}"></script>
 {% endblock content %}
