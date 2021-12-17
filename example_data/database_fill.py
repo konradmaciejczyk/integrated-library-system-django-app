@@ -1,7 +1,7 @@
 #Konrad Maciejczyk, 2021-2022
 #Note: To use this script run in terminal: python3 manage.py shell < ./example_data/database_fill.py
 from accounts.models import Citizenship, Gender, IDType, Occupation
-from worker_side.models import Condition, Availability
+from worker_side.models import Author, Condition, Availability, Publisher
 
 def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=True, *args, **kwargs):
     """Procedure for inserting data rows into SQL accounts table. 
@@ -20,7 +20,7 @@ def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=Tr
         for citizenship in citizenships_data:
             buff = Citizenship(name=citizenship)
             buff.save()
-        print(f'{len(citizenships)} row(s) has been inserted into accounts_citizenship table.\n')
+        print(f'{len(citizenships_data)} row(s) has been inserted into accounts_citizenship table.\n')
 
     if id_types:
         print(f'Starting to enter data rows into accounts_id_type table.')
@@ -43,7 +43,7 @@ def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=Tr
             buff.save()
         print(f'{len(genders_data)} row(s) has been inserted into accounts_gender table.\n')
 
-def fill_worker_side(conditions=True, availabilities=True):
+def fill_worker_side(conditions=True, availabilities=True, authors=True, publishers=True):
     """Procedure for inserting data rows into SQL worker_side tables. 
     Parameters:
     conditions=True, availabilities=True
@@ -52,6 +52,8 @@ def fill_worker_side(conditions=True, availabilities=True):
 
     conditions_data = (('Good'), ('Damaged'))
     availabilities_data = (('Available to borrow'), ('Library use only'))
+    authors_data = (("Terry Pratchett"), ("Adam Mickiewicz") , ("Henryk Sienkiewicz") , ("Stefan Żeromski"), ("Fyodor Dostoyevsky"), ("Stanisław Lem"))
+    publishers_data = (("Prószyński i S-ka"), ("Wydawnictwo Literackie"), ("Wydawnictwo MG"))
 
     if conditions:
         print(f'Starting to enter data rows into worker_side_condition table.')
@@ -66,6 +68,24 @@ def fill_worker_side(conditions=True, availabilities=True):
             buff = Availability(name=availability)
             buff.save()
         print(f'{len(availabilities_data)} row(s) has been inserted into worker_side_availability table.\n')
+
+    if authors:
+        print(f'Starting to enter data rows into worker_side_author table.')
+        for author in authors_data:
+            buff = Author(name=author)
+            buff.save()
+        print(f'{len(authors_data)} row(s) has been inserted into worker_side_author table.\n')
+
+    if publishers:
+        print(f'Starting to enter data rows into worker_side_publisher table.')
+        for publisher in publishers_data:
+            buff = Publisher(name=publisher)
+            buff.save()
+        print(f'{len(publishers_data)} row(s) has been inserted into worker_side_publisher table.\n')
+
+def fill_whole_database():
+    fill_accounts()
+    fill_worker_side()
 
 
 if __name__ == '__main__':

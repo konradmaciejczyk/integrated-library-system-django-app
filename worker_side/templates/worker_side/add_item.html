@@ -1,9 +1,15 @@
 {% extends 'worker_side/base.html' %}
 {% load static %}
 {% block title %}Add new item to Catalog{% endblock title %}
-{% block styles %}<link rel="stylesheet" href="{% static 'worker_side/css/add_item.css' %}" type="text/css">{% endblock styles %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'worker_side/css/add_item.css' %}" type="text/css">
+{% endblock styles %}
 {% block content %}
     <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Add new item to catalog</div>
+    {% for message in messages %}
+        <div class="op_status {{ message.tags }}" id="message"><i class="fas fa-info"></i> {{ message }} </div>
+    {% endfor %}
+    <div class="op_status information" id="message"><i class="fas fa-info"></i> {{ message }} </div>
     <main>
         <nav>
             <div class="option active">add a book</div>
@@ -13,41 +19,55 @@
             <div class="option">add an document</div>
         </nav>
         <section>
-            <form method="POST">
+            <form method="POST"  enctype="multipart/form-data">
+                {% csrf_token %}
+
                 <div class="input_item">
                     <span class="input_label">ISBN</span>
-                    <input type="text" id="isbn" name="isbn" autocomplete="off" placeholder="Enter ISBN" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter ISBN'" autofocus><div class="fetch_button">Fetch</div>
-                    <label><input type="checkbox" name="no_isbn" id="no_isbn">No ISBN available</label>                    
+                    {{ form.isbn }}<div class="fetch_button" id="fetch_button">Fetch</div>
+                    <label><input type="checkbox" name="no_isbn" id="no_isbn" autocomplete="off">No ISBN available</label>                    
                 </div>
                 <div class="input_item">
-                    <span class="input_label">author</span>
-                    <input type="text" id="author" name="author" autocomplete="off"  placeholder="Enter author's name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter author\'s name'">
-                    <label><input type="checkbox" id="no_author" name="no_author">Author unknow</label>                       
-                </div>
+                    <span class="input_label">Author's name</span>
+                    {{ form.author }}     
+                    <datalist id="authors_list">
+                        {% for author in authors %}
+                          <option datavalue="{{ author }}">{{ author }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Author unknown</label>                   
+                </div>                
                 <div class="input_item">
-                    <span class="input_label">title</span>
-                    <input type="text" id="title" name="title"autocomplete="off" placeholder="Enter title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter title'">                    
+                    <span class="input_label">Title</span>
+                    {{ form.title }}                   
                 </div>
+                
                 <div class="input_item">
-                    <span class="input_label">full title</span>
+                    <span class="input_label">Full title</span>
                     <input type="text" id="full_title"name="full_title" autocomplete="off" placeholder="Enter full title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter full title'">
-                    <label><input type="checkbox" id="copy_title" checked>Copy title</label>     
-                    <label><input type="checkbox" id="copy_author">Copy author</label>                  
-                </div>
+                    <label><input type="checkbox" id="copy_title" autocomplete="off">Copy title</label>     
+                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy author</label>                  
+                </div>                
                 <div class="input_item">
                     <span class="input_label">publication year</span>
-                    <input type="number" id="pub_year" name="pub_year" min="0" placeholder="Enter publication year" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter publication year'">
-                    <label><input type="checkbox" id="no_pub_year" name="no_pub_year">Publication year unknown</label>                     
+                    {{ form.pub_year }}
+                    <label><input type="checkbox" id="no_pub_year" name="no_pub_year" autocomplete="off">Publication year unknown</label>                     
                 </div>
                 <div class="input_item">
                     <span class="input_label">publisher</span>
-                    <input type="text" id="pub" name="pub" autocomplete="off" placeholder="Enter publisher" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter publisher'"> 
-                    <label><input type="checkbox" id="no_pub" name="no_pub">Publisher unknow</label>                    
-                </div>
+                    {{ form.publisher }}
+                    <datalist id="publishers_list">
+                        {% for publisher in publishers %}
+                          <option data-value="{{ publisher }}">{{ publisher }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <label><input type="checkbox" id="no_publisher" name="no_publisher" autocomplete="off">Publisher unknow</label>                    
+                </div>                
                 <div class="input_item">
                     <span class="input_label">description</span>
-                    <input type="text" id="description" name="description" autocomplete="off" placeholder="Enter description" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter description'">                    
+                    <div class="description">{{ form.description }}</div>
                 </div>
+
                 <div class="input_item">
                     <span class="input_label">condition</span>
                     <select id="condition" name="condition">
@@ -58,20 +78,21 @@
                 </div>
                 <div class="input_item">
                     <span class="input_label">status</span>
-                    <select id="status" name="status">
+                    <select id="availability" name="availability">
                         <option>---Describe availability--</option>
                         <option value="1">Available to borrow</option>
                         <option value="2">Library use only</option>
                     </select>                   
                 </div>
+                
                 <div class="input_item">
                     <span class="input_label">cover image</span>
                     <input type="file" id="cover" name="cover">
-                    <label><input type="checkbox" id="no_cover" name="no_cover">No cover available</label>                    
+                    <label><input type="checkbox" id="no_cover" name="no_cover" autocomplete="off">No cover available</label>                    
                 </div>
                 <input id="submit" type="submit" value="Submit">
             </form>
-        </section>        
+        </section> 
     </main>
     <script type="text/javascript" src="{% static 'worker_side/forms.js' %}"></script>
 {% endblock content %}
