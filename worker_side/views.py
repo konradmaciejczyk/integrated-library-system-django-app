@@ -5,8 +5,6 @@ from datetime import datetime, timedelta
 from accounts.models import Citizenship
 from worker_side.models import Book, Author, Publisher
 
-
-
 def home(request):
     return render(request, 'worker_side/home.html')
 
@@ -38,16 +36,19 @@ def add_item(request):
         'form': form
         }
 
+    return render(request, 'worker_side/add_item.html', context)
+
+def add_book(request):
+    form = AddBookForm()
     if request.method == 'POST':
         print("CO PRZYSZŁO", request.POST)
         form = AddBookForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, f'Book added successfully!')
-            return redirect('worker_side-home')
+            data_to_summary = form.save()
+            return render(request, template_name='worker_side/item_summary.html', context=data_to_summary)
         else:
             print("BŁĘDY: ", form.errors, "\nDATA: ", form.cleaned_data)
             messages.error(request, f'Form filled with invalid informations!')
             return redirect('worker_side-add_item')
     else:
-        return render(request, 'worker_side/add_item.html', context)
+        return redirect('worker_side-add_item')

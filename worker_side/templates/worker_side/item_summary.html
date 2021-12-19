@@ -1,0 +1,110 @@
+{% extends 'worker_side/base.html' %}
+{% load static %}
+{% block title %}New {{ item_info.type }} has been added to catalog{% endblock title %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/item_summary.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock styles %}
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js" integrity="sha512-QEAheCz+x/VkKtxeGoDq6nsGyzTx/0LMINTgQjqZ0h3+NjP+bCsPYz3hn0HnBkGmkIFSr7QcEZT+KyEM7lbLPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+       
+    </script>
+{% endblock scripts %}
+{% block content %}
+<div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > <a href="{% url 'worker_side-add_item' %}">Add new item to catalog</a> > New item - summary</div>
+    <main>
+        <h1>New {{ item_info.type }} added</h1>
+        <p>{{ item_info.title }} by 
+            {% if item_info.author %}
+                {{ item_info.author }}
+            {% else %} 
+                unknown author
+            {% endif %}
+        </p>
+        <div class="item_info">
+            <div class="informations">
+                {% if item_info.type is 'book' %}
+                    <span class="single_info_label">Type:</span><span class="single_info_content"> <i class="fas fa-book"></i>Book</span></br>
+                {% endif %}
+
+                <span class="single_info_label">ID:</span><span class="single_info_content" id="id_number">{{ item_info.id }}</span></br>
+
+                <span class="single_info_label">Title:</span><span class="single_info_content">{{ item_info.title }}</span></br>
+
+                {% if item_info.author is not none %}
+                    <span class="single_info_label">Author:</span><span class="single_info_content">{{ item_info.author }}</span></br>
+                {% else %}
+                    <span class="single_info_label">Author:</span><span class="single_info_content">author unknow</span></br>
+                {% endif %}
+
+                <span class="single_info_label">Full title:</span><span class="single_info_content">{{ item_info.full_title }}</span></br>
+
+                {% if item_info.publisher or item_info.publisher is none %}
+                    {% if item_info.publisher is not none %}
+                        <span class="single_info_label">Publisher:</span><span class="single_info_content">{{ item_info.publisher }}</span></br>
+                    {% else %}
+                        <span class="single_info_label">Publisher:</span><span class="single_info_content">publisher unknow</span></br>
+                    {% endif %}
+                {% endif %}
+
+                {% if item_info.pub_year %}
+                    {% if item_info.pub_year is not none %}
+                        <span class="single_info_label">Publication year:</span><span class="single_info_content">{{ item_info.pub_year }}</span></br>
+                    {% else %}
+                        <span class="single_info_label">Publication year:</span><span class="single_info_content">publication year unknow</span></br>
+                    {% endif %}
+                {% endif %}
+
+                {% if item_info.isbn %}
+                        <span class="single_info_label">ISBN:</span><span class="single_info_content">{{ item_info.isbn }}</span></br>  
+                {% endif %}
+                       
+                <span class="single_info_label">Description:</span><span class="single_info_content">{{ item_info.description }}</span></br>  
+
+                <span class="single_info_label">Condition:</span><span class="single_info_content">{{ item_info.condition }}</span></br>
+                
+                <span class="single_info_label">Availability:</span><span class="single_info_content">{{ item_info.availability }}</span></br>                
+            </div>
+            <img src="{{ item_info.cover.url }}">
+        </div>
+        <div class="operations">
+            <p class="op_caption">Operations performed</p>
+            {% if operations.new_item %}
+                <span class="single_op">Added new {{ item_info.type }} to {{item_info.type }}s table.</span>
+            {% endif %}
+            {% if operations.new_author %}
+                <span class="single_op">Added new author to authors table.</span>
+            {% endif %}
+            {% if operations.new_author %}
+                <span class="single_op">Added new publisher to publishers table.</span>
+            {% endif %}            
+        </div>
+            <svg class="barcode" id="barcode"></svg>
+        <button id="print">Print barcode</button>
+        <a href="{% url 'worker_side-add_item' %}"><div class="done">Done</div></a>
+        <div style="clear: both;"></div>
+    </main>
+    <script type="text/javascript">
+
+        function print_barcode(){
+            let current_page = document.body.innerHTML;
+            let barcode = document.getElementById('barcode');
+
+        }
+
+        const id = document.getElementById('id_number').innerHTML;
+
+        //  if ( window.history.replaceState ) {
+        //     window.history.replaceState( null, null, window.location.href );
+        // }
+
+         JsBarcode(".barcode", id, {
+             lineColor: "#194973",
+
+         } )
+
+        const print_button = document.getElementById('print').addEventListener('click', () =>{
+            window.print();
+        })
+    </script>
+{% endblock content %}

@@ -55,6 +55,10 @@ input[type=submit]:hover {
   box-shadow: 0px 0px 30px -10px #194973;
 }
 
+textarea {
+  font-size: 14px;
+}
+
 input[type=date] {
   background: white;
   border: 0;

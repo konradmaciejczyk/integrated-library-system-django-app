@@ -63,6 +63,7 @@ class AddItem{
     //Gathering checkboxes, that exclude inputs       
        this.deactivate_checkboxes = optional_fields.map(function(item){
         document.getElementById(`no_${ids[item]}`).addEventListener('input', function(){
+        console.log(item);
             that.deactivate_activate(that.inputs[item]);
             that.activate_deactivate_submit();
             that.approve_input(item);
@@ -153,15 +154,14 @@ class AddBook extends AddItem{
 
     constructor(optional_fields, copy_author_to_full_title, copy_title_to_full_title, fetch_button_id,  ...ids){
         super(optional_fields, copy_author_to_full_title, copy_title_to_full_title, ...ids);
-
+        this.cover_preview = document.getElementById('cover_preview');
         //Getting fetch_button and adding listerener on it
         this.fetch_button_id = document.getElementById(fetch_button_id);
         this.fetch_button_id.addEventListener('click', () =>{
             if(this.supervise_input(this.inputs[0]))
                 this.fetch_data(this.inputs[0].value);
             else{
-                let message = document.getElementById('message');
-                message.innerHTML = "Enter ISBN";
+                alert("Enter valid ISBN");
             }
         })
 
@@ -169,22 +169,26 @@ class AddBook extends AddItem{
 
     //Method below parse json, that came from googlebooks and extract from json asked informations given as arguments
     get_data_google(data, what){
-        switch(what){
-            case 0:{
-                return data.items['0'].volumeInfo.authors['0'] === false ? "" : data.items['0'].volumeInfo.authors['0'];
-            }case 1:{
-                return data.items['0'].volumeInfo.title === undefined ? "" : data.items['0'].volumeInfo.title;
-            }case 2:{
-                return data.items['0'].volumeInfo.publishedDate === undefined ? "" : data.items['0'].volumeInfo.publishedDate.substring(data.items['0'].volumeInfo.publishedDate.length - 4);
-            }case 3:{
-                return data.items['0'].volumeInfo.publisher === undefined ? "" : data.items['0'].volumeInfo.publisher;
+        try{
+            switch(what){
+                case 0:{
+                    return data.items['0'].volumeInfo.authors['0'] === false ? "" : data.items['0'].volumeInfo.authors['0'];
+                }case 1:{
+                    return data.items['0'].volumeInfo.title === undefined ? "" : data.items['0'].volumeInfo.title;
+                }case 2:{
+                    return data.items['0'].volumeInfo.publishedDate === undefined ? "" : data.items['0'].volumeInfo.publishedDate.substring(data.items['0'].volumeInfo.publishedDate.length - 4);
+                }case 3:{
+                    return data.items['0'].volumeInfo.publisher === undefined ? "" : data.items['0'].volumeInfo.publisher;
+                }
+                case 4:{
+                    return data.items['0'].volumeInfo.pageCount === undefined ? "": 'number of pages: ' + data.items['0'].volumeInfo.pageCount;
+                }
+                default:{
+                    return "";
+                }
             }
-            case 4:{
-                return data.items['0'].volumeInfo.pageCount === undefined ? "": 'number of pages: ' + data.items['0'].volumeInfo.pageCount;
-            }
-            default:{
-                return "";
-            }
+        }catch(error){
+            return "";
         }
     }
 
@@ -206,6 +210,8 @@ class AddBook extends AddItem{
                     return data['ISBN:'+isbn].details.contributions['0'] === undefined ? false : ', contributions: ' + data['ISBN:'+isbn].details.contributions['0'];
                 }case 6:{
                     return data['ISBN:'+isbn].details.edition_name === undefined ? false : ', edition: ' + data['ISBN:'+isbn].details.edition_name;
+                }case 7:{
+                    return data['ISBN:'+isbn].details.covers[0] === undefined ? false : `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
                 }
                 default:{
                     return false;
@@ -264,6 +270,12 @@ class AddBook extends AddItem{
                     console.log("Fetched edition from openlibrary"); return this.get_data_openlibrary(isbn, data_openlibrary, 6);
                 }
                 return "";
+            }case 'cover':{
+                let cover = this.get_data_openlibrary(isbn, data_openlibrary, 7);
+                if(cover){                    
+                    console.log("Fetched cover from openlibrary"); return cover;
+                }
+                return "#";
             }
         }
     }
@@ -282,19 +294,17 @@ class AddBook extends AddItem{
 
         let response_openlibrary = await fetch(url_openlibrary);
         let data_openlibrary = await response_openlibrary.json();
-        
         this.inputs[1].value = this.fetch_book_info(isbn, data_openlibrary, data_google, 'author');
         this.inputs[2].value = this.fetch_book_info(isbn, data_openlibrary, data_google, 'title');
         this.inputs[4].value = this.fetch_book_info(isbn, data_openlibrary, data_google, 'pub_year');
         this.inputs[5].value = this.fetch_book_info(isbn, data_openlibrary, data_google, 'publisher');
         this.inputs[6].value = this.fetch_book_info(isbn, data_openlibrary, data_google, 'pages') +
-        this.fetch_book_info(isbn, data_openlibrary, data_google, 'contributions') + this.fetch_book_info(isbn, data_openlibrary, data_google, 'edition');
+        this.fetch_book_info(isbn, data_openlibrary, data_google, 'contributions'); + this.fetch_book_info(isbn, data_openlibrary, data_google, 'edition');
 
         this.inputs[3].value = "";
         this.repeat_values(this.inputs[1], this.inputs[3]);
         this.repeat_values(this.inputs[2], this.inputs[3]);
         this.copy_checkboxes[0].checked = true; this.copy_checkboxes[1].checked = true;
-        console.log(this.copy_checkboxes);
 
         let aux_array = [1, 2, 3, 4, 5, 6];
         for(var i = 0; i < 6; i++){
@@ -303,9 +313,6 @@ class AddBook extends AddItem{
             this.approve_input(aux_array[i]);
         }
     }
-
-    
-
 
     supervise_input(item){
         switch(item.id){
@@ -337,6 +344,49 @@ class AddBook extends AddItem{
     }
 }
 
-add_book_form_controler = new AddBook([0, 1, 4, 5, 9], true, true, 'fetch_button', 'isbn', 'author', 'title', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'cover', 'submit');
+class AddMovie extends AddItem{
+    // constructor(optional_fields, copy_author_to_full_title, copy_title_to_full_title, ...ids){
 
-//9780140328721
+    // }
+}
+
+const tabs = new Array();
+const forms = new Array();
+const forms_controllers = new Array()
+
+forms_controllers.push(new AddBook([0, 1, 4, 5, 9], true, true, 'fetch_button', 'isbn', 'author', 'title', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'cover', 'submit'));
+
+for(var i=0; i<2; i++){
+    tabs.push(document.getElementById('option'+ String(i+1)))
+    forms.push(document.getElementById('form'+String(i+1)))
+}
+
+tabs.forEach((item) =>{
+    item.addEventListener('click', () =>{
+        change_form(item.id.substring(item.id.length - 1) - 1)
+    })
+})
+
+function change_form(no){
+    for(let i=0; i<2; i++){
+        if(i===no){
+            tabs[i].classList.add('active');
+            forms[i].classList.add('active');
+
+            switch(no){
+                case 0:{
+                    forms_controllers[0] = new AddBook([0, 1, 4, 5, 9], true, true, 'fetch_button', 'isbn', 'author', 'title', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'cover', 'submit'); break;
+                }case 1:{
+                    forms_controllers[1] = new AddMovie([0,3,4], false, false, 'author', 'title', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'submit'); break;
+                }
+            }
+            continue;
+
+        }else{
+            tabs[i].classList.remove('active');
+            forms[i].classList.remove('active');
+            forms_controllers[i] = undefined;
+        }
+    }
+    console.log(forms_controllers[0], forms_controllers[1]);
+}

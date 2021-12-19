@@ -1,0 +1,130 @@
+@import 'defaults.scss';
+$info_height: 30px;
+
+@include _header;
+
+main{
+    box-sizing: border-box;
+    margin: 40px auto 50px auto;
+    width: 900px; min-height: 750px;
+    background-color: white;
+    border-radius: 10px;
+    color: $main-blue;
+    padding: 50px 30px 50px 30px;
+    @include shadow($main-blue);
+}
+
+h1{
+    display: block;
+    color: black;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    margin: 0 auto 0 auto;
+    height: 40px;
+    color: $main-blue;
+}
+
+p{
+    display: block;
+    margin-top: 30px;
+    font-size: 25px;
+    height: 30px;
+    color: $main-blue;
+}
+
+i{
+    margin-right: 10px;
+}
+
+.item_info{
+    margin: 20px;
+    display: flex;
+}
+
+.single_info_label{
+    display: inline-block;
+    width: 150px; height: $info_height;
+    font-weight: 500;
+}
+.single_info_label::before{
+    content: '\2022';
+    margin-right: 5px;
+}
+.single_info_content{
+    display: inline-block;
+    width: 400px;
+}
+img{
+    width: 200px; height: 300px;
+}
+.operations{
+    width: 100%;
+}
+.op_caption{
+    display: block;
+    font-size: 20px;
+    margin: 30px 0px 10px 20px;
+}
+.single_op{
+    display: block;
+    margin-bottom: 5px;
+    margin-left: 60px;
+}
+.single_op::before{
+    content: '\002B';
+    font-weight: 900;
+    color: green;
+    margin-right: 10px;
+}
+.barcode{
+    width: 300px; height: 125px;
+    display: block;
+    margin: 80px auto 20px auto;
+    
+}
+
+button{
+    display: block;
+    margin: 20px auto 20px auto;
+    width: 200px; height: 40px;
+    font-size: 20px; font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+    border: none;
+    background-color: $main-blue;
+    color: white;
+    border-radius: 5px;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(120%);
+        @include shadow($main-blue);
+    }
+}
+
+button::before{
+    content: '\f02f';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.done{
+    float: right;
+    margin: 20px 0px 20px 0px;
+    width: 120px; height: 40px;
+    font-size: 20px; 
+    font-family: 'Roboto', sans-serif;
+    border: none;
+    background-color: $main-blue;
+    color: white;
+    border-radius: 5px;
+    text-align: center; line-height: 40px;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(120%);
+        @include shadow($main-blue);
+    }
+}

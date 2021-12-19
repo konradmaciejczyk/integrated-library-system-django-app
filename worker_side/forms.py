@@ -1,9 +1,6 @@
 # Konrad Maciejczyk, 2021 -2022
 from django import forms
-from django.db.models.base import Model
-from django.db.models.fields.files import ImageField
 from django.forms import ModelForm
-from django.forms.forms import DeclarativeFieldsMetaclass
 from django.forms.widgets import ClearableFileInput
 from accounts.models import Citizenship, Gender, IDType, Occupation, User
 from worker_side.models import Author, Availability, Book, Condition, Publisher
@@ -11,6 +8,7 @@ from user_side.models import Client
 from django.db import transaction
 import string, random
 import re
+import urllib
 
 def get_borrows_limit(occupation, citizenship):
     """Auxillary function, that detreminates (basing on client's occupation and citizenship) 
@@ -106,7 +104,7 @@ class AddBookForm(forms.Form):
     isbn = forms.CharField(required=False, widget=forms.TextInput(
         attrs={'placeholder': 'Enter ISBN', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter ISBN";', 'name': 'isbn', 'id': 'isbn', 'autocomplete': 'off'})
     )  
-    author = forms.CharField(required=True, widget=forms.TextInput(
+    author = forms.CharField(required=False, widget=forms.TextInput(
         attrs={'placeholder': 'Enter author\'s name', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter author\'s name";', 'name': 'author', 'id': 'author', 'list': 'authors_list', 'autocomplete': 'off'})
     )
     title = forms.CharField(required=True, widget=forms.TextInput(
@@ -137,13 +135,18 @@ class AddBookForm(forms.Form):
     
     @transaction.atomic
     def save(self):
+        new_item, new_author, new_publisher = False, False, False
         isbn = self.cleaned_data["isbn"] 
 
         author = None
         try:
             author = Author.objects.get(name=self.cleaned_data['author'])
         except:
-            author = Author.objects.create(name=self.cleaned_data['author'])
+            if self.cleaned_data['author'] != "":
+                new_author = True
+                author = Author.objects.create(name=self.cleaned_data['author'])
+            else:
+                author = None
 
         title = self.cleaned_data['title']
         full_title = self.cleaned_data['full_title']
@@ -153,16 +156,40 @@ class AddBookForm(forms.Form):
         try:
             publisher = Publisher.objects.get(name=self.cleaned_data['publisher']) 
         except:
-            publisher = Publisher.objects.create(name=self.cleaned_data['publisher'])
+            if self.cleaned_data['publisher'] != "":
+                new_publisher = True
+                publisher = Publisher.objects.create(name=self.cleaned_data['publisher'])
+            else:
+                publisher = None
 
 
         description = self.cleaned_data['description']
         condition = Condition.objects.get(id=self.cleaned_data['condition'])
         availability = Availability.objects.get(id=self.cleaned_data['availability'])
-        cover = self.cleaned_data['cover']
 
-        Book.objects.create(isbn=isbn, author=author, title=title, full_title=full_title, pub_year=pub_year, publisher=publisher, description=description,
-        condition=condition, availability=availability, cover=cover)
+        book = None
+        cover = self.cleaned_data['cover']  
 
+        if(cover == None):
+            book = Book.objects.create(isbn=isbn, author=author, title=title, full_title=full_title, pub_year=pub_year, publisher=publisher, description=description,
+            condition=condition, availability=availability)   
+        else:
+            book = Book.objects.create(isbn=isbn, author=author, title=title, full_title=full_title, pub_year=pub_year, publisher=publisher, description=description,
+            condition=condition, availability=availability, cover=cover)   
 
-        return True
+       
+            
+
+        new_item = True
+
+        data_to_summary = {
+          'item_info': {
+                'type': 'book', 'id': book.id, 'title': book.title, 'author': book.author, 'full_title': book.full_title, 'publisher': book.publisher, 'pub_year': book.pub_year, 'isbn': book.isbn, 'description': book.description, 'condition': book.condition.name, 'availability': book.availability, 'cover': book.cover
+          },
+          'operations':{
+              'new_item': new_item,
+              'new_author': new_author,
+              'new_publisher': new_publisher
+          }
+        }
+        return data_to_summary

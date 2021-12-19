@@ -55,6 +55,10 @@ input[type=submit]:hover {
   box-shadow: 0px 0px 30px -10px #194973;
 }
 
+textarea {
+  font-size: 14px;
+}
+
 input[type=date] {
   background: white;
   border: 0;
@@ -286,30 +290,30 @@ p {
 }
 
 /* For styling placeholders and on focus in text inputs*/
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]::-webkit-input-placeholder {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number], textarea::-webkit-input-placeholder {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:-moz-placeholder {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number], textarea:-moz-placeholder {
   /*Firefox < 19*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]::-moz-placeholder {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number], textarea::-moz-placeholder {
   /*Firefox > 19*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:-ms-input-placeholder {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number], textarea:-ms-input-placeholder {
   /*Internet Explorer 10*/
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
-input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number]:focus {
+input[type=text], input[type=tel], input[type=e-mail], input[type=date], input[list], input[type=number], textarea:focus {
   font-family: "Roboto", sans-serif;
   outline: none;
 }

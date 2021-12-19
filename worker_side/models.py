@@ -13,13 +13,13 @@ class Availability(models.Model):
         return self.name
 
 class Author(models.Model):
-    name = models.CharField(max_length=50, verbose_name="Author's first and last name")
+    name = models.CharField(max_length=50, blank=False, verbose_name="Author's first and last name")
 
     def __str__(self):
         return self.name
 
 class Publisher(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Publisher's name")
+    name = models.CharField(max_length=100, blank=False, verbose_name="Publisher's name")
 
     def __str__(self):
         return self.name
@@ -35,7 +35,7 @@ class Book(models.Model):
     description = models.CharField(max_length=200, verbose_name="Description")
     condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
-    cover = models.ImageField(default="default_cover.jpg", upload_to="covers")
+    cover = models.ImageField(default="no_image.png", upload_to="covers")
 
     def __str__(self):
-        return self.author.name + ' - ' + self.title
+        return self.title
