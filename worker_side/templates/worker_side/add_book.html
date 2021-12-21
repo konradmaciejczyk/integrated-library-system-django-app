@@ -1,18 +1,18 @@
 {% extends 'worker_side/base.html' %}
 {% load static %}
-{% block title %}Add new item to Catalog{% endblock title %}
+{% block title %}Add new book to Catalog{% endblock title %}
 {% block styles %}
     <link rel="stylesheet" href="{% static 'worker_side/css/add_item.css' %}" type="text/css">
 {% endblock styles %}
 {% block content %}
-    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Add new item to catalog</div>
+    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Add new book to catalog</div>
     {% for message in messages %}
         <div class="op_status {{ message.tags }}" id="message"><i class="fas fa-info"></i> {{ message }} </div>
     {% endfor %}
     <main>
         <nav>
-            <div class="option active" id="option1">add a book</div>
-            <div class="option" id="option2">add a movie/film</div>
+            <a href="{% url 'worker_side-add_book' %}"><div class="option active" id="option1">add a book</div></a>
+            <a href="{% url 'worker_side-add_movie' %}"><div class="option" id="option2">add a movie</div></a>
             <div class="option" id="option3">add a sound recording</div>
             <div class="option" id="option4">add an image</div>
             <div class="option" id="option5">add an document</div>
@@ -90,73 +90,10 @@
                 </div>
                 <input id="submit" type="submit" value="Submit">
             </form>
-
-            <form method="POST" action="{% url 'worker_side-add_book' %}" enctype="multipart/form-data" id="form2">
-                <div class="input_item">
-                    <span class="input_label">Author's name</span>
-                    <input type="text" list="authors_list" name="author" id="author" autocomplete="off" placeholder="Enter author's name" onblur="this.placeholder='Enter author\'s name';" onfocus="this.placeholder='';" >  
-                    <datalist id="authors_list">
-                        {% for author in authors %}
-                          <option datavalue="{{ author }}">{{ author }}</option>
-                        {% endfor %}
-                    </datalist>
-                    <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Author unknown</label>                   
-                </div> 
-
-                <div class="input_item">
-                    <span class="input_label">Title</span>
-                    <input type="text" name="title" id="title" placeholder="Enter movie's/film's title" onblur="this.placeholder='Enter movie\'s/film\'s title';" onfocus="this.placeholder=''" autocomplete="off" required autofocus>                
-                </div>
-
-                <div class="input_item">
-                    <span class="input_label">Full title</span>
-                    <input type="text" name="full_title" id="full_title" onfocus="this.placeholder='';" onblur="this.placeholder='Enter movie\'s/film\'s full title'" autocomplete="off" placeholder="Enter movie's/film's full title" >               
-                </div>
-
-                 <div class="input_item">
-                    <span class="input_label">Publication year</span>
-                    <input type="number" name="pub_year" id="pub_year" autocomplete="off" placeholder="Enter publication year" onblur="this.placeholder='Enter publication year';" onfocus="this.placeholder='';" min="1976">
-                    <label><input type="checkbox" id="no_pub_year" name="no_pub_year" autocomplete="off">Publication year unknown</label>                     
-                </div>
-
-                <div class="input_item">
-                    <span class="input_label">Publisher</span>
-                    <input type="text" id="publisher" name="publisher" list="publishers_list" placeholder="Enter publisher's name" autocomplete="off" onblur="this.placeholder='Enter publisher\'s name';" onfocus="this.placeholder='';" list="publishers_list">
-                    <datalist id="publishers_list">
-                        {% for publisher in publishers %}
-                          <option data-value="{{ publisher }}">{{ publisher }}</option>
-                        {% endfor %}
-                    </datalist>
-                    <label><input type="checkbox" id="no_publisher" name="no_publisher" autocomplete="off">Publisher unknow</label>                    
-                </div> 
-                
-                <div class="input_item aux">
-                    <span class="input_label">Description</span>
-                    <div class="description"><textarea name="description" id="description" cols="40" rows="10" placeholder="Enter movie's/film's description" onblur="this.placeholder='Enter movie\'s/film\'s description';" autocomplete="off"></textarea></div>               
-                </div>
-
-                <div class="input_item">
-                    <span class="input_label">Condition</span>
-                    <select id="condition" name="condition">
-                        <option>---Describe movie's/film's condition---</option>
-                        <option value="1">Good</option>
-                        <option value="2">Damaged</option>
-                    </select>                   
-                </div>
-                
-                <div class="input_item">
-                    <span class="input_label">Status</span>
-                    <select id="availability" name="availability">
-                        <option>---Describe availability--</option>
-                        <option value="1">Available to borrow</option>
-                        <option value="2">Library use only</option>
-                    </select>                   
-                </div>
-                <input id="submit" type="submit" value="Submit">
-                
-            </form>
-
         </section> 
     </main>
-    <script type="text/javascript" src="{% static 'worker_side/forms.js' %}"></script>
+    <script src="{% static 'worker_side/forms.js' %}"></script>
+    <script type="text/javascript">
+        let book_form_controller = new AddBook([0, 1, 4, 5, 9], true, true, 'fetch_button', 'isbn', 'author', 'title', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'cover', 'submit');
+    </script>    
 {% endblock content %}

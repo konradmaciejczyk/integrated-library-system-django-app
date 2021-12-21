@@ -1,6 +1,7 @@
 /* Konrad Maciejczyk, 2021-2022 */
 class AddItem{
     constructor(optional_fields, copy_author_to_full_title, copy_title_to_full_title, ...ids){
+       console.log("!!!"); 
        this.inputs = new Array;
        this.excluded_inputs  = new Array;
        this.inputs_states = new Array;
@@ -17,34 +18,38 @@ class AddItem{
 
     //If copy_author checkbox is included in form add event listener in order to repeat/erase values to/from full_title
        if(copy_author_to_full_title){
+        let author_index = ids.indexOf('author');
+        let full_title_index = ids.indexOf('full_title');
            this.copy_checkboxes.push(document.getElementById('copy_author'));
            this.copy_checkboxes[0].addEventListener('input', function(){
                if(this.checked){
-                    that.repeat_values(that.inputs[1], that.inputs[3]);
-                    that.inputs_states[3] = that.supervise_input(that.inputs[3]);
-                    that.approve_input(3);
+                    that.repeat_values(that.inputs[author_index], that.inputs[full_title_index]);
+                    that.inputs_states[full_title_index] = that.supervise_input(that.inputs[full_title_index]);
+                    that.approve_input(full_title_index);
                }
                else{
-                    that.erase_values(that.inputs[1], that.inputs[3]);
-                    that.inputs_states[3] = that.supervise_input(that.inputs[3]);
-                    that.approve_input(3);
+                    that.erase_values(that.inputs[author_index], that.inputs[full_title_index]);
+                    that.inputs_states[full_title_index] = that.supervise_input(that.inputs[full_title_index]);
+                    that.approve_input(full_title_index);
                 }
            })
        }
     
     //If copy_title checkbox is included in form add event listener in order to repeat/erase values to/from full_title
        if(copy_title_to_full_title){
+        let title_index = ids.indexOf('title');
+        let full_title_index = ids.indexOf('full_title');
         this.copy_checkboxes.push(document.getElementById('copy_title'));
         this.copy_checkboxes[1].addEventListener('input', function(){
             if(this.checked){
-                 that.repeat_values(that.inputs[2], that.inputs[3]);
-                 that.inputs_states[3] = that.supervise_input(that.inputs[3]);
-                 that.approve_input(3);
+                 that.repeat_values(that.inputs[title_index], that.inputs[full_title_index]);
+                 that.inputs_states[full_title_index] = that.supervise_input(that.inputs[full_title_index]);
+                 that.approve_input(full_title_index);
             }
             else{
-                 that.erase_values(that.inputs[2], that.inputs[3]);
-                 that.inputs_states[3] = that.supervise_input(that.inputs[3]);
-                 that.approve_input(3);
+                 that.erase_values(that.inputs[title_index], that.inputs[full_title_index]);
+                 that.inputs_states[full_title_index] = that.supervise_input(that.inputs[full_title_index]);
+                 that.approve_input(full_title_index);
              }
         })
     } 
@@ -103,6 +108,7 @@ class AddItem{
     //An auxiliary method that paints inputs basing on input's value correctness.
     approve_input(input_index){
         if(this.inputs_states[input_index]){
+            console.log("TU KURWA");
             this.inputs[input_index].style.borderBottom = '2px solid green';
         }
         else{
@@ -345,48 +351,29 @@ class AddBook extends AddItem{
 }
 
 class AddMovie extends AddItem{
-    // constructor(optional_fields, copy_author_to_full_title, copy_title_to_full_title, ...ids){
-
-    // }
-}
-
-const tabs = new Array();
-const forms = new Array();
-const forms_controllers = new Array()
-
-forms_controllers.push(new AddBook([0, 1, 4, 5, 9], true, true, 'fetch_button', 'isbn', 'author', 'title', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'cover', 'submit'));
-
-for(var i=0; i<2; i++){
-    tabs.push(document.getElementById('option'+ String(i+1)))
-    forms.push(document.getElementById('form'+String(i+1)))
-}
-
-tabs.forEach((item) =>{
-    item.addEventListener('click', () =>{
-        change_form(item.id.substring(item.id.length - 1) - 1)
-    })
-})
-
-function change_form(no){
-    for(let i=0; i<2; i++){
-        if(i===no){
-            tabs[i].classList.add('active');
-            forms[i].classList.add('active');
-
-            switch(no){
-                case 0:{
-                    forms_controllers[0] = new AddBook([0, 1, 4, 5, 9], true, true, 'fetch_button', 'isbn', 'author', 'title', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'cover', 'submit'); break;
-                }case 1:{
-                    forms_controllers[1] = new AddMovie([0,3,4], false, false, 'author', 'title', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'submit'); break;
-                }
+    supervise_input(item){
+        switch(item.id){
+            case 'author':{
+                if(!this.excluded_inputs.includes(item))
+                    return item.value !== "";
+            }case 'title': case 'full_title':{
+                return item.value !== "";
+            }case 'pub_year':{
+                if(!this.excluded_inputs.includes(item))
+                    return this.check_if_numeric(item, false); 
+            }case 'publisher':{
+                if(!this.excluded_inputs.includes(item))
+                    return item.value !== "";
+            }case 'description':{
+                return item.value !== "";
+            }case 'condition':{
+                return item.value === "1" || item.value === '2';
+            }case 'availability':{
+                return item.value === "1" || item.value === '2';
+            }case 'cover':{
+                if(!this.excluded_inputs.includes(item))
+                    return item.value !== "";
             }
-            continue;
-
-        }else{
-            tabs[i].classList.remove('active');
-            forms[i].classList.remove('active');
-            forms_controllers[i] = undefined;
         }
     }
-    console.log(forms_controllers[0], forms_controllers[1]);
 }

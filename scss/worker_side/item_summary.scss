@@ -128,3 +128,45 @@ button::before{
         @include shadow($main-blue);
     }
 }
+
+@media print{
+    html, body{
+        background: none;
+
+        .path{
+            display: none;
+        }
+
+        header{
+            display: none;
+        }
+
+        main{
+            p{
+                display: none;
+            }
+
+            h1{
+                display:none;
+            }
+
+            div{
+                display: none;
+            }
+
+            img{
+                display: none;
+            }
+            button{
+                display: none;
+            }
+
+            .barcode{
+                height: 50mm;
+                border: 2px solid silver;
+            }
+
+            @include shadow(white);
+        }
+    }
+}

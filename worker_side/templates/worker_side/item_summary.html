@@ -11,7 +11,7 @@
     </script>
 {% endblock scripts %}
 {% block content %}
-<div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > <a href="{% url 'worker_side-add_item' %}">Add new item to catalog</a> > New item - summary</div>
+<div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > <a href="{% url 'worker_side-add_movie' %}">Add new {{ item_info.type }} to catalog</a> > New {{ item_info.type }} - summary</div>
     <main>
         <h1>New {{ item_info.type }} added</h1>
         <p>{{ item_info.title }} by 
@@ -23,8 +23,10 @@
         </p>
         <div class="item_info">
             <div class="informations">
-                {% if item_info.type is 'book' %}
-                    <span class="single_info_label">Type:</span><span class="single_info_content"> <i class="fas fa-book"></i>Book</span></br>
+                {% if item_info.type == 'book' %}
+                    <span class="single_info_label">Type:</span><span class="single_info_content"><i class="fas fa-book-open"></i>Book</span></br>
+                {% elif item_info.type == 'movie' %}
+                    <span class="single_info_label">Type:</span><span class="single_info_content"><i class="fas fa-film"></i>Movie</span></br>
                 {% endif %}
 
                 <span class="single_info_label">ID:</span><span class="single_info_content" id="id_number">{{ item_info.id }}</span></br>
@@ -39,12 +41,8 @@
 
                 <span class="single_info_label">Full title:</span><span class="single_info_content">{{ item_info.full_title }}</span></br>
 
-                {% if item_info.publisher or item_info.publisher is none %}
-                    {% if item_info.publisher is not none %}
-                        <span class="single_info_label">Publisher:</span><span class="single_info_content">{{ item_info.publisher }}</span></br>
-                    {% else %}
-                        <span class="single_info_label">Publisher:</span><span class="single_info_content">publisher unknow</span></br>
-                    {% endif %}
+                {% if item_info.publisher %}
+                    <span class="single_info_label">Publisher:</span><span class="single_info_content">{{ item_info.publisher }}</span></br>
                 {% endif %}
 
                 {% if item_info.pub_year %}
@@ -72,25 +70,25 @@
             {% if operations.new_item %}
                 <span class="single_op">Added new {{ item_info.type }} to {{item_info.type }}s table.</span>
             {% endif %}
-            {% if operations.new_author %}
-                <span class="single_op">Added new author to authors table.</span>
+            {% if operations.new_director %}
+                <span class="single_op">Added new director to directors table.</span>
             {% endif %}
             {% if operations.new_author %}
+                <span class="single_op">Added new author to author table.</span>
+            {% endif %}
+            {% if operations.new_publisher %}
                 <span class="single_op">Added new publisher to publishers table.</span>
-            {% endif %}            
+            {% endif %}           
         </div>
             <svg class="barcode" id="barcode"></svg>
         <button id="print">Print barcode</button>
-        <a href="{% url 'worker_side-add_item' %}"><div class="done">Done</div></a>
+        <a href="{% url 'worker_side-home' %}"><div class="done">Done</div></a>
         <div style="clear: both;"></div>
     </main>
     <script type="text/javascript">
-
-        function print_barcode(){
-            let current_page = document.body.innerHTML;
-            let barcode = document.getElementById('barcode');
-
-        }
+        const print_button = document.getElementById('print').addEventListener('click', () =>{
+            window.print();
+        })
 
         const id = document.getElementById('id_number').innerHTML;
 
@@ -98,13 +96,8 @@
         //     window.history.replaceState( null, null, window.location.href );
         // }
 
-         JsBarcode(".barcode", id, {
+        JsBarcode("#barcode", id, {
              lineColor: "#194973",
-
-         } )
-
-        const print_button = document.getElementById('print').addEventListener('click', () =>{
-            window.print();
-        })
+        });
     </script>
 {% endblock content %}

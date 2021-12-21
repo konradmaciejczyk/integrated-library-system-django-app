@@ -3,7 +3,7 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import ClearableFileInput
 from accounts.models import Citizenship, Gender, IDType, Occupation, User
-from worker_side.models import Author, Availability, Book, Condition, Publisher
+from worker_side.models import Author, Availability, Book, Condition, Director, Publisher, Movie
 from user_side.models import Client
 from django.db import transaction
 import string, random
@@ -184,12 +184,87 @@ class AddBookForm(forms.Form):
 
         data_to_summary = {
           'item_info': {
-                'type': 'book', 'id': book.id, 'title': book.title, 'author': book.author, 'full_title': book.full_title, 'publisher': book.publisher, 'pub_year': book.pub_year, 'isbn': book.isbn, 'description': book.description, 'condition': book.condition.name, 'availability': book.availability, 'cover': book.cover
+                'type': 'book', 'id': book.id, 'title': book.title, 'author': book.author if book.author else "author unknown", 'full_title': book.full_title, 'publisher': publisher if publisher else "publisher unknow", 'pub_year': book.pub_year if book.pub_year else "publication year unknow", 'isbn': book.isbn, 'description': book.description, 'condition': book.condition.name, 'availability': book.availability, 'cover': book.cover
           },
           'operations':{
               'new_item': new_item,
               'new_author': new_author,
               'new_publisher': new_publisher
+          }
+        }
+        return data_to_summary
+
+class AddMovieForm(forms.Form): 
+    director = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter diector\'s name', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter author\'s name";', 'name': 'author', 'id': 'author', 'list': 'authors_list', 'autocomplete': 'off'})
+    )
+    title = forms.CharField(required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter movie\'s/film\'s title', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter movie\'s/film\'s title";', 'name': 'title', 'id': 'title', 'autocomplete': 'off'})
+    )
+    full_title = forms.CharField(required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter movie\'s/film\'s full title', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter movie\'s/film\'s full title";', 'name': 'full_title', 'id': 'full_title', 'autocomplete': 'off'})
+    )
+    pub_year = forms.IntegerField(required=False, widget=forms.NumberInput(
+        attrs={'placeholder': 'Enter year of release', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter year of release";', 'name': 'pub_year', 'id': 'pub_year', 'autocomplete': 'off', 'min': '1'})
+    )
+    description = forms.CharField(required=False, widget=forms.Textarea(
+        attrs={'placeholder': 'Enter movie\'s/film\'s description', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter movie\'s/film\'s description";', 'name': 'description', 'id': 'description', 'autocomplete': 'off'})
+    )
+    condition = forms.IntegerField(required=True, widget=forms.Select(
+        attrs={'name': 'condition', 'id': 'condition', 'autocomplete': 'off'})
+    )
+    availability = forms.IntegerField(required=True, widget=forms.Select(
+        attrs={'name': 'availability', 'id': 'availability', 'autocomplete': 'off'})
+    )
+    cover = forms.ImageField(required=False, widget=ClearableFileInput(
+        attrs={'id': 'cover', 'name': 'cover', 'autocomplete': 'off'})
+    )
+    
+    @transaction.atomic
+    def save(self):
+        new_item, new_director = False, False
+
+        director = None
+        try:
+            director = Director.objects.get(name=self.cleaned_data['director'])
+        except:
+            if self.cleaned_data['director'] != "":
+                new_director = True
+                director = Director.objects.create(name=self.cleaned_data['director'])
+            else:
+                director = None
+
+        title = self.cleaned_data['title']
+        full_title = self.cleaned_data['full_title']
+        pub_year = self.cleaned_data['pub_year']
+
+
+        description = self.cleaned_data['description']
+        condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        availability = Availability.objects.get(id=self.cleaned_data['availability'])
+
+        movie = None
+        cover = self.cleaned_data['cover']  
+
+        if(cover == None):
+            movie = Movie.objects.create(director=director, title=title, full_title=full_title, pub_year=pub_year, description=description,
+            condition=condition, availability=availability)   
+        else:
+            movie = Movie.objects.create(director=director, title=title, full_title=full_title, pub_year=pub_year, description=description,
+            condition=condition, availability=availability, cover=cover)   
+
+       
+            
+
+        new_item = True
+
+        data_to_summary = {
+          'item_info': {
+                'type': 'movie', 'id': movie.id, 'title': movie.title, 'author': movie.director, 'full_title': movie.full_title, 'pub_year': movie.pub_year, 'description': movie.description, 'condition': movie.condition.name, 'availability': movie.availability, 'cover': movie.cover
+          },
+          'operations':{
+              'new_item': new_item,
+              'new_director': new_director,
           }
         }
         return data_to_summary

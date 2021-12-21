@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import  AddBookForm, ClientRegistrationForm
+from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
-from worker_side.models import Book, Author, Publisher
+from worker_side.models import Book, Author, Director, Publisher
 
 def home(request):
     return render(request, 'worker_side/home.html')
@@ -28,18 +28,11 @@ def register_user(request):
         
         return render(request, 'worker_side/register_user.html', context)
 
-def add_item(request):
-    form = AddBookForm()
-    context = {
-        'authors': Author.objects.all(),
-        'publishers': Publisher.objects.all(),
-        'form': form
-        }
-
-    return render(request, 'worker_side/add_item.html', context)
-
 def add_book(request):
-    form = AddBookForm()
+    context = {'authors': Author.objects.all(),
+               'publishers': Publisher.objects.all(),
+               'form': AddBookForm()}
+
     if request.method == 'POST':
         print("CO PRZYSZŁO", request.POST)
         form = AddBookForm(request.POST, request.FILES)
@@ -49,6 +42,27 @@ def add_book(request):
         else:
             print("BŁĘDY: ", form.errors, "\nDATA: ", form.cleaned_data)
             messages.error(request, f'Form filled with invalid informations!')
-            return redirect('worker_side-add_item')
+            return redirect('worker_side-add_book')
     else:
-        return redirect('worker_side-add_item')
+        form = AddBookForm(request.POST, request.FILES)
+        return render(request, template_name='worker_side/add_book.html', context=context)
+
+def add_movie(request):
+    context = {'directors': Director.objects.all(),
+               'publishers': Publisher.objects.all(),
+               'form': AddMovieForm()}
+
+    if request.method == 'POST':
+        print("CO PRZYSZŁO", request.POST)
+        form = AddMovieForm(request.POST, request.FILES)
+        if form.is_valid():
+            data_to_summary = form.save()
+            return render(request, template_name='worker_side/item_summary.html', context=data_to_summary)
+        else:
+            print("BŁĘDY: ", form.errors, "\nDATA: ", form.cleaned_data)
+            messages.error(request, f'Form filled with invalid informations!')
+            return redirect('worker_side-add_movie')
+    else:
+        form = AddMovieForm(request.POST, request.FILES)
+        return render(request, template_name='worker_side/add_movie.html', context=context)
+

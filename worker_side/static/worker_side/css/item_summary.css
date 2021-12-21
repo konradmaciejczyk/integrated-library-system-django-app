@@ -358,3 +358,39 @@ button::before {
   -moz-box-shadow: 0px 0px 30px -10px #194973;
   box-shadow: 0px 0px 30px -10px #194973;
 }
+
+@media print {
+  html, body {
+    background: none;
+  }
+  html .path, body .path {
+    display: none;
+  }
+  html header, body header {
+    display: none;
+  }
+  html main, body main {
+    -webkit-box-shadow: 0px 0px 30px -10px white;
+    -moz-box-shadow: 0px 0px 30px -10px white;
+    box-shadow: 0px 0px 30px -10px white;
+  }
+  html main p, body main p {
+    display: none;
+  }
+  html main h1, body main h1 {
+    display: none;
+  }
+  html main div, body main div {
+    display: none;
+  }
+  html main img, body main img {
+    display: none;
+  }
+  html main button, body main button {
+    display: none;
+  }
+  html main .barcode, body main .barcode {
+    height: 50mm;
+    border: 2px solid silver;
+  }
+}
