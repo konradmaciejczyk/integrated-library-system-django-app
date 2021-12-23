@@ -14,11 +14,11 @@
 <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > <a href="{% url 'worker_side-add_book' %}">Add new item to catalog</a> > New {{ item_info.type }} - summary</div>
     <main>
         <h1>New {{ item_info.type }} added</h1>
-        <p>{{ item_info.title }} by 
+        <p><span style="font-weight: 500;">{{ item_info.title }}</span> by 
             {% if item_info.author %}
-                {{ item_info.author }}
+                <span style="font-weight: 500;">{{ item_info.author }}</span>
             {% else %} 
-                unknown author
+                <span style="font-weight: 500;">unknown author</span>
             {% endif %}
         </p>
         <div class="item_info">
@@ -35,6 +35,8 @@
 
                 <div class="single_info"><span class="single_info_label">Title:</span><span class="single_info_content">{{ item_info.title }}</span></div>
 
+                <div class="single_info"><span class="single_info_label">Full title:</span><span class="single_info_content">{{ item_info.full_title }}</span></div>
+
                 {% if item_info.author %}
                     <div class="single_info"><span class="single_info_label">Author:</span><span class="single_info_content">{{ item_info.author }}</span></div>
                 {% endif %}
@@ -42,8 +44,6 @@
                 {% if item_info.cast %}
                     <div class="single_info"><span class="single_info_label">Cast:</span><span class="single_info_content">{{ item_info.cast }}</span></div>
                 {% endif %}
-
-                <div class="single_info"><span class="single_info_label">Full title:</span><span class="single_info_content">{{ item_info.full_title }}</span></div>
 
                 {% if item_info.publisher %}
                     <div class="single_info"><span class="single_info_label">Publisher:</span><span class="single_info_content">{{ item_info.publisher }}</span></div>
@@ -72,16 +72,16 @@
         <div class="operations">
             <p class="op_caption">Operations performed</p>
             {% if operations.new_item %}
-                <span class="single_op">Added new {{ item_info.type }} to {{item_info.type }}s table.</span>
-            {% endif %}
+                <span class="single_op">Inserted new {{ item_info.type }} entry into {{item_info.type }}s table.</span>
+            {% endif %} 
             {% if operations.new_director %}
-                <span class="single_op">Added new director to directors table.</span>
+                <span class="single_op">Inserted new director entry into directors table.</span>
             {% endif %}
-            {% if operations.new_author %}
-                <span class="single_op">Added new author to author table.</span>
-            {% endif %}
+            {% for author in operations.new_authors %}
+                <span class="single_op authors">Inserted new author ({{author}}) entry into authors table.</span>
+            {% endfor %}
             {% if operations.new_publisher %}
-                <span class="single_op">Added new publisher to publishers table.</span>
+                <span class="single_op">Inserted new publisher entry into publishers table.</span>
             {% endif %}           
         </div>
             <svg class="barcode" id="barcode"></svg>

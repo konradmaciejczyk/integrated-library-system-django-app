@@ -3,12 +3,6 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from re import match
 
-class Gender(models.Model):
-    name = models.CharField(max_length=7, verbose_name="Gender/Sex")
-
-    def __str__(self):
-        return self.name
-
 class Citizenship(models.Model):
     name = models.CharField(max_length=33, verbose_name="Citizenship")
 

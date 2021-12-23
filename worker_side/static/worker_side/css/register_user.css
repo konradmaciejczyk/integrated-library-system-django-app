@@ -226,12 +226,12 @@ input[onblur]:focus {
   border-bottom: 2px solid #194973;
 }
 
-.single_input:nth-of-type(6) input, .single_input:nth-of-type(6) select {
+.single_input:nth-of-type(5) input, .single_input:nth-of-type(5) select {
   border-bottom: 2px solid silver;
   transition: border-bottom 0.5s;
   width: 149px;
 }
-.single_input:nth-of-type(6) input:focus, .single_input:nth-of-type(6) select:focus {
+.single_input:nth-of-type(5) input:focus, .single_input:nth-of-type(5) select:focus {
   border-bottom: 2px solid #194973;
 }
 

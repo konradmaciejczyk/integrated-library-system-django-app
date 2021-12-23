@@ -27,7 +27,7 @@ h1{
 
 p{
     display: block;
-    margin-top: 30px;
+    margin: 30px 0px 30px 0px;
     font-size: 25px;
     height: 30px;
     color: $main-blue;
@@ -48,7 +48,7 @@ i{
 
 .single_info{
     align-items: top;
-    padding: 3px 0px 3px 0px;
+    padding: 1px 0px 1px 0px;
 }
 
 .single_info_label{
@@ -68,6 +68,7 @@ i{
 }
 img{
     width: 200px; height: 300px;
+    box-shadow: 1px 1px 5px 2px $main-blue;
 }
 .operations{
     width: 100%;
@@ -79,8 +80,7 @@ img{
 }
 .single_op{
     display: block;
-    margin-bottom: 5px;
-    margin-left: 60px;
+    margin: 5px 0px 5px 60px
 }
 .single_op::before{
     content: '\002B';

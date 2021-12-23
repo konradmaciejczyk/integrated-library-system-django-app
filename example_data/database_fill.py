@@ -1,6 +1,6 @@
 #Konrad Maciejczyk, 2021-2022
 #Note: To use this script run in terminal: python3 manage.py shell < ./example_data/database_fill.py
-from accounts.models import Citizenship, Gender, IDType, Occupation
+from accounts.models import Citizenship, IDType, Occupation
 from worker_side.models import Author, Condition, Availability, Publisher
 
 def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=True, *args, **kwargs):
@@ -11,7 +11,6 @@ def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=Tr
     None"""
 
     citizenships_data = (('Afghan'), ('Albanian'), ('Algerian'), ('American'), ('Andorran'), ('Angolan'), ('Anguillan'), ('Argentine'), ('Armenian'), ('Australian'), ('Austrian'), ('Azerbaijani'), ('Bahamian'), ('Bahraini'), ('Bangladeshi'), ('Barbadian'), ('Belarusian'), ('Belgian'), ('Belizean'), ('Beninese'), ('Bermudian'), ('Bhutanese'), ('Bolivian'), ('Botswanan'), ('Brazilian'), ('British'), ('British Virgin Islander'), ('Bruneian'), ('Bulgarian'), ('Burkinan'), ('Burmese'), ('Burundian'), ('Cambodian'), ('Cameroonian'), ('Canadian'), ('Cape Verdean'), ('Cayman Islander'), ('Central African'), ('Chadian'), ('Chilean'), ('Chinese'), ('Citizen of Antigua and Barbuda'), ('Citizen of Bosnia and Herzegovina'), ('Citizen of Guinea-Bissau'), ('Citizen of Kiribati'), ('Citizen of Seychelles'), ('Citizen of the Dominican Republic'), ('Citizen of Vanuatu '), ('Colombian'), ('Comoran'), ('Congolese (Congo)'), ('Congolese (DRC)'), ('Cook Islander'), ('Costa Rican'), ('Croatian'), ('Cuban'), ('Cymraes'), ('Cymro'), ('Cypriot'), ('Czech'), ('Danish'), ('Djiboutian'), ('Dominican'), ('Dutch'), ('East Timorese'), ('Ecuadorean'), ('Egyptian'), ('Emirati'), ('English'), ('Equatorial Guinean'), ('Eritrean'), ('Estonian'), ('Ethiopian'), ('Faroese'), ('Fijian'), ('Filipino'), ('Finnish'), ('French'), ('Gabonese'), ('Gambian'), ('Georgian'), ('German'), ('Ghanaian'), ('Gibraltarian'), ('Greek'), ('Greenlandic'), ('Grenadian'), ('Guamanian'), ('Guatemalan'), ('Guinean'), ('Guyanese'), ('Haitian'), ('Honduran'), ('Hong Konger'), ('Hungarian'), ('Icelandic'), ('Indian'), ('Indonesian'), ('Iranian'), ('Iraqi'), ('Irish'), ('Israeli'), ('Italian'), ('Ivorian'), ('Jamaican'), ('Japanese'), ('Jordanian'), ('Kazakh'), ('Kenyan'), ('Kittitian'), ('Kosovan'), ('Kuwaiti'), ('Kyrgyz'), ('Lao'), ('Latvian'), ('Lebanese'), ('Liberian'), ('Libyan'), ('Liechtenstein citizen'), ('Lithuanian'), ('Luxembourger'), ('Macanese'), ('Macedonian'), ('Malagasy'), ('Malawian'), ('Malaysian'), ('Maldivian'), ('Malian'), ('Maltese'), ('Marshallese'), ('Martiniquais'), ('Mauritanian'), ('Mauritian'), ('Mexican'), ('Micronesian'), ('Moldovan'), ('Monegasque'), ('Mongolian'), ('Montenegrin'), ('Montserratian'), ('Moroccan'), ('Mosotho'), ('Mozambican'), ('Namibian'), ('Nauruan'), ('Nepalese'), ('New Zealander'), ('Nicaraguan'), ('Nigerian'), ('Nigerien'), ('Niuean'), ('North Korean'), ('Northern Irish'), ('Norwegian'), ('Omani'), ('Pakistani'), ('Palauan'), ('Palestinian'), ('Panamanian'), ('Papua New Guinean'), ('Paraguayan'), ('Peruvian'), ('Pitcairn Islander'), ('Polish'), ('Portuguese'), ('Prydeinig'), ('Puerto Rican'), ('Qatari'), ('Romanian'), ('Russian'), ('Rwandan'), ('Salvadorean'), ('Sammarinese'), ('Samoan'), ('Sao Tomean'), ('Saudi Arabian'), ('Scottish'), ('Senegalese'), ('Serbian'), ('Sierra Leonean'), ('Singaporean'), ('Slovak'), ('Slovenian'), ('Solomon Islander'), ('Somali'), ('South African'), ('South Korean'), ('South Sudanese'), ('Spanish'), ('Sri Lankan'), ('St Helenian'), ('St Lucian'), ('Stateless'), ('Sudanese'), ('Surinamese'), ('Swazi'), ('Swedish'), ('Swiss'), ('Syrian'), ('Taiwanese'), ('Tajik'), ('Tanzanian'), ('Thai'), ('Togolese'), ('Tongan'), ('Trinidadian'), ('Tristanian'), ('Tunisian'), ('Turkish'), ('Turkmen'), ('Turks and Caicos Islander'), ('Tuvaluan'), ('Ugandan'), ('Ukrainian'), ('Uruguayan'), ('Uzbek'), ('Vatican citizen'), ('Venezuelan'), ('Vietnamese'), ('Vincentian'), ('Wallisian'), ('Welsh'), ('Yemeni'), ('Zambian'), ('Zimbabwean'), ("Not selected"))
-    genders_data = (('Male'), ("Female"), ("Diverse"), ("Not selected"))
     id_types_data = (('ID Card'), ('Passport'), ("Not selected"))
     occupations_data = (('Student'), ('Academic teacher'), ('Other'), ("Not selected"))
 
@@ -36,13 +35,6 @@ def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=Tr
             buff.save()
         print(f'{len(occupations_data)} row(s) has been inserted into accounts_occupation table.\n')
 
-    if genders:
-        print(f'Starting to enter data rows into accounts_gender table.')
-        for gender in genders_data:
-            buff = Gender(name=gender)
-            buff.save()
-        print(f'{len(genders_data)} row(s) has been inserted into accounts_gender table.\n')
-
 def fill_worker_side(conditions=True, availabilities=True, authors=True, publishers=True):
     """Procedure for inserting data rows into SQL worker_side tables. 
     Parameters:
@@ -52,7 +44,7 @@ def fill_worker_side(conditions=True, availabilities=True, authors=True, publish
 
     conditions_data = (('Good'), ('Damaged'))
     availabilities_data = (('Available to borrow'), ('Library use only'))
-    authors_data = (("Terry Pratchett"), ("Adam Mickiewicz") , ("Henryk Sienkiewicz") , ("Stefan Żeromski"), ("Fyodor Dostoyevsky"), ("Stanisław Lem"))
+    authors_data = (('author unknown'), ("Terry Pratchett"), ("Adam Mickiewicz") , ("Henryk Sienkiewicz") , ("Stefan Żeromski"), ("Fyodor Dostoyevsky"), ("Stanisław Lem"))
     publishers_data = (("Prószyński i S-ka"), ("Wydawnictwo Literackie"), ("Wydawnictwo MG"))
 
     if conditions:

@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User, Citizenship, Occupation, IDType, Gender
+from accounts.models import User, Citizenship, Occupation, IDType
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)

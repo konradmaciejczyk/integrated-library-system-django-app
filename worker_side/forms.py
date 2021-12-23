@@ -133,22 +133,14 @@ class AddBookForm(forms.Form):
     
     @transaction.atomic
     def save(self):
-        new_item, new_author, new_publisher = False, False, False
-        isbn = self.cleaned_data["isbn"] 
+        new_item, new_publisher = False, False
+        book = Book()
 
-        author = None
-        try:
-            author = Author.objects.get(name=self.cleaned_data['author'])
-        except:
-            if self.cleaned_data['author'] != "":
-                new_author = True
-                author = Author.objects.create(name=self.cleaned_data['author'])
-            else:
-                author = None
+        book.isbn = self.cleaned_data["isbn"]
 
-        title = self.cleaned_data['title']
-        full_title = self.cleaned_data['full_title']
-        pub_year = self.cleaned_data['pub_year']
+        book.title = self.cleaned_data['title']
+        book.full_title = self.cleaned_data['full_title']
+        book.pub_year = self.cleaned_data['pub_year']
 
         publisher = None
         try:
@@ -160,33 +152,45 @@ class AddBookForm(forms.Form):
             else:
                 publisher = None
 
+        book.publisher = publisher
+        book.description = self.cleaned_data['description']
+        book.condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        book.availability = Availability.objects.get(id=self.cleaned_data['availability'])
 
-        description = self.cleaned_data['description']
-        condition = Condition.objects.get(id=self.cleaned_data['condition'])
-        availability = Availability.objects.get(id=self.cleaned_data['availability'])
+        cover = self.cleaned_data['cover'] 
+        if(cover != None):
+            book.cover = cover
+        
+        book.save()
 
-        book = None
-        cover = self.cleaned_data['cover']  
+        authors = self.cleaned_data['author'].split(', ') 
+        authors_objects = []
+        new_authors = []
 
-        if(cover == None):
-            book = Book.objects.create(isbn=isbn, author=author, title=title, full_title=full_title, pub_year=pub_year, publisher=publisher, description=description,
-            condition=condition, availability=availability)   
-        else:
-            book = Book.objects.create(isbn=isbn, author=author, title=title, full_title=full_title, pub_year=pub_year, publisher=publisher, description=description,
-            condition=condition, availability=availability, cover=cover)   
-
-       
-            
+        for author in authors:
+            try:
+                author = Author.objects.filter(name=author)[0]
+                book.author.add(author)
+            except:
+                if author != " ":
+                    new_authors.append(author)
+                    author = Author.objects.create(name=author)
+                    book.author.add(author)
+                else:
+                    author = None
+                    
+        print("Autorzy (objekty): ", authors_objects)
+        print("Nowi autorzy: ", new_authors)    
 
         new_item = True
 
         data_to_summary = {
           'item_info': {
-                'type': 'book', 'id': book.id, 'title': book.title, 'author': book.author if book.author else "author unknown", 'full_title': book.full_title, 'publisher': publisher if publisher else "publisher unknow", 'pub_year': book.pub_year if book.pub_year else "publication year unknow", 'isbn': book.isbn, 'description': book.description, 'condition': book.condition.name, 'availability': book.availability, 'cover': book.cover
+                'type': 'book', 'id': book.id, 'title': book.title, 'author': ", ".join([author.name for author in book.author.all()]), 'full_title': book.full_title, 'publisher': publisher if publisher else "publisher unknow", 'pub_year': book.pub_year if book.pub_year else "publication year unknow", 'isbn': book.isbn, 'description': book.description, 'condition': book.condition.name, 'availability': book.availability, 'cover': book.cover
           },
           'operations':{
               'new_item': new_item,
-              'new_author': new_author,
+              'new_authors': new_authors,
               'new_publisher': new_publisher
           }
         }
