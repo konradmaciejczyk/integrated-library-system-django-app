@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm
+from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
-from worker_side.models import Book, Author, Director, Publisher
+from worker_side.models import Author, Director, Publisher
 
 def home(request):
     return render(request, 'worker_side/home.html')
@@ -65,4 +65,21 @@ def add_movie(request):
     else:
         form = AddMovieForm(request.POST, request.FILES)
         return render(request, template_name='worker_side/add_movie.html', context=context)
+
+def add_sound_recording(request):
+    context = {'form': AddSoundRecordingForm()}
+
+    if request.method == 'POST':
+        print("CO PRZYSZŁO", request.POST)
+        form = AddSoundRecordingForm(request.POST, request.FILES)
+        if form.is_valid():
+            data_to_summary = form.save()
+            return render(request, template_name='worker_side/item_summary.html', context=data_to_summary)
+        else:
+            print("BŁĘDY: ", form.errors, "\nDATA: ", form.cleaned_data)
+            messages.error(request, f'Form filled with invalid informations!')
+            return redirect('worker_side-add_sound_recording')
+    else:
+        form = AddSoundRecordingForm(request.POST, request.FILES)
+        return render(request, template_name='worker_side/add_sound_recording.html', context=context)
 

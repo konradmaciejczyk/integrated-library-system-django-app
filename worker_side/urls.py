@@ -6,4 +6,5 @@ urlpatterns = [
     path('register-user/', views.register_user, name="worker_side-register_user"),
     path('add-book/', views.add_book, name="worker_side-add_book"),
     path('add-movie/', views.add_movie, name="worker_side-add_movie"),
+    path('add-sound-recording/', views.add_sound_recording, name="worker_side-add_sound_recording"),
 ]

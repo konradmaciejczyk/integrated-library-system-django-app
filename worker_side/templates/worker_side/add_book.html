@@ -13,9 +13,8 @@
         <nav>
             <a href="{% url 'worker_side-add_book' %}"><div class="option active" id="option1">add a book</div></a>
             <a href="{% url 'worker_side-add_movie' %}"><div class="option" id="option2">add a movie</div></a>
-            <div class="option" id="option3">add a sound recording</div>
-            <div class="option" id="option4">add an image</div>
-            <div class="option" id="option5">add an document</div>
+            <a href="{% url 'worker_side-add_sound_recording' %}"><div class="option" id="option3">add a sound recording</div></a>
+            <div class="option" id="option5">add a document</div>
         </nav>
         <section>
             <form method="POST" action="{% url 'worker_side-add_book' %}" enctype="multipart/form-data" id="form1" class="form active">
@@ -75,7 +74,7 @@
                     </select>                   
                 </div>
                 <div class="input_item">
-                    <span class="input_label">Status</span>
+                    <span class="input_label">Availability</span>
                     <select id="availability" name="availability">
                         <option>---Describe availability--</option>
                         <option value="1">Available to borrow</option>

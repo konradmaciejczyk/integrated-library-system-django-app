@@ -377,3 +377,30 @@ class AddMovie extends AddItem{
         }
     }
 }
+
+class AddSoundRecording extends AddItem{
+    supervise_input(item){
+        switch(item.id){
+            case 'author':{
+                if(!this.excluded_inputs.includes(item))
+                    return item.value !== "";
+            }case 'title': case 'full_title':{
+                return item.value !== "";
+            }case 'pub_year':{
+                if(!this.excluded_inputs.includes(item))
+                    return this.check_if_numeric(item, false); 
+            }case 'description':{
+                return item.value !== "";
+            }case 'sys_req':{
+                return item.value !== "";
+            }case 'condition':{
+                return item.value === "1" || item.value === '2';
+            }case 'availability':{
+                return item.value === "1" || item.value === '2';
+            }case 'cover':{
+                if(!this.excluded_inputs.includes(item))
+                    return item.value !== "";
+            }
+        }
+    }
+}

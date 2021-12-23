@@ -11,7 +11,7 @@
     </script>
 {% endblock scripts %}
 {% block content %}
-<div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > <a href="{% url 'worker_side-add_movie' %}">Add new {{ item_info.type }} to catalog</a> > New {{ item_info.type }} - summary</div>
+<div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > <a href="{% url 'worker_side-add_book' %}">Add new item to catalog</a> > New {{ item_info.type }} - summary</div>
     <main>
         <h1>New {{ item_info.type }} added</h1>
         <p>{{ item_info.title }} by 
@@ -24,44 +24,48 @@
         <div class="item_info">
             <div class="informations">
                 {% if item_info.type == 'book' %}
-                    <span class="single_info_label">Type:</span><span class="single_info_content"><i class="fas fa-book-open"></i>Book</span></br>
+                    <div class="single_info"><span class="single_info_label">Type:</span><span class="single_info_content"><i class="fas fa-book-open"></i>Book</span></div>
                 {% elif item_info.type == 'movie' %}
-                    <span class="single_info_label">Type:</span><span class="single_info_content"><i class="fas fa-film"></i>Movie</span></br>
+                    <div class="single_info"><span class="single_info_label">Type:</span><span class="single_info_content"><i class="fas fa-film"></i>Movie</span></div>
+                {% elif item_info.type == 'sound recording' %}
+                    <div class="single_info"><span class="single_info_label">Type:</span><span class="single_info_content"><i class="fas fa-compact-disc"></i>Sound Recording</span></div>
                 {% endif %}
 
-                <span class="single_info_label">ID:</span><span class="single_info_content" id="id_number">{{ item_info.id }}</span></br>
+                <div class="single_info"><span class="single_info_label">ID:</span><span class="single_info_content" id="id_number">{{ item_info.id }}</span></div>
 
-                <span class="single_info_label">Title:</span><span class="single_info_content">{{ item_info.title }}</span></br>
+                <div class="single_info"><span class="single_info_label">Title:</span><span class="single_info_content">{{ item_info.title }}</span></div>
 
-                {% if item_info.author is not none %}
-                    <span class="single_info_label">Author:</span><span class="single_info_content">{{ item_info.author }}</span></br>
-                {% else %}
-                    <span class="single_info_label">Author:</span><span class="single_info_content">author unknow</span></br>
+                {% if item_info.author %}
+                    <div class="single_info"><span class="single_info_label">Author:</span><span class="single_info_content">{{ item_info.author }}</span></div>
                 {% endif %}
 
-                <span class="single_info_label">Full title:</span><span class="single_info_content">{{ item_info.full_title }}</span></br>
+                {% if item_info.cast %}
+                    <div class="single_info"><span class="single_info_label">Cast:</span><span class="single_info_content">{{ item_info.cast }}</span></div>
+                {% endif %}
+
+                <div class="single_info"><span class="single_info_label">Full title:</span><span class="single_info_content">{{ item_info.full_title }}</span></div>
 
                 {% if item_info.publisher %}
-                    <span class="single_info_label">Publisher:</span><span class="single_info_content">{{ item_info.publisher }}</span></br>
+                    <div class="single_info"><span class="single_info_label">Publisher:</span><span class="single_info_content">{{ item_info.publisher }}</span></div>
                 {% endif %}
 
                 {% if item_info.pub_year %}
                     {% if item_info.pub_year is not none %}
-                        <span class="single_info_label">Publication year:</span><span class="single_info_content">{{ item_info.pub_year }}</span></br>
+                        <div class="single_info"><span class="single_info_label">Publication year:</span><span class="single_info_content">{{ item_info.pub_year }}</span></div>
                     {% else %}
-                        <span class="single_info_label">Publication year:</span><span class="single_info_content">publication year unknow</span></br>
+                        <div class="single_info"><span class="single_info_label">Publication year:</span><span class="single_info_content">publication year unknow</span></div>
                     {% endif %}
                 {% endif %}
 
                 {% if item_info.isbn %}
-                        <span class="single_info_label">ISBN:</span><span class="single_info_content">{{ item_info.isbn }}</span></br>  
+                    <div class="single_info"><span class="single_info_label">ISBN:</span><span class="single_info_content">{{ item_info.isbn }}</span></div>  
                 {% endif %}
                        
-                <span class="single_info_label">Description:</span><span class="single_info_content">{{ item_info.description }}</span></br>  
+                <div class="single_info"><span class="single_info_label">Description:</span><span class="single_info_content">{{ item_info.description }}</span></div>  
 
-                <span class="single_info_label">Condition:</span><span class="single_info_content">{{ item_info.condition }}</span></br>
+                <div class="single_info"><span class="single_info_label">Condition:</span><span class="single_info_content">{{ item_info.condition }}</span></div>
                 
-                <span class="single_info_label">Availability:</span><span class="single_info_content">{{ item_info.availability }}</span></br>                
+                <div class="single_info"><span class="single_info_label">Availability:</span><span class="single_info_content">{{ item_info.availability }}</span></div>                
             </div>
             <img src="{{ item_info.cover.url }}">
         </div>

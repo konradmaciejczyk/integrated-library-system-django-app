@@ -42,10 +42,21 @@ i{
     display: flex;
 }
 
+.informations{
+    margin-right: 20px;
+}
+
+.single_info{
+    align-items: top;
+    padding: 3px 0px 3px 0px;
+}
+
 .single_info_label{
     display: inline-block;
     width: 150px; height: $info_height;
     font-weight: 500;
+    vertical-align: top;
+    
 }
 .single_info_label::before{
     content: '\2022';

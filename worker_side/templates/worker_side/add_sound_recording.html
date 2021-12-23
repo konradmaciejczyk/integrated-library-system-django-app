@@ -1,65 +1,66 @@
 {% extends 'worker_side/base.html' %}
 {% load static %}
-{% block title %}Add new movie to Catalog{% endblock title %}
+{% block title %}Add new sound recording to Catalog{% endblock title %}
 {% block styles %}
     <link rel="stylesheet" href="{% static 'worker_side/css/add_item.css' %}" type="text/css">
 {% endblock styles %}
 {% block content %}
-    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Add new movie to catalog</div>
+    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Add new sound recording to catalog</div>
     {% for message in messages %}
         <div class="op_status {{ message.tags }}" id="message"><i class="fas fa-info"></i> {{ message }} </div>
     {% endfor %}
     <main>
         <nav>
             <a href="{% url 'worker_side-add_book' %}"><div class="option" id="option1">add a book</div></a>
-            <a href="{% url 'worker_side-add_movie' %}"><div class="option active" id="option2">add a movie</div></a>
-            <a href="{% url 'worker_side-add_sound_recording' %}"><div class="option" id="option3">add a sound recording</div></a>
+            <a href="{% url 'worker_side-add_movie' %}"><div class="option" id="option2">add a movie</div></a>
+            <a href="{% url 'worker_side-add_sound_recording' %}"><div class="option active" id="option3">add a sound recording</div></a>
             <div class="option" id="option5">add a document</div>
         </nav>
         <section>
-            <form method="POST" action="{% url 'worker_side-add_movie' %}" enctype="multipart/form-data" id="form1" class="form active">
+            <form method="POST" action="{% url 'worker_side-add_sound_recording' %}" enctype="multipart/form-data" id="form1" class="form active">
                 {% csrf_token %}
                 <div class="input_item">
-                    <span class="input_label">Director's name</span>
-                    {{ form.director }}     
-                    <datalist id="authors_list">
-                        {% for director in directors %}
-                          <option datavalue="{{ director }}">{{ director }}</option>
-                        {% endfor %}
-                    </datalist>
-                    <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Director unknown</label>                   
-                </div>                
+                   
                 <div class="input_item">
                     <span class="input_label">Title</span>
                     {{ form.title }}                   
+                </div>
+                <div class="input_item">
+                    <span class="input_label">Cast</span>
+                    {{ form.cast }}
+                    <label><input type="checkbox" id="no_author" name="no_author" autocomplete="off">Cast unknown</label>                   
                 </div>
                 
                 <div class="input_item">
                     <span class="input_label">Full title</span>
                     <input type="text" id="full_title"name="full_title" autocomplete="off" placeholder="Enter full title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter full title'">
                     <label><input type="checkbox" id="copy_title" autocomplete="off">Copy title</label>     
-                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy director</label>                  
+                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy author</label>                  
                 </div>                
                 <div class="input_item">
-                    <span class="input_label">Release year</span>
+                    <span class="input_label">Publication year</span>
                     {{ form.pub_year }}
-                    <label><input type="checkbox" id="no_pub_year" name="no_pub_year" autocomplete="off">Release year unknown</label>                     
-                </div>              
+                    <label><input type="checkbox" id="no_pub_year" name="no_pub_year" autocomplete="off">Publication year unknown</label>                     
+                </div>               
                 <div class="input_item aux">
                     <span class="input_label">Description</span>
                     <div class="description">{{ form.description }}</div>
+                </div>
+                <div class="input_item">
+                    <span class="input_label">System requirements</span>
+                    {{ form.sys_req }}                   
                 </div>
 
                 <div class="input_item">
                     <span class="input_label">Condition</span>
                     <select id="condition" name="condition">
-                        <option>---Describe data carrier condition---</option>
+                        <option>---Describe book condition---</option>
                         <option value="1">Good</option>
                         <option value="2">Damaged</option>
                     </select>                   
                 </div>
                 <div class="input_item">
-                    <span class="input_label">Availability</span>
+                    <span class="input_label">Status</span>
                     <select id="availability" name="availability">
                         <option>---Describe availability--</option>
                         <option value="1">Available to borrow</option>
@@ -76,8 +77,8 @@
             </form>
         </section> 
     </main>
-    <script type="text/javascript" src="{% static 'worker_side/forms.js' %}"></script>
+    <script src="{% static 'worker_side/forms.js' %}"></script>
     <script type="text/javascript">
-        let movie_form_controller = new AddMovie([0, 3, 7], true, true,'author', 'title', 'full_title', 'pub_year', 'description', 'condition', 'availability', 'cover', 'submit');
-    </script>
+        let book_form_controller = new AddSoundRecording([1, 3, 8], true, true,   'title', 'author', 'full_title', 'pub_year','description', 'sys_req', 'condition', 'availability', 'cover', 'submit');
+    </script>    
 {% endblock content %}

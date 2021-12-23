@@ -32,14 +32,6 @@
                     <span class="status_note" id="last_name_status">*information needed</span>
             </div>
 
-            <div class="single_input">
-                <span class="input_label">gender</span>
-                    <label><input class="input_radio" type="radio" name="gender" value="1">male</label>
-                    <label><input class="input_radio" type="radio" name="gender" value="2">female</label>
-                    <label><input class="input_radio" type="radio" name="gender" value="3">diverse</label>
-                    <span class="status_note" id="gender_status">*information needed</span>
-            </div>
-
             
             <div class="single_input">
                 <span class="input_label">date of birth</span>
@@ -172,20 +164,6 @@
         is_id_number_valid = true;
         is_id_valid = validate_id();
         validate_form();
-    })
-
-
-    //========================RADIO VALIDATION============================//
-    var is_gender_checked = false;
-    const gender = document.getElementsByName('gender'); gender_status = document.getElementById('gender_status');
-
-    gender.forEach(item => {
-        item.addEventListener('click', event =>
-        {
-            is_gender_checked = true;
-            correct('gender')
-            validate_form();
-        })
     })
 
     //========================DATE OF BIRTH VALIDATION============================//
@@ -335,7 +313,7 @@
     const submit_button = document.getElementById('submit_button');
 
     function validate_form(){
-        if(is_first_name_valid && is_last_name_valid && is_gender_checked && is_date_entered &&
+        if(is_first_name_valid && is_last_name_valid && is_date_entered &&
             is_citizenship_selected && is_id_valid && is_email_valid  && is_phone_num_valid && is_corr_valid && is_occupation_selected){
             activate_submit_button();
         }else{
