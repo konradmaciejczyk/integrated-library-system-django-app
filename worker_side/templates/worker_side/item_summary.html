@@ -16,7 +16,7 @@
         <h1>New {{ item_info.type }} added</h1>
         <p><span style="font-weight: 500;">{{ item_info.title }}</span> by 
             {% if item_info.author %}
-                <span style="font-weight: 500;">{{ item_info.author }}</span>
+                <span style="font-weight: 500;">{{ item_info.author }}{{ item_info.director }}</span>
             {% else %} 
                 <span style="font-weight: 500;">unknown author</span>
             {% endif %}
@@ -38,23 +38,31 @@
                 <div class="single_info"><span class="single_info_label">Full title:</span><span class="single_info_content">{{ item_info.full_title }}</span></div>
 
                 {% if item_info.author %}
-                    <div class="single_info"><span class="single_info_label">Author:</span><span class="single_info_content">{{ item_info.author }}</span></div>
+                    <div class="single_info"><span class="single_info_label">Author(s):</span><span class="single_info_content">{{ item_info.author }}</span></div>
+                {% endif %}
+
+                {% if item_info.director %}
+                    <div class="single_info"><span class="single_info_label">Director(s):</span><span class="single_info_content">{{ item_info.director }}</span></div>
+                {% endif %}
+
+                {% if item_info.screenwriter %}
+                    <div class="single_info"><span class="single_info_label">Screenwriter(s):</span><span class="single_info_content">{{ item_info.screenwriter }}</span></div>
                 {% endif %}
 
                 {% if item_info.cast %}
                     <div class="single_info"><span class="single_info_label">Cast:</span><span class="single_info_content">{{ item_info.cast }}</span></div>
                 {% endif %}
-
+                
                 {% if item_info.publisher %}
                     <div class="single_info"><span class="single_info_label">Publisher:</span><span class="single_info_content">{{ item_info.publisher }}</span></div>
                 {% endif %}
 
-                {% if item_info.pub_year %}
-                    {% if item_info.pub_year is not none %}
-                        <div class="single_info"><span class="single_info_label">Publication year:</span><span class="single_info_content">{{ item_info.pub_year }}</span></div>
-                    {% else %}
-                        <div class="single_info"><span class="single_info_label">Publication year:</span><span class="single_info_content">publication year unknow</span></div>
-                    {% endif %}
+                {% if item_info.pub_year is not none %}
+                    <div class="single_info"><span class="single_info_label">Publication year:</span><span class="single_info_content">{{ item_info.pub_year }}</span></div>
+                {% endif %}
+
+                {% if item_info.release_year is not none %}
+                    <div class="single_info"><span class="single_info_label">Release year:</span><span class="single_info_content">{{ item_info.release_year }}</span></div>
                 {% endif %}
 
                 {% if item_info.isbn %}
@@ -74,14 +82,21 @@
             {% if operations.new_item %}
                 <span class="single_op">Inserted new {{ item_info.type }} entry into {{item_info.type }}s table.</span>
             {% endif %} 
-            {% if operations.new_director %}
-                <span class="single_op">Inserted new director entry into directors table.</span>
-            {% endif %}
-            {% for author in operations.new_authors %}
-                <span class="single_op authors">Inserted new author ({{author}}) entry into authors table.</span>
+
+            {% for director in operations.new_directors %}
+                <span class="single_op">Inserted new director ({{ director }}) entry into directors table.</span>
             {% endfor %}
+
+            {% for author in operations.new_authors %}
+                <span class="single_op">Inserted new author ({{ author }}) entry into authors table.</span>
+            {% endfor %}
+
+            {% for screenwriter in operations.new_screenwriters %}
+                <span class="single_op">Inserted new screenwriter ({{ screenwriter }}) entry into screenwriters table.</span>
+            {% endfor %}
+
             {% if operations.new_publisher %}
-                <span class="single_op">Inserted new publisher entry into publishers table.</span>
+                <span class="single_op">Inserted new publisher ({{ operations.new_publisher }}) entry into publishers table.</span>
             {% endif %}           
         </div>
             <svg class="barcode" id="barcode"></svg>

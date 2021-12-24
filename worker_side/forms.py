@@ -3,7 +3,7 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import ClearableFileInput
 from accounts.models import Citizenship, IDType, Occupation, User
-from worker_side.models import Author, Availability, Book, Condition, Director, Publisher, Movie, SoundRecordings
+from worker_side.models import Author, Availability, Book, Condition, Director, Publisher, Movie, Screenwriter, SoundRecording
 from user_side.models import Client
 from django.db import transaction
 import string, random
@@ -100,7 +100,7 @@ class ClientRegistrationForm(ModelForm):
 
 class AddBookForm(forms.Form):  
     isbn = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter ISBN', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter ISBN";', 'name': 'isbn', 'id': 'isbn', 'autocomplete': 'off'})
+        attrs={'placeholder': 'Enter ISBN', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter ISBN";', 'name': 'isbn', 'id': 'isbn', 'autocomplete': 'off', 'autofocus': 'on'})
     )  
     author = forms.CharField(required=False, widget=forms.TextInput(
         attrs={'placeholder': 'Enter author\'s name', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter author\'s name";', 'name': 'author', 'id': 'author', 'list': 'authors_list', 'autocomplete': 'off'})
@@ -147,7 +147,7 @@ class AddBookForm(forms.Form):
             publisher = Publisher.objects.get(name=self.cleaned_data['publisher']) 
         except:
             if self.cleaned_data['publisher'] != "":
-                new_publisher = True
+                new_publisher = self.cleaned_data['publisher']
                 publisher = Publisher.objects.create(name=self.cleaned_data['publisher'])
             else:
                 publisher = None
@@ -164,7 +164,6 @@ class AddBookForm(forms.Form):
         book.save()
 
         authors = self.cleaned_data['author'].split(', ') 
-        authors_objects = []
         new_authors = []
 
         for author in authors:
@@ -172,21 +171,18 @@ class AddBookForm(forms.Form):
                 author = Author.objects.filter(name=author)[0]
                 book.author.add(author)
             except:
-                if author != " ":
+                if author != "":
                     new_authors.append(author)
                     author = Author.objects.create(name=author)
                     book.author.add(author)
                 else:
-                    author = None
-                    
-        print("Autorzy (objekty): ", authors_objects)
-        print("Nowi autorzy: ", new_authors)    
+                    author = None  
 
         new_item = True
-
+        authors = ", ".join([author.name for author in book.author.all()])
         data_to_summary = {
           'item_info': {
-                'type': 'book', 'id': book.id, 'title': book.title, 'author': ", ".join([author.name for author in book.author.all()]), 'full_title': book.full_title, 'publisher': publisher if publisher else "publisher unknow", 'pub_year': book.pub_year if book.pub_year else "publication year unknow", 'isbn': book.isbn, 'description': book.description, 'condition': book.condition.name, 'availability': book.availability, 'cover': book.cover
+                'type': 'book', 'id': book.id, 'title': book.title, 'author': authors if authors is not "" else "author(s) unknown", 'full_title': book.full_title, 'publisher': book.publisher if book.publisher else "publisher unknown", 'pub_year': book.pub_year if book.pub_year else "publication year unknow", 'isbn': book.isbn, 'description': book.description, 'condition': book.condition.name, 'availability': book.availability, 'cover': book.cover
           },
           'operations':{
               'new_item': new_item,
@@ -198,7 +194,10 @@ class AddBookForm(forms.Form):
 
 class AddMovieForm(forms.Form): 
     director = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter diector\'s name', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter author\'s name";', 'name': 'author', 'id': 'author', 'list': 'authors_list', 'autocomplete': 'off'})
+        attrs={'placeholder': 'Enter director\'s name', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter author\'s name";', 'name': 'author', 'id': 'author', 'list': 'authors_list', 'autocomplete': 'off', 'autofocus': 'on'})
+    )
+    screenwriter = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter screenwriter\'s name', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter screenwriter\'s name";', 'name': 'screenwriter', 'id': 'screenwriter', 'list': 'screenwriters_list', 'autocomplete': 'off'})
     )
     title = forms.CharField(required=True, widget=forms.TextInput(
         attrs={'placeholder': 'Enter movie\'s/film\'s title', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter movie\'s/film\'s title";', 'name': 'title', 'id': 'title', 'autocomplete': 'off'})
@@ -224,63 +223,82 @@ class AddMovieForm(forms.Form):
     
     @transaction.atomic
     def save(self):
-        new_item, new_director = False, False
+        new_directors, new_screenwriters = [], []
+        print("CO PRZYSZŁO: ", self.cleaned_data)
 
-        director = None
-        try:
-            director = Director.objects.get(name=self.cleaned_data['director'])
-        except:
-            if self.cleaned_data['director'] != "":
-                new_director = True
-                director = Director.objects.create(name=self.cleaned_data['director'])
-            else:
-                director = None
+        movie = Movie()
+        movie.title = self.cleaned_data['title']
+        movie.full_title = self.cleaned_data['full_title']
+        movie.pub_year = self.cleaned_data['pub_year']
+        movie.description = self.cleaned_data['description']
+        movie.condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        movie.availability = Availability.objects.get(id=self.cleaned_data['availability'])
 
-        title = self.cleaned_data['title']
-        full_title = self.cleaned_data['full_title']
-        pub_year = self.cleaned_data['pub_year']
+        cover = self.cleaned_data['cover'] 
+        if(cover != None):
+            movie.cover = cover
 
+        movie.save()
 
-        description = self.cleaned_data['description']
-        condition = Condition.objects.get(id=self.cleaned_data['condition'])
-        availability = Availability.objects.get(id=self.cleaned_data['availability'])
+        directors = self.cleaned_data['director'].split(", ")
+        for director in directors:
+            try:
+                director = Director.objects.filter(name=director)[0]
+                movie.director.add(director)
+            except:
+                if director != "":
+                    new_directors.append(director)
+                    director = Director.objects.create(name=director)
+                    movie.director.add(director)
+                else:
+                    director = None
 
-        movie = None
-        cover = self.cleaned_data['cover']  
+        screenwriters = self.cleaned_data['screenwriter'].split(", ")
+        for screenwriter in screenwriters:
+            try:
+                screenwriter = Screenwriter.objects.filter(name=screenwriter)[0]
+                movie.screenwriter.add(screenwriter)
+            except:
+                if screenwriter != "":
+                    new_screenwriters.append(screenwriter)
+                    screenwriter = Screenwriter.objects.create(name=screenwriter)
+                    movie.screenwriter.add(screenwriter)
+                else:
+                    screenwriter = None
 
-        if(cover == None):
-            movie = Movie.objects.create(director=director, title=title, full_title=full_title, pub_year=pub_year, description=description,
-            condition=condition, availability=availability)   
-        else:
-            movie = Movie.objects.create(director=director, title=title, full_title=full_title, pub_year=pub_year, description=description,
-            condition=condition, availability=availability, cover=cover)   
-
-       
-            
-
+        print("REZYSEROWIE: ", directors)
+        print("SCENARZYŚCI: ", screenwriters)
         new_item = True
 
+        director = ", ".join([director.name for director in movie.director.all()])
+        screenwriter = ", ".join([screenwriter.name for screenwriter in movie.screenwriter.all()])
         data_to_summary = {
           'item_info': {
-                'type': 'movie', 'id': movie.id, 'title': movie.title, 'author': movie.director, 'full_title': movie.full_title, 'pub_year': movie.pub_year, 'description': movie.description, 'condition': movie.condition.name, 'availability': movie.availability, 'cover': movie.cover
+                'type': 'movie', 'id': movie.id, 'title': movie.title, 'director': director if director else "director(s) unknown", 'screenwriter': screenwriter if screenwriter else "screenwriter(s) unknown", 'full_title': movie.full_title, 'release_year': movie.pub_year if movie.pub_year else "release year unknown", 'description': movie.description, 'condition': movie.condition.name, 'availability': movie.availability, 'cover': movie.cover
           },
           'operations':{
               'new_item': new_item,
-              'new_director': new_director,
+              'new_directors': new_directors,
+              'new_screenwriters': new_screenwriters,
           }
         }
         return data_to_summary
 
 class AddSoundRecordingForm(forms.Form): 
     title = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter title', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter title";', 'name': 'title', 'id': 'title', 'autocomplete': 'off'})
+        attrs={'placeholder': 'Enter title', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter title";', 'name': 'title', 'id': 'title', 'autocomplete': 'off', 'autofocus': 'on'})
     )
+
+    author = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter author\'s name', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter author\'s name";', 'name': 'author', 'id': 'author', 'list': 'authors_list', 'autocomplete': 'off'})
+    )
+
     full_title = forms.CharField(required=True, widget=forms.TextInput(
         attrs={'placeholder': 'Enter full title', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter full title";', 'name': 'full_title', 'id': 'full_title', 'autocomplete': 'off'})
     )
 
     cast = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter information about cast', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter information about cast";', 'name': 'author', 'id': 'author', 'autocomplete': 'off'})
+        attrs={'placeholder': 'Enter information about cast', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter information about cast";', 'name': 'cast', 'id': 'cast', 'autocomplete': 'off'})
     )
 
     pub_year = forms.IntegerField(required=False, widget=forms.NumberInput(
@@ -289,10 +307,6 @@ class AddSoundRecordingForm(forms.Form):
 
     description = forms.CharField(required=False, widget=forms.Textarea(
         attrs={'placeholder': 'Enter description', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter description";', 'name': 'description', 'id': 'description', 'autocomplete': 'off'})
-    )
-
-    sys_req = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter system requirments', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter system requirments";', 'name': 'sys_req', 'id': 'sys_req', 'autocomplete': 'off'})
     )
 
     condition = forms.IntegerField(required=True, widget=forms.Select(
@@ -307,34 +321,54 @@ class AddSoundRecordingForm(forms.Form):
     
     @transaction.atomic
     def save(self):
-        new_item = False
+        new_item, new_authors, new_publisher = False, [], False
 
-        title = self.cleaned_data['title']
-        full_title = self.cleaned_data['full_title']
-        pub_year = self.cleaned_data['pub_year']
-        cast = self.cleaned_data['cast']
-        sys_req = self.cleaned_data['sys_req']
-        description = self.cleaned_data['description']
-        condition = Condition.objects.get(id=self.cleaned_data['condition'])
-        availability = Availability.objects.get(id=self.cleaned_data['availability'])
+        sound_recording = SoundRecording()
 
-        sound_record = None
-        cover = self.cleaned_data['cover']  
+        sound_recording.title = self.cleaned_data['title']
+        sound_recording.full_title = self.cleaned_data['full_title']
+        sound_recording.pub_year = self.cleaned_data['pub_year']
+        sound_recording.cast = self.cleaned_data['cast']
+        sound_recording.description = self.cleaned_data['description']
+        sound_recording.condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        sound_recording.availability = Availability.objects.get(id=self.cleaned_data['availability'])
 
-        if(cover == None):
-            sound_record = SoundRecordings.objects.create(title=title, full_title=full_title, cast=cast, pub_year=pub_year, description=description, sys_req=sys_req,
-            condition=condition, availability=availability)   
-        else:
-            sound_record = SoundRecordings.objects.create(title=title, full_title=full_title, cast=cast, pub_year=pub_year, description=description,
-            condition=condition, availability=availability, cover=cover)   
+        cover = self.cleaned_data['cover']
+
+        if(cover != None):
+            sound_recording.cover = self.cleaned_data['cover'] 
+
+        sound_recording.save()
+
+
+
+        authors = self.cleaned_data['author'].split(', ') 
+        new_authors = []
+
+        for author in authors:
+            try:
+                author = Author.objects.filter(name=author)[0]
+                sound_recording.author.add(author)
+            except:
+                if author != " ":
+                    new_authors.append(author)
+                    author = Author.objects.create(name=author)
+                    sound_recording.author.add(author)
+                else:
+                    author = None
+          
+
+        
+           
         new_item = True
 
         data_to_summary = {
           'item_info': {
-                'type': 'sound recording', 'id': sound_record.id, 'title': sound_record.title, 'cast': sound_record.cast if sound_record.cast else "cast unknown", 'full_title': sound_record.full_title, 'pub_year': sound_record.pub_year, 'description': sound_record.description, 'sys_req':sound_record.sys_req, 'condition': sound_record.condition.name, 'availability': sound_record.availability, 'cover': sound_record.cover
+                'type': 'sound recording', 'id': sound_recording.id, 'title': sound_recording.title, 'cast': sound_recording.cast if sound_recording.cast else "cast unknown", 'full_title': sound_recording.full_title, 'pub_year': sound_recording.pub_year, 'description': sound_recording.description, 'condition': sound_recording.condition.name, 'availability': sound_recording.availability, 'cover': sound_recording.cover
           },
           'operations':{
               'new_item': new_item,
+              'new_authors': new_authors
           }
         }
         return data_to_summary

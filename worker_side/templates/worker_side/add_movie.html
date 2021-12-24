@@ -3,6 +3,16 @@
 {% block title %}Add new movie to Catalog{% endblock title %}
 {% block styles %}
     <link rel="stylesheet" href="{% static 'worker_side/css/add_item.css' %}" type="text/css">
+    <style type="text/css">
+        .input_item:nth-of-type(2){
+            position: relative;
+        }
+
+        .input_item:nth-of-type(2) label{
+            position: absolute;
+            top: 20px; left: 0px;
+        }
+    </style>
 {% endblock styles %}
 {% block content %}
     <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Add new movie to catalog</div>
@@ -14,21 +24,30 @@
             <a href="{% url 'worker_side-add_book' %}"><div class="option" id="option1">add a book</div></a>
             <a href="{% url 'worker_side-add_movie' %}"><div class="option active" id="option2">add a movie</div></a>
             <a href="{% url 'worker_side-add_sound_recording' %}"><div class="option" id="option3">add a sound recording</div></a>
-            <div class="option" id="option5">add a document</div>
         </nav>
         <section>
             <form method="POST" action="{% url 'worker_side-add_movie' %}" enctype="multipart/form-data" id="form1" class="form active">
                 {% csrf_token %}
                 <div class="input_item">
-                    <span class="input_label">Director's name</span>
+                    <span class="input_label">Director(s) name</span>
                     {{ form.director }}     
                     <datalist id="authors_list">
                         {% for director in directors %}
                           <option datavalue="{{ director }}">{{ director }}</option>
                         {% endfor %}
                     </datalist>
-                    <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Director unknown</label>                   
-                </div>                
+                    <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Director(s) unknown</label>                   
+                </div>
+                <div class="input_item">
+                    <span class="input_label">Screenwriter(s) name</span>
+                    {{ form.screenwriter }}     
+                    <datalist id="screenwriters_list">
+                        {% for screenwriter in screenwriters %}
+                          <option datavalue="{{ screenwriter }}">{{ screenwriter }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <label><input type="checkbox" name="no_screenwriter" id="no_screenwriter" autocomplete="off">Screenwriter(s) unknown</label>                   
+                </div>                                
                 <div class="input_item">
                     <span class="input_label">Title</span>
                     {{ form.title }}                   
@@ -38,13 +57,13 @@
                     <span class="input_label">Full title</span>
                     <input type="text" id="full_title"name="full_title" autocomplete="off" placeholder="Enter full title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter full title'">
                     <label><input type="checkbox" id="copy_title" autocomplete="off">Copy title</label>     
-                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy director</label>                  
+                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy director(s)</label>                  
                 </div>                
                 <div class="input_item">
                     <span class="input_label">Release year</span>
                     {{ form.pub_year }}
                     <label><input type="checkbox" id="no_pub_year" name="no_pub_year" autocomplete="off">Release year unknown</label>                     
-                </div>              
+                </div>
                 <div class="input_item aux">
                     <span class="input_label">Description</span>
                     <div class="description">{{ form.description }}</div>
@@ -78,6 +97,6 @@
     </main>
     <script type="text/javascript" src="{% static 'worker_side/forms.js' %}"></script>
     <script type="text/javascript">
-        let movie_form_controller = new AddMovie([0, 3, 7], true, true,'author', 'title', 'full_title', 'pub_year', 'description', 'condition', 'availability', 'cover', 'submit');
+        let movie_form_controller = new AddMovie([0, 1, 4, 8], true, true,'author', 'screenwriter', 'title', 'full_title', 'pub_year', 'description', 'condition', 'availability', 'cover', 'submit');
     </script>
 {% endblock content %}

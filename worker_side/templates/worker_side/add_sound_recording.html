@@ -14,7 +14,6 @@
             <a href="{% url 'worker_side-add_book' %}"><div class="option" id="option1">add a book</div></a>
             <a href="{% url 'worker_side-add_movie' %}"><div class="option" id="option2">add a movie</div></a>
             <a href="{% url 'worker_side-add_sound_recording' %}"><div class="option active" id="option3">add a sound recording</div></a>
-            <div class="option" id="option5">add a document</div>
         </nav>
         <section>
             <form method="POST" action="{% url 'worker_side-add_sound_recording' %}" enctype="multipart/form-data" id="form1" class="form active">
@@ -25,17 +24,28 @@
                     <span class="input_label">Title</span>
                     {{ form.title }}                   
                 </div>
+
+                <div class="input_item">
+                    <span class="input_label">Author's name</span>
+                    {{ form.author }}     
+                    <datalist id="authors_list">
+                        {% for author in authors %}
+                          <option datavalue="{{ author }}">{{ author }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Author(s) unknown</label>                   
+                </div>
                 <div class="input_item">
                     <span class="input_label">Cast</span>
                     {{ form.cast }}
-                    <label><input type="checkbox" id="no_author" name="no_author" autocomplete="off">Cast unknown</label>                   
+                    <label><input type="checkbox" id="no_cast" name="no_cast" autocomplete="off">Cast unknown</label>                   
                 </div>
                 
                 <div class="input_item">
                     <span class="input_label">Full title</span>
                     <input type="text" id="full_title"name="full_title" autocomplete="off" placeholder="Enter full title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter full title'">
                     <label><input type="checkbox" id="copy_title" autocomplete="off">Copy title</label>     
-                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy author</label>                  
+                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy author(s)</label>                  
                 </div>                
                 <div class="input_item">
                     <span class="input_label">Publication year</span>
@@ -45,10 +55,6 @@
                 <div class="input_item aux">
                     <span class="input_label">Description</span>
                     <div class="description">{{ form.description }}</div>
-                </div>
-                <div class="input_item">
-                    <span class="input_label">System requirements</span>
-                    {{ form.sys_req }}                   
                 </div>
 
                 <div class="input_item">
@@ -79,6 +85,6 @@
     </main>
     <script src="{% static 'worker_side/forms.js' %}"></script>
     <script type="text/javascript">
-        let book_form_controller = new AddSoundRecording([1, 3, 8], true, true,   'title', 'author', 'full_title', 'pub_year','description', 'sys_req', 'condition', 'availability', 'cover', 'submit');
+        let book_form_controller = new AddSoundRecording([1, 2, 4, 8], true, true,   'title', 'author', 'cast', 'full_title', 'pub_year','description', 'condition', 'availability', 'cover', 'submit');
     </script>    
 {% endblock content %}

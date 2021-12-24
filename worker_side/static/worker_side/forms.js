@@ -1,7 +1,6 @@
 /* Konrad Maciejczyk, 2021-2022 */
 class AddItem{
     constructor(optional_fields, copy_author_to_full_title, copy_title_to_full_title, ...ids){
-       console.log("!!!"); 
        this.inputs = new Array;
        this.excluded_inputs  = new Array;
        this.inputs_states = new Array;
@@ -68,7 +67,6 @@ class AddItem{
     //Gathering checkboxes, that exclude inputs       
        this.deactivate_checkboxes = optional_fields.map(function(item){
         document.getElementById(`no_${ids[item]}`).addEventListener('input', function(){
-        console.log(item);
             that.deactivate_activate(that.inputs[item]);
             that.activate_deactivate_submit();
             that.approve_input(item);
@@ -108,7 +106,6 @@ class AddItem{
     //An auxiliary method that paints inputs basing on input's value correctness.
     approve_input(input_index){
         if(this.inputs_states[input_index]){
-            console.log("TU KURWA");
             this.inputs[input_index].style.borderBottom = '2px solid green';
         }
         else{
@@ -356,6 +353,8 @@ class AddMovie extends AddItem{
             case 'author':{
                 if(!this.excluded_inputs.includes(item))
                     return item.value !== "";
+            }case 'screenwriter':{
+                return item.value !== "";
             }case 'title': case 'full_title':{
                 return item.value !== "";
             }case 'pub_year':{
@@ -386,12 +385,12 @@ class AddSoundRecording extends AddItem{
                     return item.value !== "";
             }case 'title': case 'full_title':{
                 return item.value !== "";
+            }case 'cast':{
+                return item.value !== "";
             }case 'pub_year':{
                 if(!this.excluded_inputs.includes(item))
                     return this.check_if_numeric(item, false); 
             }case 'description':{
-                return item.value !== "";
-            }case 'sys_req':{
                 return item.value !== "";
             }case 'condition':{
                 return item.value === "1" || item.value === '2';

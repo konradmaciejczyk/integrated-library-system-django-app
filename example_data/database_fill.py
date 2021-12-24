@@ -1,7 +1,7 @@
 #Konrad Maciejczyk, 2021-2022
 #Note: To use this script run in terminal: python3 manage.py shell < ./example_data/database_fill.py
 from accounts.models import Citizenship, IDType, Occupation
-from worker_side.models import Author, Condition, Availability, Publisher
+from worker_side.models import Author, Condition, Availability, Director, Publisher, Screenwriter
 
 def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=True, *args, **kwargs):
     """Procedure for inserting data rows into SQL accounts table. 
@@ -35,7 +35,7 @@ def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=Tr
             buff.save()
         print(f'{len(occupations_data)} row(s) has been inserted into accounts_occupation table.\n')
 
-def fill_worker_side(conditions=True, availabilities=True, authors=True, publishers=True):
+def fill_worker_side(conditions=True, availabilities=True, authors=True, publishers=True, directors=True, screenwriters=True):
     """Procedure for inserting data rows into SQL worker_side tables. 
     Parameters:
     conditions=True, availabilities=True
@@ -45,7 +45,9 @@ def fill_worker_side(conditions=True, availabilities=True, authors=True, publish
     conditions_data = (('Good'), ('Damaged'))
     availabilities_data = (('Available to borrow'), ('Library use only'))
     authors_data = (('author unknown'), ("Terry Pratchett"), ("Adam Mickiewicz") , ("Henryk Sienkiewicz") , ("Stefan Żeromski"), ("Fyodor Dostoyevsky"), ("Stanisław Lem"))
-    publishers_data = (("Prószyński i S-ka"), ("Wydawnictwo Literackie"), ("Wydawnictwo MG"))
+    publishers_data = (('publisher unknow'), ("Prószyński i S-ka"), ("Wydawnictwo Literackie"), ("Wydawnictwo MG"))
+    directors_data = (('director unknown'), ('Stanley Kubrik'), ("Christopher Nolan"), ("Denis Villeneuve"), ("Darren Aronofsky"), ("Guillermo del Toro"))
+    screenwriters_data = (('screenwriter unknown'), ('Jonathan Nolan'), ('Micheal Herr'), ("Stanley Kubrik"), ("Vince Gilligan"), ("Frank Darabont"), ("Peter Gould"))
 
     if conditions:
         print(f'Starting to enter data rows into worker_side_condition table.')
@@ -75,10 +77,23 @@ def fill_worker_side(conditions=True, availabilities=True, authors=True, publish
             buff.save()
         print(f'{len(publishers_data)} row(s) has been inserted into worker_side_publisher table.\n')
 
+    if directors:
+        print(f'Starting to enter data rows into worker_side_director table.')
+        for director in directors_data:
+            buff = Director(name=director)
+            buff.save()
+        print(f'{len(directors_data)} row(s) has been inserted into worker_side_director table.\n')
+
+    if screenwriters:
+        print(f'Starting to enter data rows into worker_side_screenwriter table.')
+        for screenwriter in screenwriters_data:
+            buff = Screenwriter(name=screenwriter)
+            buff.save()
+        print(f'{len(screenwriters_data)} row(s) has been inserted into worker_side_screenwriter table.\n')
+
 def fill_whole_database():
     fill_accounts()
     fill_worker_side()
-
 
 if __name__ == '__main__':
     fill_accounts()

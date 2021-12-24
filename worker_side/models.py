@@ -12,6 +12,9 @@ class Availability(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "Availabilities"
+
 class Author(models.Model):
     name = models.CharField(max_length=80, blank=False, verbose_name="Author's first and last name")
 
@@ -25,7 +28,13 @@ class Publisher(models.Model):
         return self.name
 
 class Director(models.Model):
-    name = models.CharField(max_length=80, blank=False, verbose_name="Direcotr's name")
+    name = models.CharField(max_length=80, verbose_name="Director's full name")
+
+    def __str__(self):
+        return self.name
+
+class Screenwriter(models.Model):
+    name = models.CharField(max_length=80, verbose_name="Writer's full name")
 
     def __str__(self):
         return self.name
@@ -35,27 +44,27 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13, null=True, verbose_name="ISBN")
     title = models.CharField(max_length=100, verbose_name="Title")
     full_title = models.CharField(max_length=150, verbose_name="Full title")
-    #author = models.ForeignKey(Author, null=True, on_delete=models.SET_NULL, verbose_name="Author")
-    author = models.ManyToManyField(Author, null=True, verbose_name="Author")
+    author = models.ManyToManyField(Author, verbose_name="Author")
     pub_year = models.SmallIntegerField(null=True, verbose_name="Publication year")
     publisher = models.ForeignKey(Publisher, null=True, on_delete=models.SET_NULL, verbose_name="Publisher")
     description = models.CharField(max_length=200, verbose_name="Description")
     condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
-    cover = models.ImageField(default="no_image.png", upload_to="covers")
+    cover = models.ImageField(default="no_image.png", upload_to="books_covers", verbose_name="books_covers")
 
     def __str__(self):
         return self.title
 
-class SoundRecordings(models.Model):
+class SoundRecording(models.Model):
     title = models.CharField(max_length=100, verbose_name="Title")
     full_title = models.CharField(max_length=150, verbose_name="Full title")
+    author = models.ManyToManyField(Author, verbose_name="Author")
     cast = models.CharField(max_length=200, verbose_name="Cast")
     pub_year = models.SmallIntegerField(null=True, verbose_name="Publication year")
     description = models.CharField(max_length=200, verbose_name="Description")
     condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
-    cover = models.ImageField(default="no_image.png", upload_to="covers")
+    cover = models.ImageField(default="no_image.png", upload_to="sound_recordings_covers")
 
     def __str__(self):
         return self.title
@@ -63,12 +72,13 @@ class SoundRecordings(models.Model):
 class Movie(models.Model):
     title = models.CharField(max_length=100, verbose_name="Title")
     full_title = models.CharField(max_length=150, verbose_name="Full title")
-    director = models.ForeignKey(Director, null=True, on_delete=models.SET_NULL, verbose_name="Director")
+    director = models.ManyToManyField(Director, verbose_name="Director")
+    screenwriter = models.ManyToManyField(Screenwriter, verbose_name="Screenwriter")
     pub_year = models.SmallIntegerField(null=True, verbose_name="Publication year")
     description = models.CharField(max_length=200, verbose_name="Description")
-    condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL)
+    condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL, verbose_name="Condition")
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
-    cover = models.ImageField(default="no_image.png", upload_to="covers")
+    cover = models.ImageField(default="no_image.png", upload_to="movies_covers", verbose_name="Cover")
 
     def __str__(self):
         return self.title

@@ -14,7 +14,6 @@
             <a href="{% url 'worker_side-add_book' %}"><div class="option active" id="option1">add a book</div></a>
             <a href="{% url 'worker_side-add_movie' %}"><div class="option" id="option2">add a movie</div></a>
             <a href="{% url 'worker_side-add_sound_recording' %}"><div class="option" id="option3">add a sound recording</div></a>
-            <div class="option" id="option5">add a document</div>
         </nav>
         <section>
             <form method="POST" action="{% url 'worker_side-add_book' %}" enctype="multipart/form-data" id="form1" class="form active">
@@ -32,7 +31,7 @@
                           <option datavalue="{{ author }}">{{ author }}</option>
                         {% endfor %}
                     </datalist>
-                    <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Author unknown</label>                   
+                    <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Author(s) unknown</label>                   
                 </div>                
                 <div class="input_item">
                     <span class="input_label">Title</span>
@@ -43,7 +42,7 @@
                     <span class="input_label">Full title</span>
                     <input type="text" id="full_title"name="full_title" autocomplete="off" placeholder="Enter full title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter full title'">
                     <label><input type="checkbox" id="copy_title" autocomplete="off">Copy title</label>     
-                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy author</label>                  
+                    <label><input type="checkbox" id="copy_author" autocomplete="off">Copy author(s)</label>                  
                 </div>                
                 <div class="input_item">
                     <span class="input_label">Publication year</span>

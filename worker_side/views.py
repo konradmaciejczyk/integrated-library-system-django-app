@@ -3,7 +3,7 @@ from django.contrib import messages
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
-from worker_side.models import Author, Director, Publisher
+from worker_side.models import Author, Director, Publisher, Screenwriter
 
 def home(request):
     return render(request, 'worker_side/home.html')
@@ -49,7 +49,7 @@ def add_book(request):
 
 def add_movie(request):
     context = {'directors': Director.objects.all(),
-               'publishers': Publisher.objects.all(),
+               'screenwriters': Screenwriter.objects.all(),
                'form': AddMovieForm()}
 
     if request.method == 'POST':
@@ -67,7 +67,8 @@ def add_movie(request):
         return render(request, template_name='worker_side/add_movie.html', context=context)
 
 def add_sound_recording(request):
-    context = {'form': AddSoundRecordingForm()}
+    context = {'form': AddSoundRecordingForm(),
+    'authors': Author.objects.all()}
 
     if request.method == 'POST':
         print("CO PRZYSZŁO", request.POST)
