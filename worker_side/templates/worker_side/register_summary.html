@@ -1,0 +1,91 @@
+{% extends 'worker_side/base.html' %}
+{% load static %}
+{% block title %}New {{ item_info.type }} has been added to catalog{% endblock title %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/register_summary.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock styles %}
+{% block content %}
+    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > <a href="{% url 'worker_side-register_user' %}">Register new user</a> > New user - summary</div>
+
+    <div class="to_print">
+        <h1>Library registration confirmation</h1>
+        <p>Personal details:</p>
+        <ul>
+            <li>
+                <span>Name and surname:</span> {{ first_name }} {{ last_name }}
+            </li>
+            <li>
+                <span>Date of birth:</span> {{ date_of_birth|date:"Y-m-d" }}
+            </li>
+            <li>
+                <span>Citizenship:</span> {{ citizenship }}
+            </li>
+            <li>
+                <span>Identity document type and number:</span> {{ id_type }} ({{ id_number }})
+            </li>
+            <li>
+                <span>Email address:</span> {{ email }}
+            </li>
+            <li>
+                <span>Phone number:</span> {{ phone_number }}
+            </li>
+            <li>
+                <span>Correspondance address:</span> {{ corr_address }}
+            </li>
+            <li>
+                <span>Occupation:</span> {{ occupation }}
+            </li>
+        </ul>
+        <h3>User registration date: {{ registration_date }} </h3>
+        <p>Account details:</p>
+        <ul>
+            <li>
+                <span>Max amount of borrows: </span> {{ borrows_max }}
+            </li>
+            <li>
+                <span>Online account access data:</span> <ul>
+                    <li><span>e-mail:</span> {{ email }}</li>
+                    <li><span>password:</span> {{ password }}</li>
+                </ul>
+            </li>
+        </ul>
+
+        <span class="dotted_field">date and employee's signature</span> <span class="dotted_field">date and client's signature</span>
+        <h2>Thank you for joining us!</h2>
+    </div>
+
+    <main>
+        <h1>New user registered</h1>
+        <p>Client data summary:</p>
+        <div class="informations">
+                <div class="single_info"><span class="single_info_label">First name: </span><span class="single_info_content">{{ first_name }}</span></div>
+                <div class="single_info"><span class="single_info_label">Last name: </span><span class="single_info_content">{{ last_name }}</span></div>
+                <div class="single_info"><span class="single_info_label">Date of birth: </span><span class="single_info_content">{{ date_of_birth }}</span></div>
+                <div class="single_info"><span class="single_info_label">Citizenship:</span><span class="single_info_content">{{ citizenship }}</span></div>
+                <div class="single_info"><span class="single_info_label">ID:</span><span class="single_info_content">({{ id_type }}) {{ id_number }}</span></div>
+                <div class="single_info"><span class="single_info_label">e-mail address: </span><span class="single_info_content">{{ email }}</span></div>
+                <div class="single_info"><span class="single_info_label">phone number: </span><span class="single_info_content">{{ phone_number }}</span></div>
+                <div class="single_info"><span class="single_info_label">correspondance address: </span><span class="single_info_content">{{ corr_address }}</span></div>
+                <div class="single_info"><span class="single_info_label">occupation: </span><span class="single_info_content"> {{ occupation }}</span></div>
+        </div>
+        <div class="account_details">
+            <p>Account data:</p>
+            <div class="informations">
+                <div class="single_info"><span class="single_info_label">Max borrows amount: </span><span class="single_info_content">{{ borrows_max }}</span></div>
+                <div class="single_info"><span class="single_info_label">Password: </span><span class="single_info_content">{{ password }}</span></div>
+            </div>  
+        </div>
+        <button id="print">Print confirmation</button>
+        <a href="{% url 'worker_side-home' %}"><div class="done">Done</div></a>
+
+        <script type="text/javascript">
+            let button = document.getElementById('print');
+
+            button.addEventListener('click', () =>{
+                window.print();
+            })
+        </script>
+    </main>
+
+{% endblock content %}

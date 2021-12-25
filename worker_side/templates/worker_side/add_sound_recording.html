@@ -51,7 +51,17 @@
                     <span class="input_label">Publication year</span>
                     {{ form.pub_year }}
                     <label><input type="checkbox" id="no_pub_year" name="no_pub_year" autocomplete="off">Publication year unknown</label>                     
-                </div>               
+                </div>
+                <div class="input_item">
+                    <span class="input_label">Publisher</span>
+                    {{ form.publisher }}
+                    <datalist id="publishers_list">
+                        {% for publisher in publishers %}
+                          <option data-value="{{ publisher }}">{{ publisher }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <label><input type="checkbox" id="no_publisher" name="no_publisher" autocomplete="off">Publisher unknow</label>                    
+                </div>                        
                 <div class="input_item aux">
                     <span class="input_label">Description</span>
                     <div class="description">{{ form.description }}</div>
@@ -85,6 +95,6 @@
     </main>
     <script src="{% static 'worker_side/forms.js' %}"></script>
     <script type="text/javascript">
-        let book_form_controller = new AddSoundRecording([1, 2, 4, 8], true, true,   'title', 'author', 'cast', 'full_title', 'pub_year','description', 'condition', 'availability', 'cover', 'submit');
+        let book_form_controller = new AddSoundRecording([1, 2, 4, 5, 9], true, true,   'title', 'author', 'cast', 'full_title', 'pub_year', 'publisher', 'description', 'condition', 'availability', 'cover', 'submit');
     </script>    
 {% endblock content %}

@@ -93,10 +93,15 @@ class ClientRegistrationForm(ModelForm):
         corr_address = self.cleaned_data['corr_address']
         id_number = self.cleaned_data["id_number"]
 
-        Client.objects.create(user=client, borrows_max = get_borrows_limit(self.cleaned_data['occupation'], self.cleaned_data['citizenship']), date_of_birth = date_of_birth,
+        client = Client.objects.create(user=client, borrows_max = get_borrows_limit(self.cleaned_data['occupation'], self.cleaned_data['citizenship']), date_of_birth = date_of_birth,
         citizenship = citizenship, occupation = occupation, corr_address = corr_address, id_type = id_type, id_number = id_number)
         
-        return password
+        data_to_summary = {
+            'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email, 'phone_number': user.phone_number, 'password': password, 'date_of_birth': client.date_of_birth, 'occupation': client.occupation.name, 'corr_address': client.corr_address, 'id_type':client.id_type.name, 'id_number': client.id_number, 'citizenship': client.citizenship.name, 'borrows_max': client.borrows_max, 'registration_date': client.registration_date
+        }
+
+
+        return data_to_summary
 
 class AddBookForm(forms.Form):  
     isbn = forms.CharField(required=False, widget=forms.TextInput(
@@ -297,14 +302,16 @@ class AddSoundRecordingForm(forms.Form):
         attrs={'placeholder': 'Enter full title', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter full title";', 'name': 'full_title', 'id': 'full_title', 'autocomplete': 'off'})
     )
 
-    cast = forms.CharField(required=True, widget=forms.TextInput(
+    cast = forms.CharField(required=False, widget=forms.TextInput(
         attrs={'placeholder': 'Enter information about cast', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter information about cast";', 'name': 'cast', 'id': 'cast', 'autocomplete': 'off'})
     )
 
     pub_year = forms.IntegerField(required=False, widget=forms.NumberInput(
         attrs={'placeholder': 'Enter year of release', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter year of release";', 'name': 'pub_year', 'id': 'pub_year', 'autocomplete': 'off', 'min': '1'})
     )
-
+    publisher = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter publisher\'s name', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter publisher\'s name";', 'name': 'publisher', 'id': 'publisher', 'autocomplete': 'off', 'list': 'publishers_list'})
+    )
     description = forms.CharField(required=False, widget=forms.Textarea(
         attrs={'placeholder': 'Enter description', 'onfocus': 'this.placeholder="";', 'onblur':'this.placeholder = "Enter description";', 'name': 'description', 'id': 'description', 'autocomplete': 'off'})
     )
@@ -321,7 +328,7 @@ class AddSoundRecordingForm(forms.Form):
     
     @transaction.atomic
     def save(self):
-        new_item, new_authors, new_publisher = False, [], False
+        new_item, new_publisher, new_authors = False, [], []
 
         sound_recording = SoundRecording()
 
@@ -340,35 +347,45 @@ class AddSoundRecordingForm(forms.Form):
 
         sound_recording.save()
 
+        try:
+            publisher = Publisher.objects.get(name=self.cleaned_data['publisher']) 
+        except:
+            if self.cleaned_data['publisher'] != "":
+                new_publisher = self.cleaned_data['publisher']
+                publisher = Publisher.objects.create(name=self.cleaned_data['publisher'])
+            else:
+                publisher = None
 
+        sound_recording.publisher = publisher
+        sound_recording.description = self.cleaned_data['description']
+        sound_recording.condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        sound_recording.availability = Availability.objects.get(id=self.cleaned_data['availability'])
 
         authors = self.cleaned_data['author'].split(', ') 
-        new_authors = []
-
         for author in authors:
             try:
                 author = Author.objects.filter(name=author)[0]
                 sound_recording.author.add(author)
             except:
-                if author != " ":
+                if author != "":
                     new_authors.append(author)
                     author = Author.objects.create(name=author)
                     sound_recording.author.add(author)
                 else:
                     author = None
-          
-
-        
            
         new_item = True
 
+        authors = ", ".join([author.name for author in sound_recording.author.all()])
+
         data_to_summary = {
           'item_info': {
-                'type': 'sound recording', 'id': sound_recording.id, 'title': sound_recording.title, 'cast': sound_recording.cast if sound_recording.cast else "cast unknown", 'full_title': sound_recording.full_title, 'pub_year': sound_recording.pub_year, 'description': sound_recording.description, 'condition': sound_recording.condition.name, 'availability': sound_recording.availability, 'cover': sound_recording.cover
+                'type': 'sound recording', 'id': sound_recording.id, 'title': sound_recording.title, 'cast': sound_recording.cast if sound_recording.cast else "cast unknown", 'full_title': sound_recording.full_title, 'pub_year': sound_recording.pub_year if sound_recording.pub_year else 'publication year unknown', 'description': sound_recording.description, 'condition': sound_recording.condition.name, 'availability': sound_recording.availability, 'cover': sound_recording.cover, 'publisher': sound_recording.publisher.name if sound_recording.publisher else "publisher unknown", 'author': author if author else 'author unknown'
           },
           'operations':{
               'new_item': new_item,
-              'new_authors': new_authors
+              'new_authors': new_authors,
+              'new_publisher': new_publisher
           }
         }
         return data_to_summary

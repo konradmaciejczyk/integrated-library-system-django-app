@@ -1,0 +1,573 @@
+@charset "UTF-8";
+/* Konrad Maciejczyk, 2021-2022 */
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+::selection {
+  background-color: #194973;
+  color: white;
+}
+
+html, body {
+  background-color: #e6f0f5;
+  color: white;
+  background: url(../img/background_light.png);
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+a, a:active, a:hover, a:visited, a:link {
+  text-decoration: none;
+  color: white;
+  transition: color 0.4s;
+}
+a:hover {
+  color: #F8D872;
+}
+.path {
+  margin: 10px 0px 0px 10px;
+  color: #194973;
+}
+.path a {
+  text-decoration: underline;
+  color: #194973;
+}
+
+input[type=submit] {
+  display: block;
+  float: right;
+  margin: 50px auto 0px auto;
+  background-color: #194973;
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  font-weight: 300;
+  opacity: 0.2;
+  pointer-events: none;
+}
+input[type=submit]:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 30px -10px #194973;
+  -moz-box-shadow: 0px 0px 30px -10px #194973;
+  box-shadow: 0px 0px 30px -10px #194973;
+}
+
+textarea {
+  font-size: 14px;
+}
+
+input[type=date] {
+  background: white;
+  border: 0;
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 300px;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  padding-bottom: 2px;
+}
+input[type=date]:focus {
+  border-bottom: 2px solid #194973;
+}
+
+input[type=text], input[type=password] {
+  border: 0px;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+input[type=checkbox] {
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-color: #194973;
+  border-radius: 20%;
+  vertical-align: middle;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #194973;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+input[type=checkbox]:checked {
+  background-color: #194973;
+}
+
+input[type=radio] {
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border: 1px solid #194973;
+  border-radius: 50%;
+  vertical-align: middle;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+input[type=radio]:checked {
+  background-color: #194973;
+}
+
+select {
+  border: 0;
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 200px;
+  padding-bottom: 2px;
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
+}
+
+label {
+  display: inline-block;
+  white-space: nowrap;
+}
+label:hover {
+  cursor: pointer;
+}
+
+fieldset {
+  border: 0px;
+}
+
+.op_status {
+  box-sizing: border-box;
+  color: white;
+  width: 800px;
+  text-align: center;
+  margin: 10px auto 10px auto;
+  padding: 10px 0 10px 0;
+  border-radius: 3px;
+}
+.op_status i {
+  margin-right: 20px;
+}
+
+.op_status.success {
+  background-color: #10b346;
+  border: 2px solid #0c8434;
+}
+
+.op_status.error {
+  background-color: #b31010;
+  border: 2px solid #840c0c;
+}
+
+.for_librarian {
+  font-size: 14px;
+}
+
+header {
+  height: 60px;
+}
+
+#logo {
+  height: 60px;
+  width: 130px;
+  padding: 5px;
+  font-size: 13px;
+}
+#logo img {
+  margin-right: 1vw;
+  width: 50px;
+  height: 50px;
+}
+
+#logging {
+  height: 50px;
+  min-width: 10%;
+  margin-right: 2%;
+}
+#logging #user_status {
+  display: block;
+  font-size: 10px;
+  font-weight: 100;
+  width: 100%;
+  text-align: right;
+}
+#logging #log_in_button {
+  width: 80px;
+  height: 59px;
+  font-size: 16px;
+  margin-top: 5px;
+  transition: color, 0.4s;
+}
+#logging #log_in_button:hover {
+  color: #F8D872;
+  cursor: pointer;
+}
+
+@media screen {
+  header {
+    position: relative;
+    background-color: #194973;
+    height: 120px;
+    width: 100vw;
+  }
+
+  #logo {
+    box-sizing: border-box;
+    position: absolute;
+    width: 380px;
+    height: 120px;
+    top: 0px;
+    left: 0px;
+    padding: 10px;
+    font-size: 27px;
+    font-weight: 300;
+    float: left;
+  }
+  #logo img {
+    margin-right: 10px;
+    width: 100px;
+    height: 100px;
+    float: left;
+  }
+  #logo a:hover {
+    color: white;
+  }
+
+  #logging {
+    position: absolute;
+    top: 20%;
+    right: 2%;
+    box-sizing: border-box;
+    font-weight: 300;
+  }
+  #logging #user_status {
+    display: block;
+    font-weight: 100;
+    font-size: 20px;
+  }
+  #logging #log_in_button {
+    float: right;
+    text-align: right;
+    transition: color, 0.4s;
+    margin-top: 10px;
+  }
+  #logging #log_in_button:hover {
+    color: #F8D872;
+    cursor: pointer;
+  }
+
+  .to_print {
+    display: none;
+  }
+
+  main {
+    box-sizing: border-box;
+    margin: 40px auto 50px auto;
+    width: 900px;
+    min-height: 750px;
+    background-color: white;
+    border-radius: 10px;
+    color: #194973;
+    padding: 50px 30px 50px 30px;
+    -webkit-box-shadow: 0px 0px 30px -10px #194973;
+    -moz-box-shadow: 0px 0px 30px -10px #194973;
+    box-shadow: 0px 0px 30px -10px #194973;
+  }
+
+  h1 {
+    display: block;
+    color: black;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    margin: 0 auto 0 auto;
+    height: 40px;
+    color: #194973;
+  }
+
+  p {
+    display: block;
+    margin: 30px 0px 10px 0px;
+    font-size: 25px;
+    height: 30px;
+    color: #194973;
+  }
+
+  .item_info {
+    margin: 20px;
+    min-height: 15px;
+  }
+
+  .informations {
+    margin-right: 20px;
+  }
+
+  .single_info {
+    align-items: top;
+    padding: 1px 0px 1px 0px;
+  }
+
+  .single_info_label {
+    display: inline-block;
+    width: 220px;
+    height: 30px;
+    font-weight: 500;
+    vertical-align: top;
+  }
+
+  .single_info_label::before {
+    content: "•";
+    margin-right: 5px;
+  }
+
+  .single_info_content {
+    display: inline-block;
+    width: 400px;
+  }
+
+  .account_details {
+    margin-top: 20px;
+  }
+
+  button {
+    display: block;
+    margin: 20px auto 20px auto;
+    width: 200px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: 300;
+    font-family: "Roboto", sans-serif;
+    border: none;
+    background-color: #194973;
+    color: white;
+    border-radius: 5px;
+  }
+  button:hover {
+    cursor: pointer;
+    filter: brightness(120%);
+    -webkit-box-shadow: 0px 0px 30px -10px #194973;
+    -moz-box-shadow: 0px 0px 30px -10px #194973;
+    box-shadow: 0px 0px 30px -10px #194973;
+  }
+
+  button::before {
+    content: "\f02f";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 5px;
+    font-size: 18px;
+  }
+
+  .done {
+    float: right;
+    margin: 20px 0px 20px 0px;
+    width: 120px;
+    height: 40px;
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    border: none;
+    background-color: #194973;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 40px;
+  }
+  .done:hover {
+    cursor: pointer;
+    filter: brightness(120%);
+    -webkit-box-shadow: 0px 0px 30px -10px #194973;
+    -moz-box-shadow: 0px 0px 30px -10px #194973;
+    box-shadow: 0px 0px 30px -10px #194973;
+  }
+}
+@media print {
+  html, body {
+    background: none;
+  }
+
+  header {
+    display: none;
+  }
+
+  .path {
+    display: none;
+  }
+
+  main {
+    display: none;
+  }
+
+  .to_print {
+    padding: 10mm;
+    width: 148mm;
+    height: 210mm;
+    display: block;
+  }
+  .to_print h1 {
+    color: black;
+    font-size: 7mm;
+    text-align: center;
+  }
+  .to_print h3 {
+    margin: 3mm 0mm 0mm 5mm;
+    font-size: 4mm;
+    color: black;
+  }
+
+  p {
+    font-size: 5.5mm;
+    margin: 10mm 0mm 5mm 0mm;
+    color: black;
+  }
+
+  ul {
+    margin-left: 5mm;
+    color: black;
+  }
+  ul li {
+    margin-bottom: 2mm;
+    list-style-type: none;
+  }
+  ul li span {
+    font-weight: bold;
+  }
+  ul li ul li {
+    list-style-type: disc;
+    margin-top: 2mm;
+  }
+  ul li ul span {
+    font-weight: bold;
+  }
+
+  .dotted_field {
+    position: relative;
+    margin-top: 20mm;
+    margin-left: 15mm;
+    font-size: 3mm;
+    display: inline-block;
+    color: black;
+  }
+
+  .dotted_field::before {
+    position: absolute;
+    content: ".........................................";
+    top: -6mm;
+    left: -4mm;
+    font-size: 5mm;
+  }
+
+  .dotted_field:nth-of-type(1) {
+    margin-right: 23mm;
+  }
+
+  .dotted_field:nth-of-type(2)::before {
+    left: -7.5mm;
+  }
+
+  h2 {
+    width: 100%;
+    text-align: center;
+    display: block;
+    color: black;
+    margin: 20mm auto 0mm auto;
+    font-size: 5mm;
+    font-weight: 300;
+  }
+}
+@media screen and (max-width: 600px) {
+  .for_librarian {
+    font-size: 6px;
+  }
+
+  .path {
+    font-size: 10px;
+  }
+
+  main {
+    margin: 20px auto 50px auto;
+    padding: 25px 15px 25px 15px;
+    width: 95vw;
+    min-width: 700px;
+  }
+
+  .informations {
+    margin-left: 10px;
+  }
+
+  .single_info {
+    min-height: 15px;
+    margin-bottom: 5px;
+  }
+
+  .single_info_label {
+    display: block;
+    width: 200px;
+    height: 15px;
+    font-size: 12px;
+  }
+
+  .single_info_content {
+    display: block;
+    margin-left: 10px;
+    font-size: 10px;
+    width: 100px;
+  }
+
+  p {
+    margin: 10px 0px 10px 0px;
+    height: 20px;
+    font-size: 15px;
+  }
+
+  h1 {
+    text-align: left;
+    font-size: 20px;
+    height: 25px;
+  }
+
+  header {
+    height: 60px;
+  }
+
+  #logo {
+    height: 60px;
+    width: 150px;
+    padding: 5px;
+    font-size: 13px;
+  }
+  #logo img {
+    margin-right: 1vw;
+    width: 50px;
+    height: 50px;
+  }
+  #logo span:nth-of-type(3) {
+    font-size: 10px;
+  }
+
+  #logging {
+    height: 50px;
+    min-width: 10%;
+    margin-right: 2%;
+  }
+  #logging #user_status {
+    display: block;
+    font-size: 10px;
+    font-weight: 100;
+    width: 100%;
+    text-align: right;
+  }
+  #logging #log_in_button {
+    width: 80px;
+    height: 59px;
+    font-size: 16px;
+    margin-top: 5px;
+    transition: color, 0.4s;
+  }
+  #logging #log_in_button:hover {
+    color: #F8D872;
+    cursor: pointer;
+  }
+}

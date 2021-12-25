@@ -13,9 +13,8 @@ def register_user(request):
     if request.method == 'POST':
         form = ClientRegistrationForm(request.POST)
         if form.is_valid():
-            password = form.save()
-            messages.success(request, f'Account created successfully! {password}')
-            return redirect('worker_side-home')
+            data_to_summary = form.save()
+            return render(request, template_name="worker_side/register_summary.html", context = data_to_summary)
         else:
             messages.error(request, f'Form filled with invalid informations!')
             return redirect('worker_side-register_user')
@@ -68,7 +67,8 @@ def add_movie(request):
 
 def add_sound_recording(request):
     context = {'form': AddSoundRecordingForm(),
-    'authors': Author.objects.all()}
+    'authors': Author.objects.all(),
+    'publishers': Publisher.objects.all()}
 
     if request.method == 'POST':
         print("CO PRZYSZŁO", request.POST)

@@ -243,6 +243,50 @@ fieldset{
     }
 }
 
+.for_librarian{
+    font-size: 14px;
+}
+
+header{
+        height: 60px;
+    }        
+
+    #logo{
+        height: 60px; width: 130px;
+        padding: 5px;
+        font-size: 13px;
+
+        img{
+            margin-right: 1vw;
+            width: 50px; height: 50px;
+        }
+    }
+
+    #logging{
+        height: 50px; min-width: 10%;
+        margin-right: 2%;            
+
+        #user_status{
+            display: block;
+            font-size: 10px; 
+            font-weight: 100;
+            width: 100%;
+            text-align: right;      
+        }
+
+        #log_in_button{
+            width: 80px; height: 59px;
+            font-size: 16px;
+            margin-top: 5px;
+            transition: color, .4s;
+
+            &:hover{
+                color: $main-yellow;
+                cursor: pointer;
+            }
+        }
+    }
+
 @mixin text_inputs{
         /* For styling placeholders and on focus in text inputs*/
     input[type='text'], input[type='tel'], input[type='e-mail'], input[type="date"], input[list], input[type="number"], textarea::-webkit-input-placeholder { 

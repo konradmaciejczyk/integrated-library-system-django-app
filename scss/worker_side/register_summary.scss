@@ -1,0 +1,303 @@
+@import 'defaults.scss';
+$info_height: 30px;
+$info_height_mobile: 15px;
+
+@media screen{
+    @include _header;
+
+    .to_print{
+        display: none;
+    }
+
+    main{
+        box-sizing: border-box;
+        margin: 40px auto 50px auto;
+        width: 900px; min-height: 750px;
+        background-color: white;
+        border-radius: 10px;
+        color: $main-blue;
+        padding: 50px 30px 50px 30px;
+        @include shadow($main-blue);
+    }
+    h1{
+        display: block;
+        color: black;
+        text-align: center;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+        margin: 0 auto 0 auto;
+        height: 40px;
+        color: $main-blue;
+    }
+    p{
+        display: block;
+        margin: 30px 0px 10px 0px;
+        font-size: 25px;
+        height: 30px;
+        color: $main-blue;
+    }
+    .item_info{
+        margin: 20px;
+        min-height: $info_height_mobile;
+    }
+
+    .informations{
+        margin-right: 20px;
+    }
+
+    .single_info{
+        align-items: top;
+        padding: 1px 0px 1px 0px;
+    }
+
+    .single_info_label{
+        display: inline-block;
+        width: 220px; height: $info_height;
+        font-weight: 500;
+        vertical-align: top;
+        
+    }
+    .single_info_label::before{
+        content: '\2022';
+        margin-right: 5px;
+    }
+    .single_info_content{
+        display: inline-block;
+        width: 400px;
+    }
+    .account_details{
+        margin-top: 20px;
+    }
+
+    button{
+        display: block;
+        margin: 20px auto 20px auto;
+        width: 200px; height: 40px;
+        font-size: 20px; font-weight: 300;
+        font-family: 'Roboto', sans-serif;
+        border: none;
+        background-color: $main-blue;
+        color: white;
+        border-radius: 5px;
+
+        &:hover{
+            cursor: pointer;
+            filter: brightness(120%);
+            @include shadow($main-blue);
+        }
+    }
+    button::before{
+        content: '\f02f';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 5px;
+        font-size: 18px;
+    }
+
+    .done{
+        float: right;
+        margin: 20px 0px 20px 0px;
+        width: 120px; height: 40px;
+        font-size: 20px; 
+        font-family: 'Roboto', sans-serif;
+        border: none;
+        background-color: $main-blue;
+        color: white;
+        border-radius: 5px;
+        text-align: center; line-height: 40px;
+
+        &:hover{
+            cursor: pointer;
+            filter: brightness(120%);
+            @include shadow($main-blue);
+        }
+    }
+}
+
+@media print{
+    html, body{
+        background: none;
+    }
+
+    header{
+        display: none;
+    }
+    .path{
+        display: none;
+    }
+    main{
+        display: none;
+    }
+
+    .to_print{
+        padding: 10mm;
+        width: 148mm; height: 210mm;
+        display: block;
+
+        h1{
+            color: black;
+            font-size: 7mm;
+            text-align: center;
+        }
+
+        h3{
+            margin: 3mm 0mm 0mm 5mm;
+            font-size: 4mm;
+            color: black;
+        }
+    }
+
+    p{
+        font-size: 5.5mm;
+        margin: 10mm 0mm 5mm 0mm;
+        color: black;
+    }
+
+    ul{
+        margin-left: 5mm;
+        color: black;
+        li{
+            margin-bottom: 2mm;
+            list-style-type: none;
+            
+            span{
+                font-weight: bold;
+            }
+
+            ul{
+                li{
+                    list-style-type: disc;
+                    margin-top: 2mm;
+                }
+                span{
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+
+    .dotted_field{
+        position: relative;
+        margin-top: 20mm;
+        margin-left: 15mm;
+        font-size: 3mm;
+        display: inline-block;
+        color: black;
+    }
+    .dotted_field::before{
+        position: absolute;
+        content: '.........................................';
+        top: -6mm; left: -4mm;
+        font-size: 5mm;
+    }
+    
+    .dotted_field:nth-of-type(1){
+        margin-right: 23mm;
+    }
+
+    .dotted_field:nth-of-type(2)::before{
+        left: -7.5mm;
+    }
+
+    h2{
+        width: 100%;
+        text-align: center;
+        display: block;
+        color: black;
+        margin: 20mm auto 0mm auto;
+        font-size: 5mm; font-weight: 300;
+    }
+
+
+
+}
+
+
+@media screen and (max-width: 600px){
+    .for_librarian{
+        font-size: 6px;
+    }
+    .path{
+        font-size: 10px;
+    }
+    main{
+        margin: 20px auto 50px auto;
+        padding: 25px 15px 25px 15px;
+        width: 95vw;  
+        min-width: 700px;
+    }
+    .informations{
+        margin-left: 10px;
+    }
+    .single_info{
+        min-height: $info_height_mobile;
+        margin-bottom: 5px;
+    }
+    .single_info_label{
+        display: block;
+        width: 200px; 
+        height: $info_height_mobile;
+        font-size: 12px;
+    }
+    .single_info_content{
+        display: block;
+        margin-left: 10px;
+        font-size: 10px;
+        width: 100px;
+    }
+
+    p{
+        margin: 10px 0px 10px 0px;
+        height: 20px;
+        font-size: 15px;
+    }
+
+    h1{
+        text-align: left;
+        font-size: 20px;
+        height: 25px;
+    }
+
+    header{
+        height: 60px;
+    }        
+
+    #logo{
+        height: 60px; width: 150px;
+        padding: 5px;
+        font-size: 13px;
+
+        img{
+            margin-right: 1vw;
+            width: 50px; height: 50px;
+        }
+        span:nth-of-type(3){
+            font-size: 10px;
+        }
+    }
+
+    #logging{
+        height: 50px; min-width: 10%;
+        margin-right: 2%;            
+
+        #user_status{
+            display: block;
+            font-size: 10px; 
+            font-weight: 100;
+            width: 100%;
+            text-align: right;      
+        }
+
+        #log_in_button{
+            width: 80px; height: 59px;
+            font-size: 16px;
+            margin-top: 5px;
+            transition: color, .4s;
+
+            &:hover{
+                color: $main-yellow;
+                cursor: pointer;
+            }
+        }
+    }
+}

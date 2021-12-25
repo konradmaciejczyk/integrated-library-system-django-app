@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User, Citizenship, Occupation, IDType
+from django.utils import timezone
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -11,6 +12,7 @@ class Client(models.Model):
     corr_address = models.CharField(max_length=50, verbose_name="Correspondence address")
     id_type = models.ForeignKey(IDType, on_delete=models.CASCADE, verbose_name="ID type")
     id_number = models.CharField(max_length=15, verbose_name="ID number")
+    registration_date = models.DateTimeField(default=timezone.now, verbose_name="Registration date")
 
     def __str__(self):
         return f'{self.user}'

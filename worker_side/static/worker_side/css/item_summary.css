@@ -162,6 +162,50 @@ fieldset {
   border: 2px solid #840c0c;
 }
 
+.for_librarian {
+  font-size: 14px;
+}
+
+header {
+  height: 60px;
+}
+
+#logo {
+  height: 60px;
+  width: 130px;
+  padding: 5px;
+  font-size: 13px;
+}
+#logo img {
+  margin-right: 1vw;
+  width: 50px;
+  height: 50px;
+}
+
+#logging {
+  height: 50px;
+  min-width: 10%;
+  margin-right: 2%;
+}
+#logging #user_status {
+  display: block;
+  font-size: 10px;
+  font-weight: 100;
+  width: 100%;
+  text-align: right;
+}
+#logging #log_in_button {
+  width: 80px;
+  height: 59px;
+  font-size: 16px;
+  margin-top: 5px;
+  transition: color, 0.4s;
+}
+#logging #log_in_button:hover {
+  color: #F8D872;
+  cursor: pointer;
+}
+
 header {
   position: relative;
   background-color: #194973;
@@ -243,7 +287,7 @@ p {
   display: block;
   margin: 30px 0px 30px 0px;
   font-size: 25px;
-  height: 30px;
+  min-height: 30px;
   color: #194973;
 }
 
