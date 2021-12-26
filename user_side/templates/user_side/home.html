@@ -9,7 +9,7 @@
         var isAllSelected = true;
 
         function findCheckboxes(){
-            item_types = document.querySelectorAll('[name="item_type"]');
+            item_types = document.querySelectorAll('#item_type');
             item_length = item_types.length;
             selectAll();
         }
@@ -48,7 +48,7 @@
                 }
             }
             switch(checked_counter){
-                case 5:{
+                case 3:{
                     item_types[item_length - 1].checked = true; break;
                 }
                 case 0:{
@@ -67,19 +67,19 @@
 {% block content %}
     <main>   
         <section id="box_searching" role="search">
-            <div id="search_tool">
-                <input type="text" autocomplete="off" name="search" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
-                <input type="submit" value="&#xe800;" style="font-family:fontello"/>                   
-            </div> 
-                <input id="author_bar" type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
+            <form method="GET" action="{% url 'user_side-search' %}">
+                <div id="search_tool">
+                    <input type="text" autocomplete="off" name="title" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>
+                    <input type="submit" value="&#xe800;" style="font-family:fontello"/>                   
+                </div> 
+                <input id="author_bar" name="author" type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
                 <fieldset>
-                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Books</label>
-                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Movies/Films</label>
-                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Sound Recordings</label>
-                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Images</label>
-                    <label><input type="checkbox" name="item_type" onclick="update_checkbox()">Articles</label>
-                    <label><input type="checkbox" name="item_type" onclick="select_deselect()">All</label>
-                </fieldset>     
+                    <label><input type="checkbox" id="item_type" name="book" onclick="update_checkbox()">Books</label>
+                    <label><input type="checkbox" id="item_type" name="movie" onclick="update_checkbox()">Movies/Films</label>
+                    <label><input type="checkbox" id="item_type" name="sr" onclick="update_checkbox()">Sound Recordings</label>
+                    <label><input type="checkbox" id="item_type" name="all" onclick="select_deselect()">All</label>
+                </fieldset> 
+            </form>    
         </section>        
     </main>    
     <footer>2021-2022 by <a href="https://www.github.com/konradmaciejczyk" rel="author" target="_blank" title="github profile">Konrad Maciejczyk</a>, University of Silesia</footer>
