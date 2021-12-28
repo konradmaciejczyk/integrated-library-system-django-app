@@ -2,86 +2,126 @@
 {% load static %}
 
 {% block title %}{{ title }}{% endblock title %}
-{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search.css' %}" media="screen"> {% endblock styles %}
-{% block scripts %}
-    <script type="text/javascript">
-        //================POP UP=================
-        function show_item_pop_up(pop_up_name){
-            const div_pop_up = document.getElementById(pop_up_name);
-            const div_overlay = document.getElementById("overlay");
-            div_pop_up.style.display = 'block';
-            div_overlay.style.display = 'block';
-        }
-
-        function close_pop_up(pop_up_name){
-            const div_pop_up = document.getElementById(pop_up_name);
-            const div_overlay = document.getElementById("overlay");
-            div_pop_up.style.display = 'none';
-            div_overlay.style.display = 'none';
-        }
-        //================END POP UP=================
-
-        //================CHECKBOXES CONTROL=================
-        var item_types;
-        var item_length;
-        var isAllSelected = true;
-
-        function findCheckboxes(){
-            item_types = document.querySelectorAll('[name="item_type"]');
-            item_length = item_types.length;
-            selectAll();
-        }
-
-        
-        function selectAll(){                
-            item_types.forEach(function(item){
-                item.checked = true;
-            })
-        }
-
-        function deselectAll(){
-            item_types[0].checked = true;
-
-            for(var i = 1; i<item_length; i++){
-                item_types[i].checked = false;
-            }
-        }
-
-        function select_deselect(){
-            if(isAllSelected){
-                deselectAll();
-                isAllSelected = !isAllSelected;
-            }else{
-                selectAll();
-                isAllSelected = !isAllSelected;
-            }
-        }
-
-        function update_checkbox(){
-            var checked_counter = 0;
-
-            for(var i=0; i<item_length - 1; i++){
-                if(item_types[i].checked === true ){
-                    checked_counter++;
-                }
-            }
-            switch(checked_counter){
-                case 5:{
-                    item_types[item_length - 1].checked = true; break;
-                }
-                case 0:{
-                    item_types[0].checked = true; break;
-                }
-                default:{
-                    item_types[item_length-1].checked = false;
-                }
-                
-            }
-        }
-        //================END CHECKBOXES CONTROL=================
-        window.onload = findCheckboxes            
-    </script>
-{% endblock scripts %}
+{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search.css' %}" media="screen"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock styles %}
 {% block content %}
-    {{ results }}
+    <main>
+        <div class="filter">
+            <form method="GET">
+                <input type="text" name="title" placeholder="Enter search phrase", onfocus="this.placeholder='';", onblur="this.placeholder='Enter search phrase';" required>
+                <input type="text" name="author" placeholder="Enter author name" onfocus="this.placeholder='';" onblur="this.placeholder='Enter author name';">
+
+                <label><input type="checkbox" name="book" id="item_type">Book</label>
+                <label><input type="checkbox" name="movie" id="item_type">Movie</label>
+                <label><input type="checkbox" name="sr" id="item_type">Sound recording</label>
+                <label><input type="checkbox" name="all" id="item_type">All</label>
+
+                <label id="not_available"><input type="checkbox" name="not_available">Show unavailable items</label>
+
+                <button>Apply</button>
+            </form>
+        </div>
+        <section class="results">
+            <span class="summary">Search phrase: <span class="text_bold">"{{ fields.title }}"</span> 
+            {% if fields.author %}
+                by <span class="text_bold">"{{ fields.author }}"</span>
+            {% endif %}           
+            in set of <span class="text_bold">{{ fields.filters }}</span> has given <span class="text_bold">{{ number_of_results }}</span> results.</span>
+
+            {% if books %}
+                <p class="tab">Books</p>
+                {% for result in books %}
+                    <div class="single_result">
+                        <div class="result_no">{{ forloop.counter }}.<i class="fas fa-book-open" title="Book"></i>
+                            <input type="checkbox" class="add_to_cart" title="Add to order list">
+                        </div>
+                    
+                            <div class="item_info"> 
+                            <ul>
+                                <li><span class="text_bold">ID: </span>{{ result.id }}</li>
+                                <li><span class="text_bold">Title: </span>{{ result.title }}</li>
+                                <li><span class="text_bold">Full title: </span>{{ result.full_title }}</li>
+                                <li><span class="text_bold">Author: </span>{{ result.author }}</li>
+                                <li><span class="text_bold">Publication year: </span>{{ result.pub_year }}</li>
+                                <li><span class="text_bold">Publisher: </span>{{ result.publisher }}</li>
+                                <li><span class="text_bold">ISBN: </span>{{ result.isbn }}</li>
+                                <li><span class="text_bold">Description: </span>{{ result.description }}</li>
+                                <li><span class="text_bold">Condition: </span>{{ result.condition }}</li>
+                                <li><span class="text_bold">Availability: </span><span class="text_bold green">{{ result.availability }}</span></li>
+                                
+                            </ul>
+                            </div>
+                        <div class="cover" onclick="show_pop_up('{{ result.title }}', '{{ result.cover }}');">
+                            <img class="image" src="{{ result.cover }}">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if movies %}
+                <p class="tab">Movies</p>
+                {% for result in movies %}
+                    <div class="single_result">
+                        <div class="result_no">{{ forloop.counter }}.<i class="fas fa-film" title="Movie/Film"></i>
+                            <input type="checkbox" class="add_to_cart" title="Add to order list">
+                        </div>
+                    
+                            <div class="item_info"> 
+                            <ul>
+                                <li><span class="text_bold">ID: </span>{{ result.id }}</li>
+                                <li><span class="text_bold">Title: </span>{{ result.title }}</li>
+                                <li><span class="text_bold">Full title: </span>{{ result.full_title }}</li>
+                                <li><span class="text_bold">Director: </span>{{ result.director }}</li>
+                                <li><span class="text_bold">Screenwriter: </span>{{ result.screenwriter }}</li>                                
+                                <li><span class="text_bold">Publication year: </span>{{ result.pub_year }}</li>
+                                <li><span class="text_bold">Description: </span>{{ result.description }}</li>
+                                <li><span class="text_bold">Condition: </span>{{ result.condition }}</li>
+                                <li><span class="text_bold">Availability: </span><span class="text_bold green">{{ result.availability }}</span></li>
+                                
+                            </ul>
+                            </div>
+
+                        <div class="cover" onclick="show_pop_up('{{ result.title }}', '{{ result.cover }}');">
+                            <img class="image" src="{{ result.cover }}">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </section>
+    </main>
+    <div id="overlay">
+    </div>
+    <div id="cover_pop_up">
+        <div class="pop_up_header">
+            <p id="pop_up_title">Lorem ipsum dolor sit amet consectetur adipisicing elit. eligendi ullam sit tempora consectetur dignissimos maiores dolorem.</p><i class="fas fa-times" onclick="hide_pop_up();"></i>
+        </div>
+        
+        <img id="pop_up_image" src="#">
+    </div>
+    
+    <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
+    <script type="text/javascript">
+        checkbox_controller = new CheckboxController('#item_type');
+
+        const overlay = document.getElementById('overlay');
+        const pop_up = document.getElementById('cover_pop_up');
+        const pop_up_title = document.getElementById('pop_up_title');
+        const pop_up_image = document.getElementById('pop_up_image');
+
+        function hide_pop_up(){
+            overlay.style.display = 'none';
+            pop_up.style.display = 'none';
+        }
+
+        function show_pop_up(title, cover){
+            pop_up_title.innerHTML = title;
+            pop_up_image.src = cover;
+            overlay.style.display = 'block';
+            pop_up.style.display = 'block';
+        }
+
+    </script>
 {% endblock content %}

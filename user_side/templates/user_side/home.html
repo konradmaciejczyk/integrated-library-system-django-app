@@ -2,68 +2,6 @@
 {% load static %}
 {% block title %}Online Library Catalog{% endblock title %}
 {% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'user_side/css/home.css' %}" media="screen">{% endblock styles %}
-{% block scripts %}
-    <script type="text/javascript">
-        var item_types;
-        var item_length;
-        var isAllSelected = true;
-
-        function findCheckboxes(){
-            item_types = document.querySelectorAll('#item_type');
-            item_length = item_types.length;
-            selectAll();
-        }
-
-        
-        function selectAll(){                
-            item_types.forEach(function(item){
-                item.checked = true;
-            })
-        }
-
-        function deselectAll(){
-            item_types[0].checked = true;
-
-            for(var i = 1; i<item_length; i++){
-                item_types[i].checked = false;
-            }
-        }
-
-        function select_deselect(){
-            if(isAllSelected){
-                deselectAll();
-                isAllSelected = !isAllSelected;
-            }else{
-                selectAll();
-                isAllSelected = !isAllSelected;
-            }
-        }
-
-        function update_checkbox(){
-            var checked_counter = 0;
-
-            for(var i=0; i<item_length - 1; i++){
-                if(item_types[i].checked === true ){
-                    checked_counter++;
-                }
-            }
-            switch(checked_counter){
-                case 3:{
-                    item_types[item_length - 1].checked = true; break;
-                }
-                case 0:{
-                    item_types[0].checked = true; break;
-                }
-                default:{
-                    item_types[item_length-1].checked = false;
-                }
-                
-            }
-        }
-
-        window.onload = findCheckboxes
-    </script>
-{% endblock scripts %}
 {% block content %}
     <main>   
         <section id="box_searching" role="search">
@@ -74,14 +12,17 @@
                 </div> 
                 <input id="author_bar" name="author" type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
                 <fieldset>
-                    <label><input type="checkbox" id="item_type" name="book" onclick="update_checkbox()">Books</label>
-                    <label><input type="checkbox" id="item_type" name="movie" onclick="update_checkbox()">Movies/Films</label>
-                    <label><input type="checkbox" id="item_type" name="sr" onclick="update_checkbox()">Sound Recordings</label>
-                    <label><input type="checkbox" id="item_type" name="all" onclick="select_deselect()">All</label>
+                    <label><input type="checkbox" id="item_type" name="book">Books</label>
+                    <label><input type="checkbox" id="item_type" name="movie">Movies/Films</label>
+                    <label><input type="checkbox" id="item_type" name="sr">Sound Recordings</label>
+                    <label><input type="checkbox" id="item_type" name="all">All</label>
                 </fieldset> 
             </form>    
         </section>        
     </main>    
     <footer>2021-2022 by <a href="https://www.github.com/konradmaciejczyk" rel="author" target="_blank" title="github profile">Konrad Maciejczyk</a>, University of Silesia</footer>
     <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
+    <script type="text/javascript">
+        checkbox_controller = new CheckboxController('#item_type');
+    </script>
 {% endblock content %}

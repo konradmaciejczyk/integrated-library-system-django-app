@@ -3,441 +3,358 @@
 
 $border-color: $main-green;
 $search_summary_color: rgba(49, 101, 90, .7);
-$filter_background_color: #F8F7F2;
-$filter_border_color: #ddd6b2;
-$search_item_background_color: white;
+$checkbox_size: 15px;
+$label_font_size: 14px;
 
 @include _header;
 
-//================BASIC ELEMENTS=================
-input[type="checkbox"]{
-    width: 15px; height: 15px;
-    border: 1px solid $main-yellow;
-    
-}
-label{
-    width: 150px;
-    font-size: 12px;
+main{
+    width: 90vw;
+    margin: 10px auto 200px auto;
+    color: black;
+    display: flex;
 }
 
-.bold_text{
-    font-weight: 400;
-}
-
-.pop_up_info{
-    font-size: 14px;
-}
-
-.item_type{
+.filter{
     box-sizing: border-box;
-    display: block;
-    padding: 10px;
-    cursor: default;
-}
-
-.result_no{
-    box-sizing: border-box;
-    margin-top: 5px;
-    padding: 10px; font-weight: 400;
-}
-
-.left_margin{
-    box-sizing: border-box;
-    min-width: 1%; min-height: 100%;
+    height: 400px;
+    flex-grow: 0; flex-shrink: 0; flex-basis: 300px;
+    background-color: white;
+    margin-right: 20px;
     display: inline-block;
-    margin-top: 10px;
-    padding-left: 2%; padding-right: 3%;
+    padding: 30px 30px 30px 30px;
+    border: 1px solid #e6e6e6;
+
+}
+
+.results{
+    min-height: 200px;
+    background-color: white;
+    display: inline-block;
     vertical-align: top;
-}
+    flex-grow: 1;
 
-.pop_up{
-    display: none;
-    position: fixed;
-    min-width: 200px; min-height: 100px;
-    background-color: $filter_background_color;
-    padding: 10px;
-    border-radius: 10px;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 200ms ease-in-out;
-    color: black;
-    z-index: 10;
-}
-
-//================END OF BASIC ELEMENTS=================
-
-.pop_up_close{
-    float: right;
-    margin-right: 20px; margin: 5px;
-    width: 30px; height: 30px;
-    text-align: center;
-    border-radius: 50%;
-    vertical-align: middle; line-height: 30px;
-    transition: background-color .4s;
-    color: black;
-
-    &:hover{
-        cursor: pointer;
-        background-color: gray;
+    p{
+        margin: 20px 0px 0px 0px;
+        background-color:rgba(0, 0, 0, .2);
+        font-size: 25px;
+        padding: 10px;
     }
 }
 
-.show_more_button{
+.summary{
+    box-sizing: border-box;
     display: block;
-    text-decoration: underline;
-    margin-top: 50px;
-    color: $main-blue;
-    width: 200px;
-    font-weight: 400;
+    background-color:rgba(49, 101, 90, 1);
+    padding: 5px;
+    color: white;
+    
 }
-.show_more_button:hover{
-    cursor: pointer;
+.text_bold{
+    font-weight: 500;
+}
+
+input[type="text"]{
+    border: 0;
+    border-bottom: 2px solid silver;
+    transition: border-bottom .5s;
+    width: 90%;
+    padding-bottom: 2px;
+    margin: 0px auto 20px auto;
+    display: block;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+    
+    &:focus{
+        border-bottom: 2px solid $main-green;
+    }
+}
+
+input[type="checkbox"]{
+    border: 1px solid $main-green;
+    width: $checkbox_size; height: $checkbox_size;
+    margin-top: 1px;
+    &:checked{
+        background-color: $main-green;
+    }
+}
+label{
+    display: block;
+    white-space: pre-wrap;
+    font-size: $label_font_size;
+    margin-bottom: 5px;
+    
+
+}
+
+#not_available{
+    margin-top: 20px;
+}
+
+button{
+    border: none;
+    display: block;
+    margin: 10px auto 10px auto;
+    background-color: $main-green;
+    color: white;
+    width: 80px; height: 30px;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+
+
+    &:hover{
+        cursor: pointer;
+        @include shadow($main-green);
+        filter: brightness(120%);
+    }
+}
+
+.single_result{
+    box-sizing: border-box;
+    width: 95%; min-height: 100px;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    margin: 15px auto 0px auto;
+    display: flex;
+    // box-shadow: -15px -15px 15px rgba(221, 221, 221, 0.2), 15px 15px 15px rgba(0, 0, 0, .1);
+}
+
+.result_no{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    i{
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        flex-grow: 0; flex-shrink: 0; flex-basis: 30%;
+    }
+
+    .add_to_cart{
+        display: block;
+        border-radius: 50%;
+    }
+}
+.item_info{
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.cover{
+    min-width: 100px;
+    margin: 10px 20px 10px 0px;
+    align-items: center;
+    transition: color .4s;
+    color: rgba(255, 255, 255, 0);
+    position: relative;
+
+    i{
+        font-size: 50px;
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        
+        
+    }
+    
+    &:hover{
+        color: rgba(255, 255, 255, 1);
+        
+        cursor: pointer;
+    }
+}
+
+#cover_pop_up{
+    width:400px; min-height: 600px;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: darkgray;
+    border-radius: 3px;
+    display: none;
+
+    img{
+        display: block;
+        margin: 0px auto 0px auto;
+        border: 1px solid lightgray;
+    }
+}
+
+.pop_up_header{
+    box-sizing: border-box;
+    display: flex;
+    padding: 20px;
+    z-index: 2;
+
+    p{
+        font-size: 20px;
+        flex-grow: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    i{
+        text-align: center;
+        vertical-align: middle; line-height: 25px;
+        transition: color .4s;
+
+        &:hover{
+            cursor: pointer;
+            color: black;
+        }
+    }
 }
 
 #overlay{
     position: fixed;
-    transition: 200ms ease-in-out;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0,0,0,.5);
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: rgba(0, 0, 0, .5);
     display: none;
-
 }
 
-#pop_up{
-    display: none;
-    position: fixed;
-    width: 800px; min-height: 200px;
-    background-color: $filter_background_color;
-    padding-bottom: 20px;
-    border-radius: 10px;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    color: black;
-    z-index: 10;
 
-    #{&}_header{
-        width: 100%; height: 40px;
-        border-bottom: 1px solid lightgray;
-    }
-
-    #{&}_title{
-        display: inline-block;
-        width: 70%; height: 100%;
-        margin-left: 10%;
-        vertical-align: middle; line-height: 40px;
-    }
-
-   
-    
-    #{&}_main_content{
-        display: inline-block;
-        width: 83%; min-height: 40%;
-        vertical-align: top;
-        margin-top: 10px;
-    }
-
-    #{&}_add_item{
-        margin-top: 10px;
-        width: 150px; height: 40px;
-        margin-left: auto; margin-right: auto;
-        background-color: $main-green;
-        vertical-align: middle; line-height: 40px;
-        text-align: center;
-        color: white;
-        border-radius: 3px;
-        transition: background-color .4s;
-
-        &:hover{
-            cursor: pointer;
-            background-color: $main-blue;
-        }
-    }
+ul{
+    margin-left: 10px;
 }
 
-#pop_up_cover{
-    display: none;
-    z-index: 10;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: $filter_background_color;
-    max-width: 800px; min-height: 200px;
-    border-radius: 10px;
-    padding-bottom: 40px;
-
-    
-    & img{
-        display: block;
-        padding: 2px;
-        margin-left: auto; margin-right: auto;
-        border: 2px solid $main-blue;
-        max-width: 700px;
-        margin-top: 40px;
-    }
-}
-
-//=============FILTER BOX===================//
-input[type="text"]{
+.image{
     display: block;
-    margin-left: auto; margin-right: auto;
-    border-radius: 3px 3px 3px 3px;
-    margin-top: 10px;
-    border: 1px solid $main-green;  
-    height: 30px; width: 50%;
-    
-    &:nth-child(2){
-        margin-bottom: 20px;
-    }
+    width: 100px;
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-
-#filter{
-    box-sizing: border-box;
-    width: 800px;
-    background-color: $filter_background_color;
-    margin-left: auto; margin-right: auto;
-    margin-top: 20px;
-    border-radius: 5px;
-    padding: 10px;
-    color: black;
-
-    padding: 20px;
-
-    fieldset{
-        margin-left: auto; margin-right: auto;
-        width: 95%; 
-        
-    }
-    #show_only_available{
-        display: block;
-        margin-left: auto; margin-right: auto;
-        width: 95%;
-        margin-top: 10px; margin-bottom: 10px;;
-    }
-
-    #apply_button{
-        background-color: $main-green;
-        margin-left: auto; margin-right: auto;
-        width: 80px; height: 30px;
-        border-radius: 3px;
-        text-align: center;
-        vertical-align: middle; line-height: 30px;
-        font-size: 14px;
-        color: $search_item_background_color;
-        transition: background-color .4s;
-
-        &:hover{
-            cursor: pointer;
-            background-color: $main-blue;
-        }
-    }
-
-    #order_status{
-        margin-top: 15px; margin-left: 5vw;
-    }
-}
-//=============END OF FILTER BOX===================//
-
-main{
-    box-sizing: border-box;
-    margin-left: auto; margin-right: auto;
-    margin-top: 25px;
-    border-radius: 5px;
-    color: black;
-    width: 800px;
-}
-
-//=============SEARCH SUMMARY==================//
-#search_summary{
-    display: block;
-    margin-left: auto; margin-right: auto;
-    background-color: $search_summary_color;
-    padding: 10px;
-    font-size: 12px;
-}
-//=============END OF SEARCH SUMMARY==================//
-//=============RESULT==================//
-.result{
-    min-height: 180px;
-    background-color: white;
-    border-bottom: 1px solid #6d6d6d;
-}
-
-.cover_image{
-
-    width: 110px; height: 180px;
+.order_item{
     float: right;
-    position: relative;
+    margin-right: 40px;
+    margin-top:0px;
+}
+.green{
+    color:rgb(72, 214, 36);
+}
 
-    & img{
-        position: absolute;
-        box-sizing: border-box;
-        width: 100px;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        border: 2px solid $main-blue;
+@media screen and (max-width:900px) and (min-width:601px){
+    main{
+        flex-direction: column;
     }
 
-    & span{
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 50px;
-        color: white;
-        width: 100%; height: 100%;
-        text-align: center;
-        line-height: 160px;
-        opacity: 0;
-        transition: opacity .4s;
-
-        &:hover{
-            cursor: pointer;
-            opacity: .7;
-        }
+    .filter{
+        width: 100%;
     }
-
 }
 
 
-        
-.result_infos{
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 15px; margin-bottom: 5px;
-    width: 65%;
-
-}
-//=============END OF RESULT==================//
-    
-    .result:last-child{
-        border-bottom: none;
-    }   
 
 @media (max-width: 600px){
-    header{        
-        height: 60px;
+    #cover_pop_up{
+       width: 95vw; min-height: 85vh;
 
-        #logo{      
-            padding: 5px;
-            font-size: 13px;    
-            height: 60px;
-            width: 130px;
-    
-            img{
-                margin-right: 1vw;
-                width: 50px; height: 50px;            
-            }
-        } 
-    }
-
-    .show_more_button{
-        margin-top: 10px;
-        width: 150px;
-    }
-
-    #logging{       
-        height: 60px; min-width: 130px;
-        top: 10%; right: 2%;
-
-        #user_status{
-
-            font-size: 10px;        
-            text-align: right; 
-            width: 100%;
+        img{
+            width: 70%;
         }
-
-        #log_in_button{ 
-            width: 80px; height: 4vh;
-            margin-top: 5px;            
-            font-size: 16px;
-            
-        }
-    }
-
-    input[type="text"]{
-        width: 80%; height: 35px;                  
-    }  
-
-    #filter{
-        min-height: 150px;
-        margin-left: auto; margin-right: auto;
-        margin-top: 1vh;
-        width: 95vw;
-        padding-top: 10px;
-
-        fieldset{
-            margin-left: auto; margin-right: auto;
-            width: 95%; font-size: 12px;
-        }     
     }
 
     main{
-        min-height: 150px;
-        margin-top: 5px; 
-        width: 100vw; 
+        flex-direction: column;
+        width: 100vw;
+        margin-top: 0;
     }
 
-    #pop_up{
-        width: 98vw;
+    input[type="text"]{
+        height: 25px;
+    }
 
-        #{&}_title{
-            margin-left: 55px;
-            width: 100px;
+    .results{
+        width: 100%;
+    }
+
+    .single_result{
+        margin-bottom: 10px;
+    }
+
+    .item_info{
+        font-size: 10px;
+    }
+
+
+    .filter{
+        width: 100%; flex-basis: 180px;
+        padding: 10px;
+        
+
+    }
+
+    label{
+        font-size: 10px;
+
+        input[type="checkbox"]{
+            width: 10px; height: 10px;
         }
     }
-    
-    #pop_up_cover{
-        width: 95vw;
+
+    .summary{
+        font-size: 10px;
+        margin: 0px 0px 5px 0px;
+    }
+
+    .cover{
+        min-width: 50px;
+
+        i{
+            top: 40%;
+            font-size: 25px;
+        }
+    }
+
+    .image{
+        width: 50px;
+        top: 40%;
+        transform: translateY(-50%);
+    }
+
+    header{
+        height: 60px;
+    }        
+
+    #logo{
+        height: 60px; width: 130px;
+        padding: 5px;
+        font-size: 13px;
 
         img{
-            width: 70vw;
+            margin-right: 1vw;
+            width: 50px; height: 50px;
         }
     }
 
-    .result{
-        min-height: 100px;
-        .left_margin{
-            width: 10%; height: 80px;
+    #logging{
+        height: 50px; min-width: 10%;
+        margin-right: 2%;            
+
+        #user_status{
+            display: block;
+            font-size: 10px; 
+            font-weight: 100;
+            width: 100%;
+            text-align: right;      
         }
 
-        .result_infos{
-            font-size: 12px; font-weight: 300;
-            margin-top: 5px; margin-bottom: 5px;
-            width: 65%;
+        #log_in_button{
+            width: 80px; height: 59px;
+            font-size: 16px;
+            margin-top: 5px;
+            transition: color, .4s;
 
-        }
-
-        .cover_image{
-
-            float: right;
-            position: relative;
-            width: 60px; height: 100px;
-        
-            & img{
-                // position: absolute;
-                box-sizing: border-box;
-                width: 55px;
-                // top: 50%; left: 50%;
-                // transform: translate(-50%, -50%);
-                border: 2px solid $main-blue;
+            &:hover{
+                color: $main-yellow;
+                cursor: pointer;
             }
-        
-            & span{
-                position: absolute;
-                top: 50%; left: 50%;
-                transform: translate(-50%, -50%);
-                font-size: 30px;
-                color: white;
-                width: 100%; height: 100%;
-                text-align: center; line-height: 80px;
-                opacity: 0;
-                transition: opacity .4s;
-        
-                &:hover{
-                    cursor: pointer;
-                    opacity: .7;
-                }
-            }        
         }
     }
 } 
