@@ -360,9 +360,6 @@ class AddMovie extends AddItem{
             }case 'pub_year':{
                 if(!this.excluded_inputs.includes(item))
                     return this.check_if_numeric(item, false); 
-            }case 'publisher':{
-                if(!this.excluded_inputs.includes(item))
-                    return item.value !== "";
             }case 'description':{
                 return item.value !== "";
             }case 'condition':{
@@ -387,6 +384,9 @@ class AddSoundRecording extends AddItem{
                 return item.value !== "";
             }case 'cast':{
                 return item.value !== "";
+            }case 'publisher':{
+                if(!this.excluded_inputs.includes(item))
+                    return item.value !== "";
             }case 'pub_year':{
                 if(!this.excluded_inputs.includes(item))
                     return this.check_if_numeric(item, false); 

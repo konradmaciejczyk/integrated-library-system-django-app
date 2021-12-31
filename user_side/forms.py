@@ -25,8 +25,8 @@ class SearchForm(forms.Form):
         'name':'sr',
     }))
 
-    all = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={
-        'name':'all',
+    not_available = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={
+        'name':'n_a',
     }))
 
 

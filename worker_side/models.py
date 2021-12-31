@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.fields.files import ImageField
+from PIL import Image
 
 class Condition(models.Model):
     name = models.CharField(max_length=7, verbose_name="Item's condition")
@@ -61,6 +63,7 @@ class SoundRecording(models.Model):
     author = models.ManyToManyField(Author, verbose_name="Author")
     cast = models.CharField(max_length=200, verbose_name="Cast")
     pub_year = models.SmallIntegerField(null=True, verbose_name="Publication year")
+    publisher = models.ForeignKey(Publisher, null=True, on_delete=models.SET_NULL, verbose_name="Publisher")
     description = models.CharField(max_length=200, verbose_name="Description")
     condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
@@ -79,6 +82,18 @@ class Movie(models.Model):
     condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL, verbose_name="Condition")
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
     cover = models.ImageField(default="no_image.png", upload_to="movies_covers", verbose_name="Cover")
+
+    def save(self):
+        super().save()
+
+        img = Image.open(self.cover.path)
+
+        if img.height > 500 or img.width > 332:
+            output_size = (332, 500)
+            img.thumbnail(output_size)
+            img.save(self.cover.path)
+
+
 
     def __str__(self):
         return self.title

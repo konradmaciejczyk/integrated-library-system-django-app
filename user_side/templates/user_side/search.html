@@ -15,9 +15,9 @@
                 <label><input type="checkbox" name="book" id="item_type">Book</label>
                 <label><input type="checkbox" name="movie" id="item_type">Movie</label>
                 <label><input type="checkbox" name="sr" id="item_type">Sound recording</label>
-                <label><input type="checkbox" name="all" id="item_type">All</label>
+                <label><input type="checkbox" id="item_type">All</label>
 
-                <label id="not_available"><input type="checkbox" name="not_available">Show unavailable items</label>
+                <label id="not_available"><input type="checkbox" name="n_a">Show unavailable items</label>
 
                 <button>Apply</button>
             </form>
@@ -29,67 +29,44 @@
             {% endif %}           
             in set of <span class="text_bold">{{ fields.filters }}</span> has given <span class="text_bold">{{ number_of_results }}</span> results.</span>
 
-            {% if books %}
-                <p class="tab">Books</p>
-                {% for result in books %}
-                    <div class="single_result">
-                        <div class="result_no">{{ forloop.counter }}.<i class="fas fa-book-open" title="Book"></i>
-                            <input type="checkbox" class="add_to_cart" title="Add to order list">
-                        </div>
-                    
-                            <div class="item_info"> 
+            {% for result in results %}
+                <div class="single_result">
+                    <div class="result_no">{{ forloop.counter }}.
+                        {% if result.type is 1 %}
+                            <i class="fas fa-book-open" title="Book"></i>
+                        {% elif result.type is 2 %}
+                            <i class="fas fa-film" title="Movie/Film"></i>
+                        {% elif result.type is 3 %}
+                            <i class="fas fa-compact-disc" title="Sound recording"></i>
+                        {% endif %}
+                        <input type="checkbox" class="add_to_cart" title="Add to order list">
+                    </div>
+                
+                        <div class="item_info"> 
                             <ul>
                                 <li><span class="text_bold">ID: </span>{{ result.id }}</li>
                                 <li><span class="text_bold">Title: </span>{{ result.title }}</li>
                                 <li><span class="text_bold">Full title: </span>{{ result.full_title }}</li>
-                                <li><span class="text_bold">Author: </span>{{ result.author }}</li>
+                                {% if result.author %}<li><span class="text_bold">Author: </span>{{ result.author }}</li>{% endif %}                                
+                                {% if result.director %}<li><span class="text_bold">Director: </span>{{ result.director }}</li>{% endif %}
+                                {% if result.screenwriter %}<li><span class="text_bold">Screenwriter: </span>{{ result.screenwriter }}</li>{% endif %}
+                                {% if result.cast %}<li><span class="text_bold">Cast: </span>{{ result.cast }}</li>{% endif %}   
                                 <li><span class="text_bold">Publication year: </span>{{ result.pub_year }}</li>
-                                <li><span class="text_bold">Publisher: </span>{{ result.publisher }}</li>
-                                <li><span class="text_bold">ISBN: </span>{{ result.isbn }}</li>
+                                {% if result.publisher %}<li><span class="text_bold">Publisher: </span>{{ result.publisher }}</li>{% endif %}
+                                {% if result.isbn %}<li><span class="text_bold">ISBN: </span>{{ result.isbn }}</li>{% endif %}
                                 <li><span class="text_bold">Description: </span>{{ result.description }}</li>
                                 <li><span class="text_bold">Condition: </span>{{ result.condition }}</li>
-                                <li><span class="text_bold">Availability: </span><span class="text_bold green">{{ result.availability }}</span></li>
-                                
+                                <li><span class="text_bold">Availability: </span><span class="text_bold green">{{ result.availability }}</span></li>                                
                             </ul>
-                            </div>
-                        <div class="cover" onclick="show_pop_up('{{ result.title }}', '{{ result.cover }}');">
-                            <img class="image" src="{{ result.cover }}">
-                            <i class="fas fa-search-plus"></i>
                         </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
 
-            {% if movies %}
-                <p class="tab">Movies</p>
-                {% for result in movies %}
-                    <div class="single_result">
-                        <div class="result_no">{{ forloop.counter }}.<i class="fas fa-film" title="Movie/Film"></i>
-                            <input type="checkbox" class="add_to_cart" title="Add to order list">
-                        </div>
+                    <div class="cover" onclick="show_pop_up('{{ result.title }}', '{{ result.cover }}');">
+                        <img class="image" src="{{ result.cover }}">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+            {% endfor %}
                     
-                            <div class="item_info"> 
-                            <ul>
-                                <li><span class="text_bold">ID: </span>{{ result.id }}</li>
-                                <li><span class="text_bold">Title: </span>{{ result.title }}</li>
-                                <li><span class="text_bold">Full title: </span>{{ result.full_title }}</li>
-                                <li><span class="text_bold">Director: </span>{{ result.director }}</li>
-                                <li><span class="text_bold">Screenwriter: </span>{{ result.screenwriter }}</li>                                
-                                <li><span class="text_bold">Publication year: </span>{{ result.pub_year }}</li>
-                                <li><span class="text_bold">Description: </span>{{ result.description }}</li>
-                                <li><span class="text_bold">Condition: </span>{{ result.condition }}</li>
-                                <li><span class="text_bold">Availability: </span><span class="text_bold green">{{ result.availability }}</span></li>
-                                
-                            </ul>
-                            </div>
-
-                        <div class="cover" onclick="show_pop_up('{{ result.title }}', '{{ result.cover }}');">
-                            <img class="image" src="{{ result.cover }}">
-                            <i class="fas fa-search-plus"></i>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
         </section>
     </main>
     <div id="overlay">

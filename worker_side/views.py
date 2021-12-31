@@ -4,6 +4,7 @@ from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundR
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
 from worker_side.models import Author, Director, Publisher, Screenwriter
+from django.core.mail import send_mail
 
 def home(request):
     return render(request, 'worker_side/home.html')
@@ -14,6 +15,25 @@ def register_user(request):
         form = ClientRegistrationForm(request.POST)
         if form.is_valid():
             data_to_summary = form.save()
+
+            subject = 'Online Library Catalog - library registration confimation'
+            message = """ 
+            Hello {},
+
+            You have registred yourself in our Library.
+            You can now use our Online Platform to search and order items from Library.
+
+            Your password: {}
+
+
+            This message was created created automatically. Please do not respond.
+
+            Sincerly,
+            Online Library Catalog team
+            """.format(data_to_summary['first_name'], data_to_summary['password'])
+            to = form.cleaned_data['email']
+            send_mail(subject, message, 'conrad2048@gmail.com', (to,))
+
             return render(request, template_name="worker_side/register_summary.html", context = data_to_summary)
         else:
             messages.error(request, f'Form filled with invalid informations!')

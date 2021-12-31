@@ -8,7 +8,6 @@ from user_side.models import Client
 from django.db import transaction
 import string, random
 import re
-import urllib
 
 def get_borrows_limit(occupation, citizenship):
     """Auxillary function, that detreminates (basing on client's occupation and citizenship) 
@@ -229,7 +228,6 @@ class AddMovieForm(forms.Form):
     @transaction.atomic
     def save(self):
         new_directors, new_screenwriters = [], []
-        print("CO PRZYSZŁO: ", self.cleaned_data)
 
         movie = Movie()
         movie.title = self.cleaned_data['title']
@@ -270,9 +268,7 @@ class AddMovieForm(forms.Form):
                     movie.screenwriter.add(screenwriter)
                 else:
                     screenwriter = None
-
-        print("REZYSEROWIE: ", directors)
-        print("SCENARZYŚCI: ", screenwriters)
+                    
         new_item = True
 
         director = ", ".join([director.name for director in movie.director.all()])
@@ -345,8 +341,8 @@ class AddSoundRecordingForm(forms.Form):
         if(cover != None):
             sound_recording.cover = self.cleaned_data['cover'] 
 
-        sound_recording.save()
-
+        
+        publisher = None
         try:
             publisher = Publisher.objects.get(name=self.cleaned_data['publisher']) 
         except:
@@ -357,10 +353,12 @@ class AddSoundRecordingForm(forms.Form):
                 publisher = None
 
         sound_recording.publisher = publisher
+
         sound_recording.description = self.cleaned_data['description']
         sound_recording.condition = Condition.objects.get(id=self.cleaned_data['condition'])
         sound_recording.availability = Availability.objects.get(id=self.cleaned_data['availability'])
 
+        sound_recording.save()
         authors = self.cleaned_data['author'].split(', ') 
         for author in authors:
             try:

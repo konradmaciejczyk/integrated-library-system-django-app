@@ -3,7 +3,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass')(require('sass'));
 var browserSync = require('browser-sync').create();
 
-const app_name= "user_side";
+const app_name= "worker_side";
 
 function style(){
     //1. Where SCSS files are

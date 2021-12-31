@@ -186,6 +186,7 @@ label {
   white-space: pre-wrap;
   font-size: 14px;
   margin-bottom: 5px;
+  width: 150px;
 }
 
 #not_available {
@@ -218,6 +219,7 @@ button:hover {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   margin: 15px auto 0px auto;
   display: flex;
+  color: #3d3d3d;
 }
 
 .result_no {
@@ -266,7 +268,7 @@ button:hover {
 
 #cover_pop_up {
   width: 400px;
-  min-height: 600px;
+  min-height: 300px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -278,7 +280,7 @@ button:hover {
 }
 #cover_pop_up img {
   display: block;
-  margin: 0px auto 0px auto;
+  margin: 0px auto 35px auto;
   border: 1px solid lightgray;
 }
 
@@ -382,7 +384,7 @@ ul {
   .filter {
     width: 100%;
     flex-basis: 180px;
-    padding: 10px;
+    padding: 20px 10px 10px 10px;
   }
 
   label {
