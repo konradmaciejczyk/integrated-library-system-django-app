@@ -119,7 +119,7 @@ main {
 
 .filter {
   box-sizing: border-box;
-  height: 400px;
+  min-height: 400px;
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: 300px;
@@ -142,6 +142,53 @@ main {
   background-color: rgba(0, 0, 0, 0.2);
   font-size: 25px;
   padding: 10px;
+}
+
+.page_buttons {
+  margin-top: 20px;
+  width: 100%;
+  height: 50px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+}
+
+.page_button {
+  margin-right: 5px;
+  width: 45px;
+  height: 45px;
+  background-color: #31655a;
+  border-radius: 5px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 45px;
+  display: inline-block;
+  transition: filter 0.4s;
+}
+.page_button:hover {
+  cursor: pointer;
+  filter: brightness(120%);
+}
+
+.page_button.active {
+  background-color: #194973;
+}
+
+.authors {
+  border-top: 1px solid lightgray;
+  margin-top: 20px;
+  padding-top: 20px;
+  font-size: 13px;
+}
+.authors a {
+  color: black;
+  text-decoration: underline;
+}
+.authors ul {
+  list-style-type: none;
+}
+.authors ul li {
+  margin-top: 5px;
 }
 
 .summary {
@@ -186,7 +233,7 @@ label {
   white-space: pre-wrap;
   font-size: 14px;
   margin-bottom: 5px;
-  width: 150px;
+  width: 170px;
 }
 
 #not_available {
@@ -244,6 +291,10 @@ button:hover {
 .item_info {
   padding: 10px;
   flex-grow: 1;
+}
+.item_info a {
+  color: #3d3d3d;
+  text-decoration: underline;
 }
 
 .cover {

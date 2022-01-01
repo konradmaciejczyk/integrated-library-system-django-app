@@ -1,6 +1,5 @@
 {% extends 'user_side/base.html' %}
 {% load static %}
-
 {% block title %}{{ title }}{% endblock title %}
 {% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'user_side/css/search.css' %}" media="screen"> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -9,7 +8,7 @@
     <main>
         <div class="filter">
             <form method="GET">
-                <input type="text" name="title" placeholder="Enter search phrase", onfocus="this.placeholder='';", onblur="this.placeholder='Enter search phrase';" required>
+                <input type="text" name="title" placeholder="Enter search phrase", onfocus="this.placeholder='';", onblur="this.placeholder='Enter search phrase';">
                 <input type="text" name="author" placeholder="Enter author name" onfocus="this.placeholder='';" onblur="this.placeholder='Enter author name';">
 
                 <label><input type="checkbox" name="book" id="item_type">Book</label>
@@ -20,6 +19,18 @@
                 <label id="not_available"><input type="checkbox" name="n_a">Show unavailable items</label>
 
                 <button>Apply</button>
+
+                {% if authors %}                    
+                    <div class="authors">
+                        <ul>
+                        {% for author in authors %}
+                            <li>
+                                <a href="#" id="author_link" title="{{ author.name }}">{{ author.name }} ({{ author.type }})</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
             </form>
         </div>
         <section class="results">
@@ -31,7 +42,7 @@
 
             {% for result in results %}
                 <div class="single_result">
-                    <div class="result_no">{{ forloop.counter }}.
+                    <div class="result_no">{{ forloop.counter|add:start_loop }}.
                         {% if result.type is 1 %}
                             <i class="fas fa-book-open" title="Book"></i>
                         {% elif result.type is 2 %}
@@ -66,7 +77,22 @@
                     </div>
                 </div>
             {% endfor %}
-                    
+            
+           
+                {% if results %}
+                    <nav class="page_buttons">
+                        <a href="#" class="button_a" id="button_first" title="1"><div class="page_button"><i class="fas fa-angle-double-left"></i></div></a>
+                        {% for n in pages %}
+                            {% if n is results.number %}
+                                <a href="#" class="button_a"><div class="page_button active">{{ n }}</div></a>
+                            {% else %}
+                                <a href="#" class="button_a"><div class="page_button">{{ n }}</div></a>
+                            {% endif %}
+                        {% endfor %}
+                        <a href="#" class="button_a" id="button_last" title="{{ last_page }}"><div class="page_button"><i class="fas fa-angle-double-right"></i></div></a>
+                    </nav>
+                {% endif %}
+
         </section>
     </main>
     <div id="overlay">
@@ -100,5 +126,30 @@
             pop_up.style.display = 'block';
         }
 
+        const buttons_a = document.querySelectorAll('.button_a');
+        const page_buttons = document.querySelectorAll('.page_button');
+        
+        for(let i=0; i<buttons_a.length; i++){
+            let href = window.location.href.replace(/&page=\d+/, "")
+            buttons_a[i].href = href + '&page=' + page_buttons[i].innerHTML;
+        }
+
+        function load_at(){
+            let posY = document.querySelector('.summary').getBoundingClientRect().top;
+            window.scroll(0, posY);
+        }
+
+        first_button = document.getElementById('button_first');
+        first_button.href = window.location.href.replace(/&page=\d+/, "") + "&page=" + '1';
+        last_button = document.getElementById('button_last');
+        last_button.href = window.location.href.replace(/&page=\d+/, "") + "&page=" + last_button.title;
+
+        author_links = document.querySelectorAll('#author_link');
+        author_links.forEach((author_link) => {
+            author_link.href = window.location.href.replace(/\?[\W\w]+/, "") + "?author=" + author_link.title.replace(/\s/, "+") + "&book=on&movie=on&sr=on";
+            console.log(author_link.title);
+        })
+
+        load_at();
     </script>
 {% endblock content %}

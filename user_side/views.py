@@ -1,7 +1,10 @@
+# Konrad Maciejczyk, 2021-2022
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from user_side.forms import SearchForm
-from worker_side.models import Author, Book, Director, Movie, SoundRecording
+from worker_side.models import Book, Movie, SoundRecording
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from worker_side.models import Author, Screenwriter, Director
 
 def get_books(title, author, output):
     results =  Book.objects.raw("SELECT * FROM worker_side_book AS book INNER JOIN (SELECT * FROM worker_side_author AS author INNER JOIN worker_side_book_author AS book_author ON author.id=book_author.author_id) AS total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)", ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book AS book INNER JOIN (SELECT * FROM worker_side_author AS author INNER JOIN worker_side_book_author AS book_author ON author.id=book_author.author_id) AS total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)", ["%"+title+"%"])
@@ -54,8 +57,7 @@ def get_movies(title, director_screenwriter, output):
         output.append(movie)
         movie = {}
 
-def get_sound_recordings(title, author, output):
-    
+def get_sound_recordings(title, author, output):    
     results = SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(author.name) LIKE LOWER(%s);", ["%"+title+"%", author+"%"]) if author else  SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s);", ["%"+title+"%"])
 
 
@@ -79,13 +81,23 @@ def get_sound_recordings(title, author, output):
         output.append(soundrecording)
         soundrecording = {}
 
+def get_authors(name, output):
+    authors = set()
+    for result in output:
+        print(result)
+        #authors.add(result.author)
+        #print("AUTORZY: ", result.author)
+
+    return authors
+
 def search(request):
-    if 'title' in request.GET:
+    if 'title' in request.GET or 'author' in request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
             data = form.cleaned_data
             sets = []
             output = []
+            authors = None
 
             if data['book']:
                 get_books(data['title'], data['author'], output)
@@ -102,14 +114,42 @@ def search(request):
             if len(sets) > 1:
                 sets.insert(len(sets) - 1, "and")
 
+            if 1:
+                authors = get_authors(data['author'], output)
+
             result = ", ".join(sets[0:-2]) +" "
             result += " ".join(sets[-2:])
+
+            divide_by = 100
+            paginator = Paginator(output, divide_by)
+            page = request.GET.get('page')
+
+            results = None
+            try:
+                results = paginator.page(page)
+            except PageNotAnInteger:
+                results = paginator.page(1)
+            except EmptyPage:
+                results = paginator.page(paginator.num_pages)
+
+            pages = [results.number]
+            if results.has_previous():
+                pages.insert(0, results.previous_page_number())
+            if results.has_next():
+                pages.append(results.next_page_number())
+           
             
             context = {
                 'number_of_results': len(output),
                 'fields':{'title': data['title'], 'author': data['author'], 'filters': result},
-                'results': output
+                'results': results,
+                'authors': authors,
+                'pages': pages,
+                'last_page': paginator.num_pages,
+                'start_loop': divide_by * (results.number - 1)
             }
+
+            
 
             return render(request, "user_side/search.html", context)
         else:

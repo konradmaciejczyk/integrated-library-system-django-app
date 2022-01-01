@@ -5,7 +5,7 @@ from django import forms
 from worker_side.models import Author
 
 class SearchForm(forms.Form):
-    title = forms.CharField(required=True, widget=forms.TextInput(attrs={
+    title = forms.CharField(required=False, widget=forms.TextInput(attrs={
         'name': 'title'
     }))
 
