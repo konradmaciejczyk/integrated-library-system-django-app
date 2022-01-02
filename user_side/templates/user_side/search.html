@@ -17,6 +17,12 @@
                 <label><input type="checkbox" id="item_type">All</label>
 
                 <label id="not_available"><input type="checkbox" name="n_a">Show unavailable items</label>
+                <label for="on_site">Items on site:</label>
+                <select name="on_site" id="on_site">
+                    <option value=5>5</option>
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                </select>
 
                 <button>Apply</button>
 
@@ -25,7 +31,7 @@
                         <ul>
                         {% for author in authors %}
                             <li>
-                                <a href="#" id="author_link" title="{{ author.name }}">{{ author.name }} ({{ author.type }})</a>
+                                <a href="#" id="author_link" title="{{ author }}">{{ author }}</a>
                             </li>
                         {% endfor %}
                         </ul>
@@ -34,9 +40,9 @@
             </form>
         </div>
         <section class="results">
-            <span class="summary">Search phrase: <span class="text_bold">"{{ fields.title }}"</span> 
+            <span class="summary">Search phrase: <span class="text_bold" id="title_string">"{{ fields.title }}"</span> 
             {% if fields.author %}
-                by <span class="text_bold">"{{ fields.author }}"</span>
+                by <span class="text_bold" id="author_string">"{{ fields.author }}"</span>
             {% endif %}           
             in set of <span class="text_bold">{{ fields.filters }}</span> has given <span class="text_bold">{{ number_of_results }}</span> results.</span>
 
@@ -50,7 +56,9 @@
                         {% elif result.type is 3 %}
                             <i class="fas fa-compact-disc" title="Sound recording"></i>
                         {% endif %}
-                        <input type="checkbox" class="add_to_cart" title="Add to order list">
+                        {% if user.is_staff is False and user.is_authenticated %}
+                            <input type="checkbox" class="add_to_cart" title="Add to order list">
+                        {% endif %}
                     </div>
                 
                         <div class="item_info"> 
@@ -71,7 +79,7 @@
                             </ul>
                         </div>
 
-                    <div class="cover" onclick="show_pop_up('{{ result.title }}', '{{ result.cover }}');">
+                    <div class="cover" onclick="show_pop_up(`{{ result.title }}`, `{{ result.cover }}`);">
                         <img class="image" src="{{ result.cover }}">
                         <i class="fas fa-search-plus"></i>
                     </div>
@@ -126,29 +134,55 @@
             pop_up.style.display = 'block';
         }
 
-        const buttons_a = document.querySelectorAll('.button_a');
-        const page_buttons = document.querySelectorAll('.page_button');
-        
-        for(let i=0; i<buttons_a.length; i++){
-            let href = window.location.href.replace(/&page=\d+/, "")
-            buttons_a[i].href = href + '&page=' + page_buttons[i].innerHTML;
-        }
-
         function load_at(){
             let posY = document.querySelector('.summary').getBoundingClientRect().top;
             window.scroll(0, posY);
         }
 
-        first_button = document.getElementById('button_first');
-        first_button.href = window.location.href.replace(/&page=\d+/, "") + "&page=" + '1';
-        last_button = document.getElementById('button_last');
-        last_button.href = window.location.href.replace(/&page=\d+/, "") + "&page=" + last_button.title;
+        
+        
+        try{
+            const buttons_a = document.querySelectorAll('.button_a');
+            const page_buttons = document.querySelectorAll('.page_button');
 
-        author_links = document.querySelectorAll('#author_link');
-        author_links.forEach((author_link) => {
-            author_link.href = window.location.href.replace(/\?[\W\w]+/, "") + "?author=" + author_link.title.replace(/\s/, "+") + "&book=on&movie=on&sr=on";
-            console.log(author_link.title);
-        })
+            for(let i=0; i<buttons_a.length; i++){
+            let href = window.location.href.replace(/&page=\d+/, "")
+            buttons_a[i].href = href + '&page=' + page_buttons[i].innerHTML;
+            }        
+
+            first_button = document.getElementById('button_first');
+            first_button.href = window.location.href.replace(/&page=\d+/, "") + "&page=" + '1';
+            last_button = document.getElementById('button_last');
+            last_button.href = window.location.href.replace(/&page=\d+/, "") + "&page=" + last_button.title;
+
+            author_links = document.querySelectorAll('#author_link');
+            author_links.forEach((author_link) => {
+                author_link.href = window.location.href.replace(/\?[\W\w]+/, "") + "?author=" + author_link.title.replace(/\s/, "+") + "&book=on&movie=on&sr=on";
+            })
+        }catch(e){
+            e
+        }
+       
+        try{
+            const on_site = document.getElementById('on_site');
+            on_site.value = document.location.href.match(/on_site=\d+/)[0].match(/\d+/)[0];
+        }catch(e){
+            e
+        }
+
+        try{
+            const title_bar=document.querySelector("input[name='title']");
+            title_bar.value = document.getElementById('title_string').innerHTML.match(/[\wąężźćłóń\s]+/)[0];
+        }catch(e){
+            e
+        }
+        
+        try{
+            const author_bar=document.querySelector("input[name='author");
+            author_bar.value=document.getElementById('author_string').innerHTML.match(/[\wąężźćłóń\s]+/)[0];
+        }catch(e){
+            e
+        }
 
         load_at();
     </script>

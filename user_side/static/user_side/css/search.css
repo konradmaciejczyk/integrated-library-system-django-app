@@ -115,14 +115,14 @@ main {
   margin: 10px auto 200px auto;
   color: black;
   display: flex;
+  align-items: flex-start;
 }
 
 .filter {
   box-sizing: border-box;
-  min-height: 400px;
+  min-height: 300px;
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 300px;
   background-color: white;
   margin-right: 20px;
   display: inline-block;
@@ -369,6 +369,19 @@ button:hover {
   display: none;
 }
 
+#on_site {
+  display: inline-block;
+  background-color: white;
+  outline-color: #31655a;
+  border-color: #31655a;
+}
+
+label[for] {
+  margin: 5px 0px 20px 26px;
+  width: 90px;
+  display: inline-block;
+}
+
 ul {
   margin-left: 10px;
 }
@@ -376,7 +389,6 @@ ul {
 .image {
   display: block;
   width: 100px;
-  background-color: black;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -404,7 +416,7 @@ ul {
 @media (max-width: 600px) {
   #cover_pop_up {
     width: 95vw;
-    min-height: 85vh;
+    min-height: 25vh;
   }
   #cover_pop_up img {
     width: 70%;
@@ -432,9 +444,13 @@ ul {
     font-size: 10px;
   }
 
+  label[for] {
+    margin-left: 22px;
+    width: 70px;
+  }
+
   .filter {
     width: 100%;
-    flex-basis: 180px;
     padding: 20px 10px 10px 10px;
   }
 
@@ -495,7 +511,7 @@ ul {
   }
   #logging #log_in_button {
     width: 80px;
-    height: 59px;
+    height: 29px;
     font-size: 16px;
     margin-top: 5px;
     transition: color, 0.4s;

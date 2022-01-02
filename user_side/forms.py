@@ -29,6 +29,10 @@ class SearchForm(forms.Form):
         'name':'n_a',
     }))
 
+    on_site = forms.ChoiceField(required=False, choices=(('5', '5'), ('10', '10'), ('25', '25')), label="Items on list", widget=forms.Select(attrs={
+        'name': 'on_site'
+    }))
+
 
 
 

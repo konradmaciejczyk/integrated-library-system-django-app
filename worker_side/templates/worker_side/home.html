@@ -16,7 +16,7 @@
     {% endif %}
     <main>
         <div class="option_box search">
-            <a href="#"><i class="fas fa-search"></i></br>Search in resources</a>
+            <a href="{% url 'user_side-home' %}"><i class="fas fa-search"></i></br>Search in resources</a>
         </div>
         <div class="option_box user" style="grid-area: user1">
             <a href="{% url 'worker_side-register_user' %}"><i class="fas fa-user-plus"></i><br>Register new user</a>            

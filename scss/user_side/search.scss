@@ -14,12 +14,13 @@ main{
     margin: 10px auto 200px auto;
     color: black;
     display: flex;
+    align-items:flex-start;
 }
 
 .filter{
     box-sizing: border-box;
-    min-height: 400px;
-    flex-grow: 0; flex-shrink: 0; flex-basis: 300px;
+    min-height: 300px;
+    flex-grow: 0; flex-shrink: 0;
     background-color: white;
     margin-right: 20px;
     display: inline-block;
@@ -271,6 +272,18 @@ button{
     display: none;
 }
 
+#on_site{
+    display: inline-block;
+    background-color: white;
+    outline-color: $main-green;
+    border-color: $main-green;
+}
+label[for]{
+    margin: 5px 0px 20px 26px;
+    width: 90px;
+    display: inline-block;
+}
+
 
 ul{
     margin-left: 10px;
@@ -279,7 +292,6 @@ ul{
 .image{
     display: block;
     width: 100px;
-    background-color: black;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -308,7 +320,7 @@ ul{
 
 @media (max-width: 600px){
     #cover_pop_up{
-       width: 95vw; min-height: 85vh;
+       width: 95vw; min-height: 25vh;
 
         img{
             width: 70%;
@@ -337,12 +349,15 @@ ul{
         font-size: 10px;
     }
 
+    label[for]{
+        margin-left: 22px;
+        width: 70px;
+    }
+
 
     .filter{
-        width: 100%; flex-basis: 180px;
+        width: 100%;
         padding: 20px 10px 10px 10px;
-        
-
     }
 
     label{
@@ -401,7 +416,7 @@ ul{
         }
 
         #log_in_button{
-            width: 80px; height: 59px;
+            width: 80px; height: 29px;
             font-size: 16px;
             margin-top: 5px;
             transition: color, .4s;
