@@ -1,0 +1,313 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+html, body {
+  background-color: #e6f0f5;
+  color: #F8F7F2;
+  background: url(../img/background_light.png);
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+a, a:active, a:hover, a:visited, a:link {
+  text-decoration: none;
+  color: #F8F7F2;
+  transition: color 0.4s;
+}
+a:hover {
+  color: #F8D872;
+}
+input[type=submit] {
+  border: 0px;
+  background-color: #FFFFFF;
+}
+
+input[type=text], input[type=password] {
+  border: 0px;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  padding-left: 2%;
+}
+
+input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 20%;
+  vertical-align: middle;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+input[type=checkbox]:checked {
+  background-color: #F8D872;
+}
+
+.cart {
+  position: fixed;
+  top: 150px;
+  right: 1vw;
+  width: 160px;
+  height: 50px;
+  color: white;
+  background-color: #31655a;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  transform: scale(0);
+  transition: transform 0.2s;
+}
+.cart i {
+  margin-right: 5px;
+}
+.cart:hover {
+  cursor: pointer;
+}
+
+label {
+  display: inline-block;
+  white-space: nowrap;
+}
+label:hover {
+  cursor: pointer;
+}
+
+fieldset {
+  border: 0px;
+}
+
+header {
+  position: relative;
+  background-color: #31655a;
+  height: 120px;
+  width: 100vw;
+}
+
+#logo {
+  box-sizing: border-box;
+  position: absolute;
+  width: 225px;
+  height: 120px;
+  top: 0px;
+  left: 0px;
+  padding: 10px;
+  font-size: 27px;
+  font-weight: 300;
+  float: left;
+}
+#logo img {
+  margin-right: 10px;
+  width: 100px;
+  height: 100px;
+  float: left;
+}
+#logo a:hover {
+  color: #F8F7F2;
+}
+
+#logging {
+  position: absolute;
+  top: 20%;
+  right: 2%;
+  box-sizing: border-box;
+  font-weight: 300;
+}
+#logging #user_status {
+  display: block;
+  font-weight: 100;
+  font-size: 20px;
+}
+#logging #log_in_button {
+  float: right;
+  text-align: right;
+  transition: color, 0.4s;
+  margin-top: 10px;
+  transition: color 0.4s;
+}
+
+main {
+  box-sizing: border-box;
+  padding: 15px;
+  padding-bottom: 100px;
+  width: 70vw;
+  min-height: 100px;
+  background-color: white;
+  margin: 50px auto 0px auto;
+}
+
+.text_bold {
+  font-weight: 500;
+}
+
+h1 {
+  text-align: center;
+  color: #3d3d3d;
+  font-weight: 300;
+}
+
+.single_result {
+  box-sizing: border-box;
+  width: 95%;
+  min-height: 100px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 15px auto 0px auto;
+  display: flex;
+  color: #424242;
+}
+
+.result_no {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.result_no i {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 30%;
+}
+.result_no .add_to_cart {
+  display: block;
+  border-radius: 50%;
+}
+
+.item_info {
+  padding: 10px;
+  flex-grow: 1;
+}
+.item_info a {
+  color: #424242;
+  text-decoration: underline;
+}
+
+.green {
+  color: #48d624;
+}
+
+input[type=checkbox] {
+  border: 1px solid #31655a;
+  width: 15px;
+  height: 15px;
+  margin-top: 1px;
+}
+input[type=checkbox]:checked {
+  background-color: #31655a;
+}
+
+button {
+  background-color: #31655a;
+  border: none;
+  width: 150px;
+  height: 40px;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  border-radius: 5px;
+  margin: 10px auto 0px auto;
+  display: block;
+  font-weight: 300;
+}
+button:hover {
+  cursor: pointer;
+  filter: brightness(120%);
+  -webkit-box-shadow: 0px 0px 30px -10px #31655a;
+  -moz-box-shadow: 0px 0px 30px -10px #31655a;
+  box-shadow: 0px 0px 30px -10px #31655a;
+}
+
+.cover {
+  width: 100px;
+  margin: 10px 20px 10px 0px;
+  align-items: center;
+  transition: color 0.4s;
+  color: rgba(255, 255, 255, 0);
+  position: relative;
+}
+.cover i {
+  font-size: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.cover:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.image {
+  display: block;
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+p {
+  text-align: center;
+  font-size: 20px;
+  margin: 20px 50px 0px 0px;
+  color: #424242;
+}
+
+#cover_pop_up {
+  width: 400px;
+  min-height: 300px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: darkgray;
+  border-radius: 3px;
+  display: none;
+}
+#cover_pop_up img {
+  display: block;
+  margin: 0px auto 35px auto;
+  border: 1px solid lightgray;
+  width: 200px;
+}
+
+.pop_up_header {
+  box-sizing: border-box;
+  display: flex;
+  padding: 20px;
+  z-index: 2;
+}
+.pop_up_header p {
+  font-size: 20px;
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.pop_up_header i {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 25px;
+  transition: color 0.4s;
+}
+.pop_up_header i:hover {
+  cursor: pointer;
+  color: black;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+}

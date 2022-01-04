@@ -49,6 +49,28 @@ input[type=checkbox]:checked {
   background-color: #F8D872;
 }
 
+.cart {
+  position: fixed;
+  top: 150px;
+  right: 1vw;
+  width: 160px;
+  height: 50px;
+  color: white;
+  background-color: #31655a;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  transform: scale(0);
+  transition: transform 0.2s;
+}
+.cart i {
+  margin-right: 5px;
+}
+.cart:hover {
+  cursor: pointer;
+}
+
 label {
   display: inline-block;
   white-space: nowrap;
@@ -197,6 +219,13 @@ footer {
   }
 }
 @media (max-width: 600px) {
+  .cart {
+    top: auto;
+    right: auto;
+    bottom: 50px;
+    left: 2.5vw;
+  }
+
   header {
     height: 60px;
   }
@@ -239,17 +268,17 @@ footer {
 
   main #box_searching {
     margin-top: 5vh;
-    height: 380px;
+    height: 300px;
     width: 95vw;
   }
   main #box_searching #search_tool {
     width: 80vw;
-    height: 30px;
+    height: 40px;
   }
   main #box_searching #author_bar {
     width: 80vw;
     margin-left: 8%;
-    height: 25px;
+    height: 30px;
   }
   main #box_searching fieldset {
     grid-template-columns: repeat(1, minmax(0, 1fr));

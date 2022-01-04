@@ -1,0 +1,57 @@
+{% extends 'user_side/base.html' %}
+{% load static %}
+{% block title %}Order summary{% endblock title %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/cart.css' %}" media="screen">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+{% endblock styles %}
+{% block content %}
+    <main>
+        <h1>You're about to order following items</h1>
+
+        {% for result in results %}
+                <div class="single_result">
+                    <div class="result_no">{{ forloop.counter }}.
+                        {% if result.type is 1 %}
+                            <i class="fas fa-book-open" title="Book"></i>
+                        {% elif result.type is 2 %}
+                            <i class="fas fa-film" title="Movie/Film"></i>
+                        {% elif result.type is 3 %}
+                            <i class="fas fa-compact-disc" title="Sound recording"></i>
+                        {% endif %}
+                        {% if user.is_staff is False and user.is_authenticated %}
+                            <input type="checkbox" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}">
+                        {% endif %}
+                    </div>
+                
+                        <div class="item_info"> 
+                            <ul>
+                                <li><span class="text_bold">ID: </span>{{ result.id }}</li>
+                                <li><span class="text_bold">Title: </span>{{ result.title }}</li>
+                                <li><span class="text_bold">Full title: </span>{{ result.full_title }}</li>
+                                {% if result.author %}<li><span class="text_bold">Author: </span>{{ result.author }}</li>{% endif %}                                
+                                {% if result.director %}<li><span class="text_bold">Director: </span>{{ result.director }}</li>{% endif %}
+                                {% if result.screenwriter %}<li><span class="text_bold">Screenwriter: </span>{{ result.screenwriter }}</li>{% endif %}
+                                {% if result.cast %}<li><span class="text_bold">Cast: </span>{{ result.cast }}</li>{% endif %}   
+                                <li><span class="text_bold">Publication year: </span>{{ result.pub_year }}</li>
+                                {% if result.publisher %}<li><span class="text_bold">Publisher: </span>{{ result.publisher }}</li>{% endif %}
+                                {% if result.isbn %}<li><span class="text_bold">ISBN: </span>{{ result.isbn }}</li>{% endif %}
+                                <li><span class="text_bold">Description: </span>{{ result.description }}</li>
+                                <li><span class="text_bold">Condition: </span>{{ result.condition }}</li>
+                                <li><span class="text_bold">Availability: </span><span class="text_bold green">{{ result.availability }}</span></li>                                
+                            </ul>
+                        </div>
+
+                    <div class="cover" onclick="show_pop_up(`{{ result.title }}`, `{{ result.cover }}`);">
+                        <img class="image" src="{{ result.cover }}">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <p>Your account allows you to order {{ client_borrows }} more items.</p>
+
+            <button>Order items</button>
+
+    </main>
+{% endblock content %}

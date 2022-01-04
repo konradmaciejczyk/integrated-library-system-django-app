@@ -1,9 +1,14 @@
 # Konrad Maciejczyk, 2021-2022
+from os import sched_setscheduler
+from django.http.response import JsonResponse
+import json
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from user_side.forms import SearchForm
+from user_side.models import Client
 from worker_side.models import Book, Movie, SoundRecording
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from accounts.models import User
 
 def get_books(title, author, output, authors):
     results =  Book.objects.raw("SELECT * FROM worker_side_book AS book INNER JOIN (SELECT * FROM worker_side_author AS author INNER JOIN worker_side_book_author AS book_author ON author.id=book_author.author_id) AS total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)", ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book AS book INNER JOIN (SELECT * FROM worker_side_author AS author INNER JOIN worker_side_book_author AS book_author ON author.id=book_author.author_id) AS total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)", ["%"+title+"%"])
@@ -105,9 +110,9 @@ def search(request):
             data = form.cleaned_data
 
             
-            if data['title'] == '' and data['author'] == '':
-                context = {'number_of_results': 0, 'fields':{'title': data['title'], 'author': data['author'], 'filters': "books"}}
-                return render(request, "user_side/search.html", context)
+            # if data['title'] == '' and data['author'] == '':
+            #     context = {'number_of_results': 0, 'fields':{'title': data['title'], 'author': data['author'], 'filters': "books"}}
+            #     return render(request, "user_side/search.html", context)
 
             sets = []
             output = []
@@ -158,7 +163,8 @@ def search(request):
                 'authors': list(authors),
                 'pages': pages,
                 'last_page': paginator.num_pages,
-                'start_loop': divide_by * (results.number - 1)
+                'start_loop': divide_by * (results.number - 1),
+                'cart_status': len(request.session['cart']) if 'cart' in request.session else 0
             }
 
             return render(request, "user_side/search.html", context)
@@ -172,7 +178,83 @@ def log_in(request):
 
 @login_required
 def profile(request):
-    return render(request, "user_side/profile.html")
+    context = {
+        'cart_status': len(request.session['cart']) if 'cart' in request.session else 0
+    }
+    return render(request, "user_side/profile.html", context=context)
 
 def home(request):
-    return render(request, "user_side/home.html")
+    context = {
+        'cart_status': len(request.session['cart']) if 'cart' in request.session else 0
+    }
+
+    return render(request, "user_side/home.html", context)
+
+def update_item(request):
+    data = json.loads(request.body)
+    action = data['action']
+    print(data)
+
+    if 'cart' not in request.session:
+        request.session['cart'] = []
+    
+    if action == 1:
+        print("!!!")
+        request.session['cart'].append(data['productID'])
+    elif action == 2:
+        request.session['cart'].remove(data['productID'])
+
+    
+    request.session.modified = True
+
+    print("SESSION STORE: ", request.session['cart'], len(request.session['cart']))
+    return JsonResponse(len(request.session['cart']), safe=False)
+
+def cart(request):
+    results = []
+    items = []
+
+    for item in request.session['cart']:
+        item_type, item_id = item.split('-')
+        print(item_type, item_id)
+
+        if item_type == '1':
+            print("TU KURWA")
+            aux = Book.objects.get(id=item_id)
+
+            book = {}
+            book['type'] = 1
+            book['title'] = aux.title
+            book['full_title'] = aux.full_title
+            author = [author.name for author in aux.author.all()]
+            if author:
+                author = ', '.join(author)
+            else:
+                author = "author(s) unknown"
+            book['author'] = author
+            book['isbn'] = aux.isbn if aux.isbn else 'isbn not available'
+            book['id'] = aux.id
+            book['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
+            book['pub_year'] = aux.pub_year if aux.pub_year else "publication year unknown"
+            book['description'] = aux.description
+            book['condition'] = aux.condition.name
+            book['availability'] = aux.availability.name
+            book['cover'] = aux.cover.url
+
+            results.append(book)
+
+        elif item_type == '2':
+            items.append(Movie.objects.get(id=item_id))
+        elif item_type == '3':
+            items.append(SoundRecording.objects.get(id=item_id))
+
+    logged_user = User.objects.get(email=request.user.email)
+    logged_client = Client.objects.get(user = logged_user)
+        
+    context = {
+        'results': results,
+        'client_borrows': logged_client.borrows_max - logged_client.current_borrows
+    }
+
+    
+    return render(request, template_name='user_side/cart.html', context=context)

@@ -56,9 +56,7 @@
                         {% elif result.type is 3 %}
                             <i class="fas fa-compact-disc" title="Sound recording"></i>
                         {% endif %}
-                        {% if user.is_staff is False and user.is_authenticated %}
-                            <input type="checkbox" class="add_to_cart" title="Add to order list">
-                        {% endif %}
+                            <input type="checkbox" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}">
                     </div>
                 
                         <div class="item_info"> 
@@ -107,12 +105,17 @@
     </div>
     <div id="cover_pop_up">
         <div class="pop_up_header">
-            <p id="pop_up_title">Lorem ipsum dolor sit amet consectetur adipisicing elit. eligendi ullam sit tempora consectetur dignissimos maiores dolorem.</p><i class="fas fa-times" onclick="hide_pop_up();"></i>
+            <p id="pop_up_title"></p><i class="fas fa-times" onclick="hide_pop_up();"></i>
         </div>
         
         <img id="pop_up_image" src="#">
     </div>
     
+    <a href="{% url 'user_side-cart' %}" title="Proceed to order summary" target="_blanc">
+        <div class="cart" >
+            <i class="fas fa-shopping-bag"></i> <span id="items_number" class="text_bold">{{ cart_status }}</span> item(s) selected
+        </div>
+    </a>
     <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
     <script type="text/javascript">
         checkbox_controller = new CheckboxController('#item_type');
@@ -185,5 +188,92 @@
         }
 
         load_at();
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+        const add_to_cart = document.querySelectorAll('.add_to_cart');
+        const cart = document.querySelector('.cart');
+        const items_number = document.getElementById('items_number');
+
+        function initiate_cart(){
+            const cart_status = document.getElementById('items_number').innerHTML;
+            const cart = document.querySelector('.cart');
+            console.log(cart_status);
+            if (parseInt(cart_status) > 0){
+                cart.style.transform = 'scale(1)';
+            }else{
+                cart.style.transform = 'scale(0)';
+            }
+        }
+
+
+        let items_amount = 0;        
+        function update_cart(op){
+            switch(op){
+                case 1:{                    
+                    items_amount += 1;
+                    console.log("Item added ", items_amount);
+                    break;
+                }case 2:{                    
+                    items_amount -= 1;
+                    console.log("Item deleted ", items_amount);
+                    break;
+                }
+            }
+
+            if(items_amount < 1){
+                cart.style.transform = 'scale(0)';
+            }else{
+                cart.style.transform = 'scale(1)';
+                
+                items_number.innerHTML = items_amount;
+            }
+        }
+
+        function update_user_order(item, action){
+            var url = '/update-item/';
+
+            fetch(url, {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({'productID': item, 'action':action})
+            }).then((response) =>{
+                return response.json()
+            }).then((data) => {
+                console.log('data:', data);
+            })
+        }
+
+        for(let i=0; i< add_to_cart.length; i++){
+            add_to_cart[i].addEventListener('click', function(){
+                if (this.checked){
+                    update_cart(1);
+                    update_user_order(add_to_cart[i].dataset.item, 1);
+                }else{
+                    update_cart(2);
+                    update_user_order(add_to_cart[i].dataset.item, 2);
+                }
+            })
+        }
+
+        initiate_cart();
     </script>
 {% endblock content %}

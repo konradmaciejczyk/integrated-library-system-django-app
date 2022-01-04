@@ -89,9 +89,11 @@ footer{
     }   
 } 
 
-
-
 @media (max-width: 600px){
+    .cart{
+        top: auto; right: auto;
+        bottom: 50px; left: 2.5vw;
+    }
     header{
         height: 60px;
     }        
@@ -135,18 +137,18 @@ footer{
     main{
         #box_searching{
             margin-top: 5vh;
-            height: 380px;
+            height: 300px;
             width: 95vw;
 
             #search_tool{
                 width: 80vw;
-                height: 30px;
+                height: 40px;
             }
 
             #author_bar{
                 width: 80vw;
                 margin-left: 8%;
-                height: 25px;
+                height: 30px;
             }
 
             fieldset{

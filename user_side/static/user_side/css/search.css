@@ -49,6 +49,28 @@ input[type=checkbox]:checked {
   background-color: #F8D872;
 }
 
+.cart {
+  position: fixed;
+  top: 150px;
+  right: 1vw;
+  width: 160px;
+  height: 50px;
+  color: white;
+  background-color: #31655a;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  transform: scale(0);
+  transition: transform 0.2s;
+}
+.cart i {
+  margin-right: 5px;
+}
+.cart:hover {
+  cursor: pointer;
+}
+
 label {
   display: inline-block;
   white-space: nowrap;
@@ -304,6 +326,7 @@ button:hover {
   transition: color 0.4s;
   color: rgba(255, 255, 255, 0);
   position: relative;
+  height: 200px;
 }
 .cover i {
   font-size: 50px;
@@ -413,7 +436,22 @@ ul {
     width: 100%;
   }
 }
+.cart {
+  top: auto;
+  bottom: 5vh;
+  left: 5vw;
+  width: 160px;
+  height: 50px;
+}
+
 @media (max-width: 600px) {
+  .cart {
+    width: 120px;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+  }
+
   #cover_pop_up {
     width: 95vw;
     min-height: 25vh;

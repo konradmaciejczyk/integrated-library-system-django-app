@@ -1,0 +1,182 @@
+@import 'defaults.scss';
+$font-color: rgb(66, 66, 66);
+$checkbox_size: 15px;
+@include _header;
+
+main{
+    box-sizing: border-box;
+    padding: 15px;
+    padding-bottom: 100px;
+    width: 70vw; min-height:100px;
+    background-color: white;
+    margin: 50px auto 0px auto;
+}
+
+.text_bold{
+    font-weight: 500;
+}
+
+h1{
+    text-align: center;
+    color: rgb(61, 61, 61);
+    font-weight: 300;
+}
+
+.single_result{
+    box-sizing: border-box;
+    width: 95%; min-height: 100px;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    margin: 15px auto 0px auto;
+    display: flex;
+    color: $font-color;
+}
+
+.result_no{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    i{
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        flex-grow: 0; flex-shrink: 0; flex-basis: 30%;
+    }
+
+    .add_to_cart{
+        display: block;
+        border-radius: 50%;
+    }
+}
+.item_info{
+    padding: 10px;
+    flex-grow: 1;
+
+    a{
+        color: $font-color;
+        text-decoration: underline;
+    }  
+}
+
+.green{
+    color:rgb(72, 214, 36);
+}
+input[type="checkbox"]{
+    border: 1px solid $main-green;
+    width: $checkbox_size; height: $checkbox_size;
+    margin-top: 1px;
+    &:checked{
+        background-color: $main-green;
+    }
+}
+
+button{
+    background-color: $main-green;
+    border: none;
+    width: 150px; height: 40px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 10px auto 0px auto;
+    display: block;
+    font-weight: 300;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(120%);
+        @include shadow($main-green);
+    }
+}
+
+.cover{
+    width: 100px;
+    margin: 10px 20px 10px 0px;
+    align-items: center;
+    transition: color .4s;
+    color: rgba(255, 255, 255, 0);
+    position: relative;
+
+    i{
+        font-size: 50px;
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        
+        
+    }
+    
+    &:hover{
+        color: rgba(255, 255, 255, 1);
+        
+        cursor: pointer;
+    }
+}
+
+.image{
+    display: block;
+    width: 100px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+p{
+    text-align: center;
+    font-size: 20px;
+    margin: 20px 50px 0px 0px;
+    color: $font-color;
+}
+
+#cover_pop_up{
+    width:400px; min-height: 300px;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: darkgray;
+    border-radius: 3px;
+    display: none;
+
+    img{
+        display: block;
+        margin: 0px auto 35px auto;
+        border: 1px solid lightgray;
+        width: 200px;
+    }
+}
+
+.pop_up_header{
+    box-sizing: border-box;
+    display: flex;
+    padding: 20px;
+    z-index: 2;
+
+    p{
+        font-size: 20px;
+        flex-grow: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    i{
+        text-align: center;
+        vertical-align: middle; line-height: 25px;
+        transition: color .4s;
+
+        &:hover{
+            cursor: pointer;
+            color: black;
+        }
+    }
+}
+
+#overlay{
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: rgba(0, 0, 0, .5);
+    display: none;
+}

@@ -48,6 +48,28 @@ input[type=checkbox]:checked {
   background-color: #F8D872;
 }
 
+.cart {
+  position: fixed;
+  top: 150px;
+  right: 1vw;
+  width: 160px;
+  height: 50px;
+  color: white;
+  background-color: #31655a;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  transform: scale(0);
+  transition: transform 0.2s;
+}
+.cart i {
+  margin-right: 5px;
+}
+.cart:hover {
+  cursor: pointer;
+}
+
 label {
   display: inline-block;
   white-space: nowrap;

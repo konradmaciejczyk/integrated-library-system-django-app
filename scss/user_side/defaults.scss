@@ -70,6 +70,28 @@ input[type="checkbox"]{
     }
 }
 
+.cart{
+    position: fixed;
+    top: 150px; right: 1vw;
+    width: 160px; height: 50px;
+    color: white;
+    background-color: $main-green;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle; line-height: 50px;
+    transform: scale(0);
+    transition: transform .2s;
+
+    i{
+        margin-right: 5px;
+    }
+
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
 label{
     display: inline-block;
     white-space: nowrap;
