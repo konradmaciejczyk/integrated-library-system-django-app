@@ -7,7 +7,7 @@
 {% endblock styles %}
 {% block content %}
     <main>
-        <h1>You're about to order following items</h1>
+        <h1>You're about to order following items:</h1>
 
         {% for result in results %}
                 <div class="single_result">
@@ -20,7 +20,7 @@
                             <i class="fas fa-compact-disc" title="Sound recording"></i>
                         {% endif %}
                         {% if user.is_staff is False and user.is_authenticated %}
-                            <input type="checkbox" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}">
+                            <input type="checkbox" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}" checked>
                         {% endif %}
                     </div>
                 
@@ -49,9 +49,120 @@
                 </div>
             {% endfor %}
 
-            <p>Your account allows you to order {{ client_borrows }} more items.</p>
-
-            <button>Order items</button>
-
+            <p>Your account allows you to order <span id="client_borrows">{{ client_borrows }}</span> more items.</p>
+            <p class="order_warning">You can't order more than {{ client_borrows }} items</p>
+            
+            <div id="buttons">
+                <a href="{% url 'user_side-home' %}" id="go_back">Return to search page</a>
+                <button id="order_button">Order items</button>
+            </div>
     </main>
+    <div id="overlay"></div>
+    <div id="cover_pop_up">
+        <div class="pop_up_header">
+            <p id="pop_up_title"></p><i class="fas fa-times" onclick="hide_pop_up();"></i>
+        </div>
+        
+        <img id="pop_up_image" src="#">
+    </div>
+    {{ items_amount|json_script:"items_amount" }}
+    <script type="text/javascript">
+        const overlay = document.getElementById('overlay');
+        const pop_up = document.getElementById('cover_pop_up');
+        const pop_up_title = document.getElementById('pop_up_title');
+        const pop_up_image = document.getElementById('pop_up_image');
+        var items_amount = JSON.parse(document.getElementById('items_amount').textContent).length;
+        const borrows_available = parseInt(document.getElementById('client_borrows').innerHTML);
+        const order_button = document.getElementById('order_button');
+        const order_warning = document.querySelector('.order_warning');
+
+        function hide_pop_up(){
+            overlay.style.display = 'none';
+            pop_up.style.display = 'none';
+        }
+
+        function show_pop_up(title, cover){
+            pop_up_title.innerHTML = title;
+            pop_up_image.src = cover;
+            overlay.style.display = 'block';
+            pop_up.style.display = 'block';
+        }
+
+        function update_cart(op){
+            switch(op){
+                case 1:{ 
+                    console.log("Item added ", items_amount);
+                    break;
+                }case 2:{                
+                    console.log("Item deleted ", items_amount);
+                    break;
+                }
+            }
+        }
+        
+        function validate_borrows(){
+            console.log(borrows_available);
+            if (borrows_available - items_amount < 0){
+                order_button.style.opacity = '.2';
+                order_button.style.pointerEvents = 'none';
+                order_warning.style.opacity = '1';
+            }else{
+                order_button.style.opacity = '1';
+                order_button.style.pointerEvents = 'auto';
+                order_warning.style.opacity = '0';
+            }
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        function update_user_order(item, action){
+            var url = '/update-item/';
+
+            fetch(url, {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({'productID': item, 'action':action})
+            }).then((response) =>{
+                return response.json()
+            }).then((data) => {
+                console.log('data:', data);
+                items_amount = data.length;
+                validate_borrows();
+                
+            })
+        }
+
+        const add_to_cart = document.querySelectorAll('.add_to_cart');
+        for(let i=0; i< add_to_cart.length; i++){
+            add_to_cart[i].addEventListener('click', function(){
+                if (this.checked){
+                    update_cart(1);
+                    update_user_order(add_to_cart[i].dataset.item, 1);
+                }else{
+                    update_cart(2);
+                    update_user_order(add_to_cart[i].dataset.item, 2);
+                }
+            })
+        }
+        validate_borrows();
+        
+    </script>
 {% endblock content %}

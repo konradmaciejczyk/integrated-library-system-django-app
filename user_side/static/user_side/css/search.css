@@ -53,7 +53,7 @@ input[type=checkbox]:checked {
   position: fixed;
   top: 150px;
   right: 1vw;
-  width: 160px;
+  width: 180px;
   height: 50px;
   color: white;
   background-color: #31655a;
@@ -326,7 +326,6 @@ button:hover {
   transition: color 0.4s;
   color: rgba(255, 255, 255, 0);
   position: relative;
-  height: 200px;
 }
 .cover i {
   font-size: 50px;
@@ -440,8 +439,6 @@ ul {
   top: auto;
   bottom: 5vh;
   left: 5vw;
-  width: 160px;
-  height: 50px;
 }
 
 @media (max-width: 600px) {

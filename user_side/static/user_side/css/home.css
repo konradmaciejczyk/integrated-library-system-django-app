@@ -53,7 +53,7 @@ input[type=checkbox]:checked {
   position: fixed;
   top: 150px;
   right: 1vw;
-  width: 160px;
+  width: 180px;
   height: 50px;
   color: white;
   background-color: #31655a;
@@ -153,7 +153,7 @@ main #box_searching {
   -moz-box-shadow: 0px 0px 30px -10px #31655a;
   box-shadow: 0px 0px 30px -10px #31655a;
   margin-top: 15vh;
-  padding-top: 6vh;
+  padding-top: 70px;
 }
 main #box_searching #search_tool {
   width: 65%;

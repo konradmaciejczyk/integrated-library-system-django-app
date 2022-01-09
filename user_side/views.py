@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from accounts.models import User
 
 def get_books(title, author, output, authors):
-    results =  Book.objects.raw("SELECT * FROM worker_side_book AS book INNER JOIN (SELECT * FROM worker_side_author AS author INNER JOIN worker_side_book_author AS book_author ON author.id=book_author.author_id) AS total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)", ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book AS book INNER JOIN (SELECT * FROM worker_side_author AS author INNER JOIN worker_side_book_author AS book_author ON author.id=book_author.author_id) AS total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)", ["%"+title+"%"])
+    results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s);", ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)", ["%"+title+"%"])
 
     book = {}
 
@@ -39,7 +39,7 @@ def get_books(title, author, output, authors):
         book = {}
 
 def get_movies(title, director_screenwriter, output, authors):
-    results = Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_director AS movie_director ON movie.id=movie_director.movie_id INNER JOIN worker_side_director AS director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(director.name) LIKE LOWER (%s)", ["%"+title+"%", director_screenwriter+"%"]) if director_screenwriter else Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_director AS movie_director ON movie.id=movie_director.movie_id INNER JOIN worker_side_director AS director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s)", ["%"+title+"%"])
+    results = Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(director.name) LIKE LOWER (%s);", ["%"+title+"%", director_screenwriter+"%"]) if director_screenwriter else Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s);", ["%"+title+"%"])
 
     if len(results) < 1:
         results = Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_screenwriter AS movie_screenwriter ON movie.id=movie_screenwriter.movie_id INNER JOIN worker_side_screenwriter AS screenwriter ON screenwriter.id=movie_screenwriter.screenwriter_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(screenwriter.name) LIKE LOWER(%s)", ["%"+title+"%", director_screenwriter+"%"])
@@ -134,8 +134,7 @@ def search(request):
 
             result = ", ".join(sets[0:-2]) +" "
             result += " ".join(sets[-2:])
-
-            print(data)
+            
             divide_by = int(data['on_site']) if data['on_site'] else 5
             paginator = Paginator(output, divide_by)
             page = request.GET.get('page')
@@ -153,9 +152,7 @@ def search(request):
                 pages.insert(0, results.previous_page_number())
             if results.has_next():
                 pages.append(results.next_page_number())
-           
-            print(authors)
-            
+
             context = {
                 'number_of_results': len(output),
                 'fields':{'title': data['title'], 'author': data['author'], 'filters': result},
@@ -164,7 +161,8 @@ def search(request):
                 'pages': pages,
                 'last_page': paginator.num_pages,
                 'start_loop': divide_by * (results.number - 1),
-                'cart_status': len(request.session['cart']) if 'cart' in request.session else 0
+                'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
+                'cart_items': request.session['cart'] if 'cart' in request.session else 'Ni ma'
             }
 
             return render(request, "user_side/search.html", context)
@@ -191,69 +189,88 @@ def home(request):
     return render(request, "user_side/home.html", context)
 
 def update_item(request):
-    data = json.loads(request.body)
-    action = data['action']
-    print(data)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        action = data['action']
 
-    if 'cart' not in request.session:
-        request.session['cart'] = []
-    
-    if action == 1:
-        print("!!!")
-        request.session['cart'].append(data['productID'])
-    elif action == 2:
-        request.session['cart'].remove(data['productID'])
+        if 'cart' not in request.session:
+            request.session['cart'] = []
+        
+        if action == 1:
+            if data['productID'] not in request.session['cart']:
+                request.session['cart'].append(data['productID'])  
+        elif action == 2:
+            if data['productID'] in request.session['cart']:
+                request.session['cart'].remove(data['productID'])
 
-    
-    request.session.modified = True
+        print("KOSZYK: ", request.session['cart'])
 
-    print("SESSION STORE: ", request.session['cart'], len(request.session['cart']))
-    return JsonResponse(len(request.session['cart']), safe=False)
+        request.session.modified = True
+
+        return JsonResponse(request.session['cart'], safe=False)
+    else:
+        return redirect('user_side-home')
 
 def cart(request):
     results = []
-    items = []
 
     for item in request.session['cart']:
         item_type, item_id = item.split('-')
-        print(item_type, item_id)
 
+        aux = None
+        order_item = {
+            'author': '', 'type': '', 'isbn': '', 'publisher': '', 'title': '', 'full_title': '', 'id': '', 'pub_year': '', 'description': '', 'condition': '', 'availability': '', 'cover': ''
+        }
         if item_type == '1':
-            print("TU KURWA")
             aux = Book.objects.get(id=item_id)
 
-            book = {}
-            book['type'] = 1
-            book['title'] = aux.title
-            book['full_title'] = aux.full_title
             author = [author.name for author in aux.author.all()]
             if author:
                 author = ', '.join(author)
             else:
                 author = "author(s) unknown"
-            book['author'] = author
-            book['isbn'] = aux.isbn if aux.isbn else 'isbn not available'
-            book['id'] = aux.id
-            book['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
-            book['pub_year'] = aux.pub_year if aux.pub_year else "publication year unknown"
-            book['description'] = aux.description
-            book['condition'] = aux.condition.name
-            book['availability'] = aux.availability.name
-            book['cover'] = aux.cover.url
-
-            results.append(book)
-
+            order_item['author'] = author
+            order_item['isbn'] = aux.isbn if aux.isbn else 'isbn not available'
+            order_item['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
         elif item_type == '2':
-            items.append(Movie.objects.get(id=item_id))
+            aux = Movie.objects.get(id=item_id)
+
+            director = [director.name for director in aux.director.all()]
+            if director:
+                director = ', '.join(director)
+            else:
+                director = "director(s) unknown"
+            order_item['director'] = director
+            screenwriter = [screenwriter.name for screenwriter in aux.screenwriter.all()]
+            if screenwriter:
+                screenwriter = ', '.join(screenwriter)
+            else:
+                screenwriter = 'screenwriter(s) unknown'
+            order_item['screenwriter'] = screenwriter
         elif item_type == '3':
-            items.append(SoundRecording.objects.get(id=item_id))
+            aux = SoundRecording.objects.get(id=item_id)
+            order_item['cast'] = aux.cast if aux.cast else "cast unknown"
+            order_item['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
+
+        order_item['type'] = item_type
+        order_item['title'] = aux.title
+        order_item['full_title'] = aux.full_title
+        order_item['id'] = aux.id
+        order_item['pub_year'] = aux.pub_year if aux.pub_year else "publication year unknown"
+        order_item['description'] = aux.description
+        order_item['condition'] = aux.condition.name
+        order_item['availability'] = aux.availability.name
+        order_item['cover'] = aux.cover.url
+
+        results.append(order_item)
 
     logged_user = User.objects.get(email=request.user.email)
     logged_client = Client.objects.get(user = logged_user)
         
     context = {
         'results': results,
-        'client_borrows': logged_client.borrows_max - logged_client.current_borrows
+        'client_borrows': logged_client.borrows_max - logged_client.current_borrows,
+        'items_amount': request.session['cart'] if 'cart' in request.session else 0
     }
 
     

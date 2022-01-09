@@ -56,7 +56,9 @@
                         {% elif result.type is 3 %}
                             <i class="fas fa-compact-disc" title="Sound recording"></i>
                         {% endif %}
+                        {% if user.is_staff is False and user.is_authenticated %}
                             <input type="checkbox" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}">
+                        {% endif %}
                     </div>
                 
                         <div class="item_info"> 
@@ -116,10 +118,12 @@
             <i class="fas fa-shopping-bag"></i> <span id="items_number" class="text_bold">{{ cart_status }}</span> item(s) selected
         </div>
     </a>
+    {{ cart_items|json_script:"item_list" }}
     <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
     <script type="text/javascript">
         checkbox_controller = new CheckboxController('#item_type');
 
+        /*===========POP UP===============*/
         const overlay = document.getElementById('overlay');
         const pop_up = document.getElementById('cover_pop_up');
         const pop_up_title = document.getElementById('pop_up_title');
@@ -136,14 +140,15 @@
             overlay.style.display = 'block';
             pop_up.style.display = 'block';
         }
-
+        /*=================END POP UP=================*/
+        /*=========AUTO SCROLL============*/
         function load_at(){
             let posY = document.querySelector('.summary').getBoundingClientRect().top;
             window.scroll(0, posY);
         }
-
-        
-        
+        load_at();
+        /*=======END AUTO SCROLL============*/
+        /*==========SETTING UP ITEM ON LIST, AUTHOR AND TITLE===============*/
         try{
             const buttons_a = document.querySelectorAll('.button_a');
             const page_buttons = document.querySelectorAll('.page_button');
@@ -186,9 +191,8 @@
         }catch(e){
             e
         }
-
-        load_at();
-
+        /*=======END SETTING UP ITEM ON LIST, AUTHOR AND TITLE===============*/
+        /*=======GETTING CSRF TOKEN=======================*/
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -203,17 +207,19 @@
                 }
             }
             return cookieValue;
-}
-const csrftoken = getCookie('csrftoken');
-
+        }
+        const csrftoken = getCookie('csrftoken');
+        /*===========END GETTING CSRF TOKEN==============*/
+        
         const add_to_cart = document.querySelectorAll('.add_to_cart');
+        const cart_status = document.getElementById('items_number').innerHTML;
         const cart = document.querySelector('.cart');
         const items_number = document.getElementById('items_number');
+        const url = '/update-item/';
+        var cart_items = JSON.parse(document.getElementById('item_list').textContent);
+        console.log(cart_items);
 
-        function initiate_cart(){
-            const cart_status = document.getElementById('items_number').innerHTML;
-            const cart = document.querySelector('.cart');
-            console.log(cart_status);
+        function initiate_cart(){            
             if (parseInt(cart_status) > 0){
                 cart.style.transform = 'scale(1)';
             }else{
@@ -221,33 +227,16 @@ const csrftoken = getCookie('csrftoken');
             }
         }
 
-
-        let items_amount = 0;        
-        function update_cart(op){
-            switch(op){
-                case 1:{                    
-                    items_amount += 1;
-                    console.log("Item added ", items_amount);
-                    break;
-                }case 2:{                    
-                    items_amount -= 1;
-                    console.log("Item deleted ", items_amount);
-                    break;
-                }
-            }
-
-            if(items_amount < 1){
-                cart.style.transform = 'scale(0)';
-            }else{
+        function update_cart(number){
+            items_number.innerHTML = number;
+            if(number > 0){
                 cart.style.transform = 'scale(1)';
-                
-                items_number.innerHTML = items_amount;
+            }else{
+                cart.style.transform = 'scale(0)';
             }
         }
 
         function update_user_order(item, action){
-            var url = '/update-item/';
-
             fetch(url, {
                 method: 'POST',
                 headers:{
@@ -258,18 +247,21 @@ const csrftoken = getCookie('csrftoken');
             }).then((response) =>{
                 return response.json()
             }).then((data) => {
-                console.log('data:', data);
+                update_cart(data.length);
+                console.log(data);
             })
         }
 
         for(let i=0; i< add_to_cart.length; i++){
+            if(cart_items.includes(add_to_cart[i].dataset.item)){
+                add_to_cart[i].checked = true;
+            }
+
             add_to_cart[i].addEventListener('click', function(){
                 if (this.checked){
-                    update_cart(1);
-                    update_user_order(add_to_cart[i].dataset.item, 1);
+                    update_user_order(add_to_cart[i].dataset.item, 1)
                 }else{
-                    update_cart(2);
-                    update_user_order(add_to_cart[i].dataset.item, 2);
+                    update_user_order(add_to_cart[i].dataset.item, 2)
                 }
             })
         }
