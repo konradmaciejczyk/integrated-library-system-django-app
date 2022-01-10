@@ -1,0 +1,45 @@
+{% extends 'worker_side/base.html' %}
+{% load static %}
+{% block title %}Placed orders{% endblock title %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/orders.css' %}">
+{% endblock styles %}
+{% block content %}
+    <main>
+        <h1>Placed orders</h1>
+        <table>
+            <tr>
+                <th>No.</th>
+                <th>Item info</th>
+                <th>Client info</th>
+                <th>Placed at</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>
+                    1.
+                </td>
+                <td>
+                    <ul>
+                        <li>Book</li>
+                        <li>ID: 23</li>
+                        <li>Solaris</li>
+                    </ul>
+                </td>
+                <td>
+                    Konrad Maciejczyk</br>
+                    ID: 10</br>
+                    konrad.maciejczyk@smcebi.edu.pl</br>
+                </td>
+                <td>
+                    10.01.2022 18:51
+                </td>
+                <td>
+                    <button>Ready for pick up</button>
+                </td>
+            </tr>
+            <tr>
+        </table>
+    </main>
+    
+{% endblock content %}

@@ -1,5 +1,5 @@
 # Konrad Maciejczyk, 2021-2022
-from os import sched_setscheduler
+from os import CLD_EXITED, sched_setscheduler, stat
 from django.http.response import JsonResponse
 import json
 from django.shortcuts import redirect, render
@@ -9,6 +9,8 @@ from user_side.models import Client
 from worker_side.models import Book, Movie, SoundRecording
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from accounts.models import User
+from django.contrib import messages
+from user_side.models import BookOrder, SoundRecordingOrder, MovieOrder, Status 
 
 def get_books(title, author, output, authors):
     results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s);", ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)", ["%"+title+"%"])
@@ -212,66 +214,93 @@ def update_item(request):
         return redirect('user_side-home')
 
 def cart(request):
-    results = []
-
-    for item in request.session['cart']:
-        item_type, item_id = item.split('-')
-
-        aux = None
-        order_item = {
-            'author': '', 'type': '', 'isbn': '', 'publisher': '', 'title': '', 'full_title': '', 'id': '', 'pub_year': '', 'description': '', 'condition': '', 'availability': '', 'cover': ''
-        }
-        if item_type == '1':
-            aux = Book.objects.get(id=item_id)
-
-            author = [author.name for author in aux.author.all()]
-            if author:
-                author = ', '.join(author)
-            else:
-                author = "author(s) unknown"
-            order_item['author'] = author
-            order_item['isbn'] = aux.isbn if aux.isbn else 'isbn not available'
-            order_item['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
-        elif item_type == '2':
-            aux = Movie.objects.get(id=item_id)
-
-            director = [director.name for director in aux.director.all()]
-            if director:
-                director = ', '.join(director)
-            else:
-                director = "director(s) unknown"
-            order_item['director'] = director
-            screenwriter = [screenwriter.name for screenwriter in aux.screenwriter.all()]
-            if screenwriter:
-                screenwriter = ', '.join(screenwriter)
-            else:
-                screenwriter = 'screenwriter(s) unknown'
-            order_item['screenwriter'] = screenwriter
-        elif item_type == '3':
-            aux = SoundRecording.objects.get(id=item_id)
-            order_item['cast'] = aux.cast if aux.cast else "cast unknown"
-            order_item['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
-
-        order_item['type'] = item_type
-        order_item['title'] = aux.title
-        order_item['full_title'] = aux.full_title
-        order_item['id'] = aux.id
-        order_item['pub_year'] = aux.pub_year if aux.pub_year else "publication year unknown"
-        order_item['description'] = aux.description
-        order_item['condition'] = aux.condition.name
-        order_item['availability'] = aux.availability.name
-        order_item['cover'] = aux.cover.url
-
-        results.append(order_item)
-
     logged_user = User.objects.get(email=request.user.email)
     logged_client = Client.objects.get(user = logged_user)
-        
-    context = {
-        'results': results,
-        'client_borrows': logged_client.borrows_max - logged_client.current_borrows,
-        'items_amount': request.session['cart'] if 'cart' in request.session else 0
-    }
+    client_borrows = logged_client.borrows_max - logged_client.current_borrows
 
+    if request.method == "GET":
+        results = []
+
+        for item in request.session['cart']:
+            item_type, item_id = item.split('-')
+
+            aux = None
+            order_item = {
+                'author': '', 'type': '', 'isbn': '', 'publisher': '', 'title': '', 'full_title': '', 'id': '', 'pub_year': '', 'description': '', 'condition': '', 'availability': '', 'cover': ''
+            }
+            if item_type == '1':
+                aux = Book.objects.get(id=item_id)
+
+                author = [author.name for author in aux.author.all()]
+                if author:
+                    author = ', '.join(author)
+                else:
+                    author = "author(s) unknown"
+                order_item['author'] = author
+                order_item['isbn'] = aux.isbn if aux.isbn else 'isbn not available'
+                order_item['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
+            elif item_type == '2':
+                aux = Movie.objects.get(id=item_id)
+
+                director = [director.name for director in aux.director.all()]
+                if director:
+                    director = ', '.join(director)
+                else:
+                    director = "director(s) unknown"
+                order_item['director'] = director
+                screenwriter = [screenwriter.name for screenwriter in aux.screenwriter.all()]
+                if screenwriter:
+                    screenwriter = ', '.join(screenwriter)
+                else:
+                    screenwriter = 'screenwriter(s) unknown'
+                order_item['screenwriter'] = screenwriter
+            elif item_type == '3':
+                aux = SoundRecording.objects.get(id=item_id)
+                order_item['cast'] = aux.cast if aux.cast else "cast unknown"
+                order_item['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
+
+            order_item['type'] = item_type
+            order_item['title'] = aux.title
+            order_item['full_title'] = aux.full_title
+            order_item['id'] = aux.id
+            order_item['pub_year'] = aux.pub_year if aux.pub_year else "publication year unknown"
+            order_item['description'] = aux.description
+            order_item['condition'] = aux.condition.name
+            order_item['availability'] = aux.availability.name
+            order_item['cover'] = aux.cover.url
+
+            results.append(order_item)
+
+        
+            
+        context = {
+            'results': results,
+            'client_borrows': client_borrows,
+            'items_amount': request.session['cart'] if 'cart' in request.session else 0
+        }
+    else:
+        if len(request.session['cart']) > client_borrows:
+            messages.error('Failed to place an order. Try again later.')
+            return redirect('user_side-home')
+        else:
+            status = Status.objects.get(id=1)
+            for order in request.session['cart']:
+                item_type, item_id = order.split('-')                
+                if item_type == '1':
+                    item = Book.objects.get(id=item_id)                    
+                    order = BookOrder.objects.create(client=logged_client, item=item, status = status)
+                elif item_type == '2':
+                    item = Movie.objects.get(id=item_id)
+                    order = MovieOrder.objects.create(client=logged_client, item=item, status=status)
+                elif item_type == '3':
+                    item = SoundRecording.objects.get(id=item_id)
+                    order = SoundRecordingOrder.objects.create(item=item, client=logged_client, status=status)
+
+            request.session['cart'] = []
+            request.session.modified = True
+
+            
+            messages.success(request, 'Your order has been placed. You\'ll receive e-mail, when your items are ready to be picked up.')
+            return redirect('user_side-home')
     
     return render(request, template_name='user_side/cart.html', context=context)

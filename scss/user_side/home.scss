@@ -93,6 +93,7 @@ footer{
     .cart{
         top: auto; right: auto;
         bottom: 50px; left: 2.5vw;
+        border: 2px solid white;
     }
     header{
         height: 60px;
@@ -139,6 +140,7 @@ footer{
             margin-top: 5vh;
             height: 300px;
             width: 95vw;
+            padding-top: 6vh;
 
             #search_tool{
                 width: 80vw;

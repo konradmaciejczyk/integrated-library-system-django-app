@@ -1,0 +1,67 @@
+@import 'defaults.scss';
+$cell_border_color: rgb(165, 194, 255);
+
+@include _header;
+
+main{
+    width: 80vw; min-height: 100px;
+    background-color: white;
+    color: $main-blue;
+    margin: 50px auto 0px auto;
+    padding: 50px 30px 50px 30px;
+}
+
+h1{
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+table{
+    width: 100%;
+    border-spacing: 0;
+    border-radius: 5px 5px 0px 0xp;
+    border-bottom: 3px solid $main-blue;
+}
+
+th{
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 20px;
+    padding: 10px;
+    color:white;
+    background-color: $main-blue;
+}
+
+td{
+    padding: 5px 5px 5px 10px;
+}
+td:last-child{
+    border-right: 0;
+}
+
+tr:nth-of-type(odd){
+    background-color: rgb(218, 218, 218);    
+}
+
+
+ul{
+    list-style: none;
+}
+
+button{
+    display: block;
+    margin-left: auto; margin-right: auto;
+    background-color: $main-blue;
+    border: 0;
+    color: white;
+    width: 120px; height: 30px;
+    border-radius: 3px;
+    font-family: 'Roboto', sans-serif;
+    transition: filter;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(130%);
+    }
+}

@@ -54,7 +54,10 @@
             
             <div id="buttons">
                 <a href="{% url 'user_side-home' %}" id="go_back">Return to search page</a>
-                <button id="order_button">Order items</button>
+                <form method="POST">
+                    {% csrf_token %}
+                    <button id="order_button">Order items</button>
+                </form>                
             </div>
     </main>
     <div id="overlay"></div>

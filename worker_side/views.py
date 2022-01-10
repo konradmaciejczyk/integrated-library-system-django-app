@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+
+from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
@@ -53,13 +55,11 @@ def add_book(request):
                'form': AddBookForm()}
 
     if request.method == 'POST':
-        print("CO PRZYSZŁO", request.POST)
         form = AddBookForm(request.POST, request.FILES)
         if form.is_valid():
             data_to_summary = form.save()
             return render(request, template_name='worker_side/item_summary.html', context=data_to_summary)
         else:
-            print("BŁĘDY: ", form.errors, "\nDATA: ", form.cleaned_data)
             messages.error(request, f'Form filled with invalid informations!')
             return redirect('worker_side-add_book')
     else:
@@ -72,13 +72,11 @@ def add_movie(request):
                'form': AddMovieForm()}
 
     if request.method == 'POST':
-        print("CO PRZYSZŁO", request.POST)
         form = AddMovieForm(request.POST, request.FILES)
         if form.is_valid():
             data_to_summary = form.save()
             return render(request, template_name='worker_side/item_summary.html', context=data_to_summary)
         else:
-            print("BŁĘDY: ", form.errors, "\nDATA: ", form.cleaned_data)
             messages.error(request, f'Form filled with invalid informations!')
             return redirect('worker_side-add_movie')
     else:
@@ -91,16 +89,24 @@ def add_sound_recording(request):
     'publishers': Publisher.objects.all()}
 
     if request.method == 'POST':
-        print("CO PRZYSZŁO", request.POST)
         form = AddSoundRecordingForm(request.POST, request.FILES)
         if form.is_valid():
             data_to_summary = form.save()
             return render(request, template_name='worker_side/item_summary.html', context=data_to_summary)
         else:
-            print("BŁĘDY: ", form.errors, "\nDATA: ", form.cleaned_data)
             messages.error(request, f'Form filled with invalid informations!')
             return redirect('worker_side-add_sound_recording')
     else:
         form = AddSoundRecordingForm(request.POST, request.FILES)
         return render(request, template_name='worker_side/add_sound_recording.html', context=context)
+
+def placed_orders(request):
+    books = BookOrder.objects.all()
+    movies = MovieOrder.objects.all()
+    sound_recordings = SoundRecordingOrder.objects.all()
+    context = {
+        'books': books, 'movies': movies, 'sound_recordings': sound_recordings
+    }
+
+    return render(request, template_name='worker_side/orders.html', context=context)
 

@@ -325,9 +325,10 @@ ul{
 
 @media (max-width: 600px){
     .cart{
-        width: 120px; height: 30px;
+        width: 130px; height: 40px;
         font-size: 12px;
-        line-height: 30px;
+        line-height: 40px;
+        border: 2px solid white;
     }
     #cover_pop_up{
        width: 95vw; min-height: 25vh;
