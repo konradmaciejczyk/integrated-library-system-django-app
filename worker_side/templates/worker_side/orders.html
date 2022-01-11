@@ -1,12 +1,13 @@
 {% extends 'worker_side/base.html' %}
 {% load static %}
-{% block title %}Placed orders{% endblock title %}
+{% block title %}{{ title }}{% endblock title %}
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/orders.css' %}">
 {% endblock styles %}
 {% block content %}
+<div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > {{ title }}</div>
     <main>
-        <h1>Placed orders</h1>
+        <h1>{{ title }}</h1>
         <table>
             <tr>
                 <th>No.</th>
@@ -15,31 +16,34 @@
                 <th>Placed at</th>
                 <th></th>
             </tr>
-            <tr>
-                <td>
-                    1.
-                </td>
-                <td>
-                    <ul>
-                        <li>Book</li>
-                        <li>ID: 23</li>
-                        <li>Solaris</li>
-                    </ul>
-                </td>
-                <td>
-                    Konrad Maciejczyk</br>
-                    ID: 10</br>
-                    konrad.maciejczyk@smcebi.edu.pl</br>
-                </td>
-                <td>
-                    10.01.2022 18:51
-                </td>
-                <td>
-                    <button>Ready for pick up</button>
-                </td>
-            </tr>
-            <tr>
-        </table>
+            {% for item in items %}
+                <tr>                
+                    <td>
+                        <span style="font-weight: 700;">{{ forloop.counter }}.</span>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>{{ item.item_type }}</li>
+                            <li>ID: {{ item.item_id }}</li>
+                            <li>{{ item.item.title }}</li>
+                        </ul>
+                    </td>
+                    <td>
+                        {{ item.client.user.first_name }} {{ item.client.user.last_name }}</br>
+                        {{ item.client.user.email}}</br>
+                    </td>
+                    <td>
+                        {{ item.timestamp }}
+                    </td>
+                    <td>
+                        <button>
+                            {% if title == 'Placed orders' %}
+                                Ready for pick up
+                            {% endif %}
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
     </main>
     
 {% endblock content %}

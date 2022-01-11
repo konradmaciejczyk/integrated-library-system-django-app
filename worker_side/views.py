@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder
+from user_side.models import BookOrder
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
@@ -9,7 +9,10 @@ from worker_side.models import Author, Director, Publisher, Screenwriter
 from django.core.mail import send_mail
 
 def home(request):
-    return render(request, 'worker_side/home.html')
+    number_of_orders = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 1 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 1 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 1) ORDER BY timestamp;")
+    print("TU KURWA: ", number_of_orders[:])
+
+    return render(request, 'worker_side/home.html', context={'number_of_orders': len(number_of_orders[:])})
 
 def register_user(request):
     password = None
@@ -101,11 +104,19 @@ def add_sound_recording(request):
         return render(request, template_name='worker_side/add_sound_recording.html', context=context)
 
 def placed_orders(request):
-    books = BookOrder.objects.all()
-    movies = MovieOrder.objects.all()
-    sound_recordings = SoundRecordingOrder.objects.all()
+    items = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 1 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 1 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 1) ORDER BY timestamp;")
+
     context = {
-        'books': books, 'movies': movies, 'sound_recordings': sound_recordings
+        'items': items, 'title': 'Placed orders'
+    }
+
+    return render(request, template_name='worker_side/orders.html', context=context)
+
+def waiting_orders(request):
+    items = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 2 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 2 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 2) ORDER BY timestamp;")
+
+    context = {
+        'title': 'Waiting orders', 'items': items
     }
 
     return render(request, template_name='worker_side/orders.html', context=context)

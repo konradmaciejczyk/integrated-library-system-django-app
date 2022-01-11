@@ -38,6 +38,17 @@ main{
     column-gap: 10px; row-gap: 20px;
 }
 
+.notification{
+    position: absolute;
+    right: 10px;
+    background-color: rgb(220, 0, 0);
+    border: 2px solid white;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    vertical-align: middle; line-height: 30px;
+    font-weight: 700;
+}
+
 .option_box{    
     border-radius: 5px;
     text-align: center;
@@ -58,6 +69,10 @@ main{
     a:hover{
         color: $main-font-color-light;
     }
+}
+
+.option_box.borrows:nth-of-type(8){
+    position: relative;
 }
 
 .option_box.search{

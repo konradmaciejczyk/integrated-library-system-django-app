@@ -48,9 +48,13 @@
                     </div>
                 </div>
             {% endfor %}
-
-            <p>Your account allows you to order <span id="client_borrows">{{ client_borrows }}</span> more items.</p>
-            <p class="order_warning">You can't order more than {{ client_borrows }} items</p>
+            {% if client_borrows > 0 %}
+                <p>Your account allows you to order <span id="client_borrows">{{ client_borrows }}</span> more items.</p>
+                <p class="order_warning">You can't order more than {{ client_borrows }} items</p>
+            {% else %}
+                <span style="opacity: 0;" id="client_borrows">0</span>
+                <p class="order_warning">You can't order more items</p>
+            {% endif %}
             
             <div id="buttons">
                 <a href="{% url 'user_side-home' %}" id="go_back">Return to search page</a>

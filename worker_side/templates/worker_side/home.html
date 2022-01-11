@@ -37,15 +37,32 @@
             <a href="#"><i class="fas fa-minus-square"></i></br>Delete item</a>            
         </div>
         <div class="option_box borrows" style="grid-area: borrow1">
-            <a href="{% url 'worker_side-placed_orders' %}"><i class="fas fa-exclamation"></i></br>New orders</a>
+            <a href="{% url 'worker_side-placed_orders' %}">
+                <div class="notification">5</div>
+                <i class="fas fa-exclamation"></i>
+            </br>New orders
+        </a>
         </div>
         <i class="fas fa-book-reader"></i>
         <div class="option_box borrows" style="grid-area: borrow2">
-            <a href="#"><i class="fas fa-clock"></i></br>Pending Borrows</a>
+            <a href="{% url 'worker_side-waiting_orders' %}"><i class="fas fa-clock"></i></br>Pending Borrows</a>
         </div>
         <div class="option_box borrows" style="grid-area: borrow3">                
             <a href="#"><i class="fas fa-book-reader"></i></br>Current borrowed items</a>
         </div>           
     </main>
+    {{ number_of_orders|json_script:"orders_amount" }}
     <footer>2021-2022 by <a href="https://www.github.com/konradmaciejczyk" rel="author" target="_blank" title="github profile">Konrad Maciejczyk</a>, University of Silesia</footer>
+    <script type="text/javascript">
+        var number_of_orders = parseInt(document.getElementById('orders_amount').textContent);
+        const notification = document.querySelector('.notification');
+
+        if(number_of_orders === 0){
+            notification.innerHTML = number_of_orders;
+            notification.style.opacity = '0';
+        }else{
+            notification.innerHTML = number_of_orders;
+            notification.style.opacity = '1';
+        }
+    </script>
 {% endblock content %}

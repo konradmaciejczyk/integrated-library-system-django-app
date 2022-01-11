@@ -296,9 +296,10 @@ def cart(request):
                     item = SoundRecording.objects.get(id=item_id)
                     order = SoundRecordingOrder.objects.create(item=item, client=logged_client, status=status)
 
+            logged_client.current_borrows += len(request.session['cart'])
+            logged_client.save()
             request.session['cart'] = []
             request.session.modified = True
-
             
             messages.success(request, 'Your order has been placed. You\'ll receive e-mail, when your items are ready to be picked up.')
             return redirect('user_side-home')
