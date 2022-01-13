@@ -36,7 +36,7 @@
                         {{ item.timestamp }}
                     </td>
                     <td>
-                        <button>
+                        <button data-item="{{item.item_type}}-{{item.id}}">
                             {% if title == 'Placed orders' %}
                                 Ready for pick up
                             {% endif %}
@@ -45,5 +45,35 @@
                 </tr>
             {% endfor %}
     </main>
-    
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden">
+    </form>
+    <script type="text/javascript">
+        const buttons = document.querySelectorAll('button');
+        const token = document.getElementsByName('csrfmiddlewaretoken');
+        console.log(token);
+
+        function send_data(itemID){
+            fetch('', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': token[0].value
+                },
+                body: JSON.stringify({'itemID': itemID})
+            }).then((response) => {
+                return response.json()
+            }).then((response_json) => {
+                console.log(response_json);
+            })
+        }
+
+        
+        buttons.forEach((button) =>{
+            button.addEventListener('click', () => {
+                send_data(button.dataset.item);
+            })
+        })
+    </script>
 {% endblock content %}

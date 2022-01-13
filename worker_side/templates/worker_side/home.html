@@ -54,15 +54,30 @@
     {{ number_of_orders|json_script:"orders_amount" }}
     <footer>2021-2022 by <a href="https://www.github.com/konradmaciejczyk" rel="author" target="_blank" title="github profile">Konrad Maciejczyk</a>, University of Silesia</footer>
     <script type="text/javascript">
-        var number_of_orders = parseInt(document.getElementById('orders_amount').textContent);
         const notification = document.querySelector('.notification');
-
-        if(number_of_orders === 0){
-            notification.innerHTML = number_of_orders;
-            notification.style.opacity = '0';
-        }else{
-            notification.innerHTML = number_of_orders;
-            notification.style.opacity = '1';
+        
+        function update_notification(number_of_orders){
+            if(number_of_orders === 0){
+                notification.innerHTML = number_of_orders;
+                notification.style.opacity = '0';
+            }else{
+                notification.innerHTML = number_of_orders;
+                notification.style.opacity = '1';
+            }
         }
+
+        function get_orders_amount(){
+            fetch(window.location.href + "?order_status").then((response) =>{
+                return response.json()
+            }).then((response_json => {
+                update_notification(response_json);
+            }))
+        }
+        
+        
+
+        update_notification(parseInt(document.getElementById('orders_amount').textContent));
+        setInterval(get_orders_amount, 5000);
+
     </script>
 {% endblock content %}

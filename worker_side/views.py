@@ -1,21 +1,27 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
-from user_side.models import BookOrder
+from django.http.response import JsonResponse 
+from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
 from worker_side.models import Author, Director, Publisher, Screenwriter
 from django.core.mail import send_mail
+import json
 
 def home(request):
-    number_of_orders = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 1 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 1 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 1) ORDER BY timestamp;")
-    print("TU KURWA: ", number_of_orders[:])
+    status = Status.objects.get(id=1)
+    number_of_orders = len(BookOrder.objects.all().filter(status=status)) + len(SoundRecordingOrder.objects.all().filter(status=status)) + len(MovieOrder.objects.all().filter(status=status))
+    print(number_of_orders)
 
-    return render(request, 'worker_side/home.html', context={'number_of_orders': len(number_of_orders[:])})
+    if 'order_status' in request.GET:
+        return JsonResponse(number_of_orders, safe=False)
+    else:
+        return render(request, 'worker_side/home.html', context={'number_of_orders':number_of_orders})
 
+ 
 def register_user(request):
-    password = None
+    #password = None
     if request.method == 'POST':
         form = ClientRegistrationForm(request.POST)
         if form.is_valid():
@@ -104,13 +110,61 @@ def add_sound_recording(request):
         return render(request, template_name='worker_side/add_sound_recording.html', context=context)
 
 def placed_orders(request):
-    items = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 1 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 1 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 1) ORDER BY timestamp;")
+    if request.method == "GET":
+        items = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 1 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 1 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 1) ORDER BY timestamp;")
 
-    context = {
+        context = {
         'items': items, 'title': 'Placed orders'
-    }
+        }
+        return render(request, template_name='worker_side/orders.html', context=context)
+    else:
+        item, itemID = json.loads(request.body)['itemID'].split("-")
+        status = Status.objects.get(id=2)
+        
+        item_type, item_title, client_name, client_email = None, None, None, None
+        if item == "Book":
+            book = BookOrder.objects.get(id=itemID)            
+            book.status = status
+            item_type = "book"
+            item_title = book.item.title
+            client_name = book.client.user.first_name
+            client_email = book.client.user.email
+            book.save()
+        elif item == "Movie/Film":
+            movie = MovieOrder.objects.get(id=itemID)
+            movie.status = status
+            item_type = "Movie"
+            item_title = movie.item.title
+            client_name = movie.client.user.first_name
+            client_email = movie.client.user.email
+            movie.save()
+        elif item == "Sound Recording":
+            sr = SoundRecordingOrder.objects.get(id=itemID)
+            sr.status = status
+            item_type = "sound recording"
+            item_title = sr.item.title
+            client_name = sr.client.user.first_name
+            client_email = sr.client.user.email
+            sr.save()
 
-    return render(request, template_name='worker_side/orders.html', context=context)
+        subject = 'Online Library Catalog - Your item is waiting for pick up!'
+        message = """ 
+        Hello {},
+
+        The following {}:
+        {}  is waiting for you at library for pick up.
+
+
+
+        This message was created created automatically. Please do not respond.
+
+        Sincerly,
+        Online Library Catalog team
+        """.format(client_name, item_type, item_title)
+        send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
+
+        return JsonResponse("OK!", safe=False)
+        
 
 def waiting_orders(request):
     items = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 2 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 2 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 2) ORDER BY timestamp;")
