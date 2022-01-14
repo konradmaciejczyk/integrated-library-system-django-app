@@ -55,13 +55,23 @@ button{
     background-color: $main-blue;
     border: 0;
     color: white;
-    width: 120px; height: 30px;
+    min-width: 100px; height: 30px;
     border-radius: 3px;
     font-family: 'Roboto', sans-serif;
     transition: filter;
+    padding: 0px 10px 0px 10px;
 
     &:hover{
         cursor: pointer;
         filter: brightness(130%);
     }
+}
+
+tr{
+    opacity: 0;
+    transition: opacity .4s;
+}
+
+.exists{
+    opacity: 1;
 }

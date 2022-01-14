@@ -57,7 +57,7 @@
                             <i class="fas fa-compact-disc" title="Sound recording"></i>
                         {% endif %}
                         {% if user.is_staff is False and user.is_authenticated %}
-                            <input type="checkbox" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}">
+                            <input type="checkbox" autocomplete="off" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}">
                         {% endif %}
                     </div>
                 

@@ -35,7 +35,7 @@ class BookOrder(models.Model):
     status = ForeignKey(Status, on_delete=models.SET_NULL, null=True, verbose_name="Book order status")
 
     def __str__(self):
-        return "{} (ID: {}) by {} (E-mail: {})".format(self.item.title, self.item.id, self.client.user.first_name + self.client.user.last_name, self.client.user.email)
+        return "{} (ID: {}) by {} (E-mail: {}) (status: {})".format(self.item.title, self.item.id, self.client.user.first_name + self.client.user.last_name, self.client.user.email, self.status.name)
 
 class MovieOrder(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Client")
@@ -44,7 +44,7 @@ class MovieOrder(models.Model):
     status = ForeignKey(Status, on_delete=models.SET_NULL, null=True, verbose_name="Movie order status")
 
     def __str__(self):
-        return "{} (ID: {}) by {} (E-mail: {})".format(self.item.title, self.item.id, self.client.user.first_name + self.client.user.last_name, self.client.user.email)
+        return "{} (ID: {}) by {} (E-mail: {}) (status: {})".format(self.item.title, self.item.id, self.client.user.first_name + self.client.user.last_name, self.client.user.email, self.status.name)
 
 class SoundRecordingOrder(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Client")
@@ -53,4 +53,4 @@ class SoundRecordingOrder(models.Model):
     status = ForeignKey(Status, on_delete=models.SET_NULL, null=True, verbose_name="Sound recording order status")
 
     def __str__(self):
-        return "{} (ID: {}) by {} (E-mail: {})".format(self.item.title, self.item.id, self.client.user.first_name + " " + self.client.user.last_name, self.client.user.email)
+        return "{} (ID: {}) by {} (E-mail: {}) (status: {})".format(self.item.title, self.item.id, self.client.user.first_name + self.client.user.last_name, self.client.user.email, self.status.name)

@@ -45,10 +45,10 @@
         </div>
         <i class="fas fa-book-reader"></i>
         <div class="option_box borrows" style="grid-area: borrow2">
-            <a href="{% url 'worker_side-waiting_orders' %}"><i class="fas fa-clock"></i></br>Pending Borrows</a>
+            <a href="{% url 'worker_side-waiting_orders' %}"><i class="fas fa-clock"></i></br>Pending orders</a>
         </div>
         <div class="option_box borrows" style="grid-area: borrow3">                
-            <a href="#"><i class="fas fa-book-reader"></i></br>Current borrowed items</a>
+            <a href="{% url 'worker_side-borrowed_items' %}"><i class="fas fa-book-reader"></i></br>Currently borrowed items</a>
         </div>           
     </main>
     {{ number_of_orders|json_script:"orders_amount" }}

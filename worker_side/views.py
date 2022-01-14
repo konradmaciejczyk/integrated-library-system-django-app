@@ -1,3 +1,4 @@
+from django.db.models import Value
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import JsonResponse 
@@ -5,7 +6,7 @@ from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
-from worker_side.models import Author, Director, Publisher, Screenwriter
+from worker_side.models import Author, Book, Director, Publisher, Screenwriter
 from django.core.mail import send_mail
 import json
 
@@ -110,68 +111,135 @@ def add_sound_recording(request):
         return render(request, template_name='worker_side/add_sound_recording.html', context=context)
 
 def placed_orders(request):
+    status = Status.objects.get(id=1)
     if request.method == "GET":
-        items = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 1 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 1 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 1) ORDER BY timestamp;")
+        items = list(BookOrder.objects.all().annotate(item_type=Value('Book')).filter(status=status)) + list(MovieOrder.objects.all().annotate(item_type=Value("Movie/Film")).filter(status=status)) + list(SoundRecordingOrder.objects.all().annotate(item_type=Value("Sound recording")).filter(status=status))
 
         context = {
         'items': items, 'title': 'Placed orders'
         }
+
         return render(request, template_name='worker_side/orders.html', context=context)
     else:
-        item, itemID = json.loads(request.body)['itemID'].split("-")
-        status = Status.objects.get(id=2)
-        
-        item_type, item_title, client_name, client_email = None, None, None, None
-        if item == "Book":
-            book = BookOrder.objects.get(id=itemID)            
-            book.status = status
-            item_type = "book"
-            item_title = book.item.title
-            client_name = book.client.user.first_name
-            client_email = book.client.user.email
-            book.save()
-        elif item == "Movie/Film":
-            movie = MovieOrder.objects.get(id=itemID)
-            movie.status = status
-            item_type = "Movie"
-            item_title = movie.item.title
-            client_name = movie.client.user.first_name
-            client_email = movie.client.user.email
-            movie.save()
-        elif item == "Sound Recording":
-            sr = SoundRecordingOrder.objects.get(id=itemID)
-            sr.status = status
-            item_type = "sound recording"
-            item_title = sr.item.title
-            client_name = sr.client.user.first_name
-            client_email = sr.client.user.email
-            sr.save()
+        try: 
+            item, itemID = json.loads(request.body)['itemID'].split("-")
+            status = Status.objects.get(id=2)
+            item_type, item_title, client_name, client_email = None, None, None, None
+            if item == "Book":
+                book = BookOrder.objects.get(id=itemID)            
+                book.status = status
+                item_type = "book"
+                item_title = book.item.title
+                client_name = book.client.user.first_name
+                client_email = book.client.user.email
+                book.save()
+            elif item == "Movie/Film":
+                movie = MovieOrder.objects.get(id=itemID)
+                movie.status = status
+                item_type = "movie"
+                item_title = movie.item.title
+                client_name = movie.client.user.first_name
+                client_email = movie.client.user.email
+                movie.save()
+            elif item == "Sound recording":
+                print('!!!!KURWA!!!!!!')
+                sr = SoundRecordingOrder.objects.get(id=itemID)
+                sr.status = status
+                item_type = "sound recording"
+                item_title = sr.item.title
+                client_name = sr.client.user.first_name
+                client_email = sr.client.user.email
+                sr.save()
 
-        subject = 'Online Library Catalog - Your item is waiting for pick up!'
-        message = """ 
-        Hello {},
+            subject = 'Online Library Catalog - Your item is waiting for pickup!'
+            message = """ 
+            Hello {},
 
-        The following {}:
-        {}  is waiting for you at library for pick up.
+            The following {}:
+            {}  is waiting for you at library for pickup.
 
 
 
-        This message was created created automatically. Please do not respond.
+            This message was created created automatically. Please do not respond.
 
-        Sincerly,
-        Online Library Catalog team
-        """.format(client_name, item_type, item_title)
-        send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
-
-        return JsonResponse("OK!", safe=False)
+            Sincerly,
+            Online Library Catalog team
+            """.format(client_name, item_type, item_title)
+            #send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
+            return JsonResponse(["OK!", item+'-'+itemID], safe=False)
+        except:
+            JsonResponse("ERROR!", safe=False)
         
 
 def waiting_orders(request):
-    items = BookOrder.objects.raw("(SELECT 'Book' as item_type, *  FROM user_side_bookorder WHERE status_id = 2 UNION SELECT 'Movie/Film' as item_type, * FROM user_side_movieorder WHERE status_id = 2 UNION SELECT 'Sound Recording' as item_type, * FROM user_side_soundrecordingorder WHERE status_id = 2) ORDER BY timestamp;")
+    status = Status.objects.get(id=2)
+    if request.method == "GET":
+        items = list(BookOrder.objects.all().annotate(item_type=Value('Book')).filter(status=status)) + list(MovieOrder.objects.all().annotate(item_type=Value("Movie/Film")).filter(status=status)) + list(SoundRecordingOrder.objects.all().annotate(item_type=Value("Sound recording")).filter(status=status))
 
-    context = {
-        'title': 'Waiting orders', 'items': items
-    }
+        context = {
+            'title': 'Ready for pickup', 'items': items
+        }
 
-    return render(request, template_name='worker_side/orders.html', context=context)
+        return render(request, template_name='worker_side/orders.html', context=context)
+    else:
+        try: 
+            item, itemID = json.loads(request.body)['itemID'].split("-")
+            status = Status.objects.get(id=3)
+
+            if item == "Book":
+                book = BookOrder.objects.get(id=itemID)            
+                book.status = status
+                book.save()
+            elif item == "Movie/Film":
+                movie = MovieOrder.objects.get(id=itemID)
+                movie.status = status
+                movie.save()
+            elif item == "Sound recording":
+                
+                sr = SoundRecordingOrder.objects.get(id=itemID)
+                sr.status = status
+                sr.save()
+            
+            return JsonResponse(["OK!", item+'-'+itemID], safe=False)
+        except:
+            JsonResponse("ERROR!", safe=False)
+
+
+def borrowed_items(request):
+    status = Status.objects.get(id=3)
+    if request.method == "GET":
+        items = list(BookOrder.objects.all().annotate(item_type=Value('Book')).filter(status=status)) + list(MovieOrder.objects.all().annotate(item_type=Value("Movie/Film")).filter(status=status)) + list(SoundRecordingOrder.objects.all().annotate(item_type=Value("Sound recording")).filter(status=status))
+
+        context = {
+            'title': 'Borrowed items', 'items': items
+        }
+
+        return render(request, template_name="worker_side/orders.html", context=context)
+    else:
+        try: 
+            item, itemID = json.loads(request.body)['itemID'].split("-")
+
+            if item == "Book":
+                book = BookOrder.objects.get(id=itemID)
+                client = book.client    
+                client.current_borrows -= 1 
+                book.delete()
+                client.save()
+            elif item == "Movie/Film":
+                movie = MovieOrder.objects.get(id=itemID)
+                client = movie.client
+                client.current_borrows -= 1
+                movie.delete()
+                client.save()
+            elif item == "Sound recording":
+                sr = SoundRecordingOrder.objects.get(id=itemID)
+                client = sr.client
+                client.current_borrows -= 1
+                sr.delete()
+                client.save()
+            
+            return JsonResponse(["OK!", item+'-'+itemID], safe=False)
+        except:
+            JsonResponse("ERROR!", safe=False)
+
 

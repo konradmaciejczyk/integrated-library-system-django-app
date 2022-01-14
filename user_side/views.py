@@ -259,7 +259,7 @@ def cart(request):
                 order_item['cast'] = aux.cast if aux.cast else "cast unknown"
                 order_item['publisher'] = aux.publisher.name if aux.publisher else "publisher unknown"
 
-            order_item['type'] = item_type
+            order_item['type'] = int(item_type)
             order_item['title'] = aux.title
             order_item['full_title'] = aux.full_title
             order_item['id'] = aux.id
