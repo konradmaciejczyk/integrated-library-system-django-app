@@ -53,6 +53,7 @@ class Book(models.Model):
     condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
     cover = models.ImageField(default="no_image.png", upload_to="books_covers", verbose_name="books_covers")
+    due_date = models.DateField(null=True, verbose_name="Return date")
 
     def __str__(self):
         return self.title
@@ -68,6 +69,7 @@ class SoundRecording(models.Model):
     condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
     cover = models.ImageField(default="no_image.png", upload_to="sound_recordings_covers")
+    due_date = models.DateField(null=True, verbose_name="Return date")
 
     def __str__(self):
         return self.title
@@ -82,6 +84,7 @@ class Movie(models.Model):
     condition = models.ForeignKey(Condition, null=True, on_delete=models.SET_NULL, verbose_name="Condition")
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
     cover = models.ImageField(default="no_image.png", upload_to="movies_covers", verbose_name="Cover")
+    due_date = models.DateField(null=True, verbose_name="Return date")
 
     def save(self):
         super().save()

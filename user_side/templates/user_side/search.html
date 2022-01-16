@@ -16,7 +16,7 @@
                 <label><input type="checkbox" name="sr" id="item_type">Sound recording</label>
                 <label><input type="checkbox" id="item_type">All</label>
 
-                <label id="not_available"><input type="checkbox" name="n_a">Show unavailable items</label>
+                <label id="not_available"><input type="checkbox" name="not_available">Show unavailable items</label>
                 <label for="on_site">Items on site:</label>
                 <select name="on_site" id="on_site">
                     <option value=5>5</option>
@@ -56,7 +56,7 @@
                         {% elif result.type is 3 %}
                             <i class="fas fa-compact-disc" title="Sound recording"></i>
                         {% endif %}
-                        {% if user.is_staff is False and user.is_authenticated %}
+                        {% if user.is_staff is False and user.is_authenticated and result.availability != "Not available" %}
                             <input type="checkbox" autocomplete="off" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}">
                         {% endif %}
                     </div>
@@ -75,7 +75,18 @@
                                 {% if result.isbn %}<li><span class="text_bold">ISBN: </span>{{ result.isbn }}</li>{% endif %}
                                 <li><span class="text_bold">Description: </span>{{ result.description }}</li>
                                 <li><span class="text_bold">Condition: </span>{{ result.condition }}</li>
-                                <li><span class="text_bold">Availability: </span><span class="text_bold green">{{ result.availability }}</span></li>                                
+                                <li><span class="text_bold">Availability: </span>
+                                {% if result.availability == 'Not available' %}
+                                    <span class="text_bold" style="color: rgb(211, 0, 0);">
+                                {% else %}
+                                <span class="text_bold green">
+                                {% endif %}
+                                    {{ result.availability }} 
+                                    {% if result.due_date %}
+                                        (Borrowed until: {{ result.due_date }})
+                                    {% endif %}
+                                    
+                                </span></li>                                
                             </ul>
                         </div>
 

@@ -6,9 +6,55 @@
     <link rel="stylesheet" type="text/css" href="{% static 'user_side/css/profile.css' %}" media="screen">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock styles %}
-
 {% block content %} 
-    <h1>{{ user.first_name }}'s informations page</h1>
+    <main>
+        <nav>
+            <div id="information_button" class="nav_button active">
+                User's informations
+            </div>
+            <div id="borrows_button" class="nav_button">
+                User's borrows
+            </div>
+        </nav>
+        <section id="user_info">
+            <h1>{{ user.first_name }}'s personal informations</h1>
+            <ul>
+                <li>
+                    <span class="info_label">Name and surname:</span> {{ user.first_name }} {{ user.last_name }}
+                </li>
+                <li>
+                    <span class="info_label">Email address:</span> {{ user.email }} <div class="edit_button" id="change_email"><i class="far fa-edit"></i></div>
+                </li>
+                <li>
+                    <span class="info_label">Phone number:</span> {{ user.phone_number }} <div class="edit_button" id="change_phone_num"><i class="far fa-edit"></i></div>
+                </li>
+                <li>
+                    <span class="info_label">Correspondance address:</span> {{ client.corr_address }} <div class="edit_button" id="change_addr"><i class="far fa-edit"></i></div>
+                </li>
+                <li>
+                    <span class="info_label">Date of birth:</span> {{ client.date_of_birth }}
+                </li>
+                <li>
+                    <span class="info_label">Identity document:</span> {{ client.id_type }} ({{ client.id_number }})
+                </li>
+                <li>
+                    <span class="info_label">Citizenship:</span> {{ client.citizenship.name }}
+                </li>
+                <li>
+                    <span class="info_label">Occupation:</span> {{ client.occupation.name }}
+                </li>
+            </ul>
+            <h1>Account data</h1>
+            <ul>
+                <li>
+                    <span class="info_label">Max amount of borrowed items:</span> {{ client.borrows_max }}                    
+                </li>
+                <li>
+                    <span class="info_label">Current amount of borrowed items:</span> {{ client.current_borrows }}
+                </li>
+            </ul>
+        </section>
+    </main>
 
     <a href="{% url 'user_side-cart' %}" title="Proceed to order summary" target="_blanc">
         <div class="cart" >
@@ -17,10 +63,38 @@
     </a>
 
     <script type="text/javascript">
+        const edit_buttons = document.querySelectorAll('.edit_button');
+
+        function activate_input(button){
+            switch(button.target.id){
+                case 'change_email':{
+                    pElement = button.target.parentNode;
+                    pElement.innerHTML = `<span class="info_label">Email address:</span><input type="text"></div>`
+                    break;
+                }
+            }
+        }
+
+        edit_buttons.forEach((button) => {
+            button.addEventListener('click', (item) => {
+                activate_input(item);
+            })
+        })
+
+
+
+
+
+
+
+
+
+
+
+
         function initiate_cart(){
             const cart_status = document.getElementById('items_number').innerHTML;
             const cart = document.querySelector('.cart');
-            console.log(cart_status);
             if (parseInt(cart_status) > 0){
                 cart.style.transform = 'scale(1)';
             }else{

@@ -196,7 +196,7 @@ h1 {
   margin-top: 10px;
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 30%;
+  flex-basis: 10%;
 }
 .result_no .add_to_cart {
   display: block;

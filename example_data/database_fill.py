@@ -1,6 +1,7 @@
 #Konrad Maciejczyk, 2021-2022
 #Note: To use this script run in terminal: python3 manage.py shell < ./example_data/database_fill.py
 from accounts.models import Citizenship, IDType, Occupation
+from user_side.models import Status
 from worker_side.models import Author, Condition, Availability, Director, Publisher, Screenwriter
 
 def fill_accounts(citizenships=True, id_types=True, occupations=True, genders=True, *args, **kwargs):
@@ -44,7 +45,7 @@ def fill_worker_side(conditions=True, availabilities=True, authors=True, publish
     None"""
 
     conditions_data = (('Good'), ('Damaged'))
-    availabilities_data = (('Available to borrow'), ('Library use only'))
+    availabilities_data = (('Available to borrow'), ('Library use only'), ('Not available'))
     authors_data = (('author unknown'), ("Terry Pratchett"), ("Adam Mickiewicz") , ("Henryk Sienkiewicz") , ("Stefan Żeromski"), ("Fyodor Dostoyevsky"), ("Stanisław Lem"))
     publishers_data = (('publisher unknow'), ("Prószyński i S-ka"), ("Wydawnictwo Literackie"), ("Wydawnictwo MG"))
     directors_data = (('director unknown'), ('Stanley Kubrik'), ("Christopher Nolan"), ("Denis Villeneuve"), ("Darren Aronofsky"), ("Guillermo del Toro"))
@@ -92,10 +93,21 @@ def fill_worker_side(conditions=True, availabilities=True, authors=True, publish
             buff.save()
         print(f'{len(screenwriters_data)} row(s) has been inserted into worker_side_screenwriter table.\n')
 
+def fill_user_side():
+    statuses_data = (('Placed'), ('Ready'), ("Fullfilled"))
+
+    print(f'Starting to enter data rows into user_side_status table.')
+    for status in statuses_data:
+        buff = Status(name=status)
+        buff.save()
+    print(f'{len(statuses_data)} row(s) has been inserted into user_side_status table.\n')
+
 def fill_whole_database():
     fill_accounts()
     fill_worker_side()
+    fill_user_side()
 
 if __name__ == '__main__':
     fill_accounts()
     fill_worker_side()
+    fill_user_side()

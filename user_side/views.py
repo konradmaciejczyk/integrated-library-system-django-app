@@ -1,19 +1,18 @@
 # Konrad Maciejczyk, 2021-2022
-from os import CLD_EXITED, sched_setscheduler, stat
 from django.http.response import JsonResponse
 import json
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from user_side.forms import SearchForm
 from user_side.models import Client
-from worker_side.models import Book, Movie, SoundRecording
+from worker_side.models import Availability, Book, Movie, SoundRecording
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from accounts.models import User
 from django.contrib import messages
 from user_side.models import BookOrder, SoundRecordingOrder, MovieOrder, Status 
 
-def get_books(title, author, output, authors):
-    results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s);", ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)", ["%"+title+"%"])
+def get_books(title, author, output, authors, availability):
+    results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
 
     book = {}
 
@@ -36,15 +35,16 @@ def get_books(title, author, output, authors):
         book['condition'] = result.condition.name
         book['availability'] = result.availability.name
         book['cover'] = result.cover.url
+        book['due_date'] = result.due_date if result.due_date else False
         
         output.append(book)
         book = {}
 
-def get_movies(title, director_screenwriter, output, authors):
-    results = Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(director.name) LIKE LOWER (%s);", ["%"+title+"%", director_screenwriter+"%"]) if director_screenwriter else Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s);", ["%"+title+"%"])
+def get_movies(title, director_screenwriter, output, authors, availability):
+    results = Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(director.name) LIKE LOWER (%s)"+availability, ["%"+title+"%", director_screenwriter+"%"]) if director_screenwriter else Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
 
     if len(results) < 1:
-        results = Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_screenwriter AS movie_screenwriter ON movie.id=movie_screenwriter.movie_id INNER JOIN worker_side_screenwriter AS screenwriter ON screenwriter.id=movie_screenwriter.screenwriter_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(screenwriter.name) LIKE LOWER(%s)", ["%"+title+"%", director_screenwriter+"%"])
+        results = Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_screenwriter AS movie_screenwriter ON movie.id=movie_screenwriter.movie_id INNER JOIN worker_side_screenwriter AS screenwriter ON screenwriter.id=movie_screenwriter.screenwriter_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(screenwriter.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", director_screenwriter+"%"])
         
         
     movie = {}
@@ -73,12 +73,13 @@ def get_movies(title, director_screenwriter, output, authors):
         movie['condition'] = result.condition.name
         movie['availability'] = result.availability.name
         movie['cover'] = result.cover.url
+        movie['due_date'] = result.due_date if result.due_date else False        
 
         output.append(movie)
         movie = {}
 
-def get_sound_recordings(title, author, output, authors):    
-    results = SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(author.name) LIKE LOWER(%s);", ["%"+title+"%", author+"%"]) if author else  SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s);", ["%"+title+"%"])
+def get_sound_recordings(title, author, output, authors, availability):    
+    results = SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(author.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else  SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
 
     soundrecording = {}
 
@@ -101,6 +102,7 @@ def get_sound_recordings(title, author, output, authors):
         soundrecording['condition'] = result.condition.name
         soundrecording['availability'] = result.availability.name
         soundrecording['cover'] = result.cover.url
+        soundrecording['due_date'] = result.due_date if result.due_date else False
 
         output.append(soundrecording)
         soundrecording = {}
@@ -120,15 +122,17 @@ def search(request):
             output = []
             authors = set()
 
+            print("CO PRZYSZŁO: ", data)
+
             if data['book']:
-                get_books(data['title'], data['author'], output, authors)
+                get_books(data['title'], data['author'], output, authors, ' ;' if data['not_available'] else " AND book.availability_id != 3;")
                 sets.append("books")
             if data['movie']:
-                get_movies(data['title'], data['author'], output, authors)
+                get_movies(data['title'], data['author'], output, authors, ' ;' if data['not_available'] else " AND movie.availability_id != 3;")
                 sets.append('movies')
 
             if data['sr']:
-               get_sound_recordings(data['title'], data['author'], output, authors)
+               get_sound_recordings(data['title'], data['author'], output, authors, ' ;' if data['not_available'] else " AND soundrecording.availability_id != 3;")
                sets.append('sound recordings')
 
             if len(sets) > 1:
@@ -178,8 +182,10 @@ def log_in(request):
 
 @login_required
 def profile(request):
+    client = Client.objects.get(user=request.user)
     context = {
-        'cart_status': len(request.session['cart']) if 'cart' in request.session else 0
+        'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
+        'client': client
     }
     return render(request, "user_side/profile.html", context=context)
 
@@ -284,17 +290,30 @@ def cart(request):
             return redirect('user_side-home')
         else:
             status = Status.objects.get(id=1)
+            availability = Availability.objects.get(id=3)
             for order in request.session['cart']:
                 item_type, item_id = order.split('-')                
                 if item_type == '1':
-                    item = Book.objects.get(id=item_id)                    
+                    item = Book.objects.get(id=item_id)                                   
                     order = BookOrder.objects.create(client=logged_client, item=item, status = status)
+                    order.default_availability = item.availability
+                    item.availability = availability
+                    item.save()
+                    order.save()     
                 elif item_type == '2':
                     item = Movie.objects.get(id=item_id)
                     order = MovieOrder.objects.create(client=logged_client, item=item, status=status)
+                    order.default_availability = item.availability
+                    item.availability = availability
+                    item.save()
+                    order.save()
                 elif item_type == '3':
                     item = SoundRecording.objects.get(id=item_id)
                     order = SoundRecordingOrder.objects.create(item=item, client=logged_client, status=status)
+                    order.default_availability = item.availability
+                    item.availability = availability
+                    item.save()
+                    order.save()                    
 
             logged_client.current_borrows += len(request.session['cart'])
             logged_client.save()

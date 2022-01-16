@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.fields.related import ForeignKey
 from accounts.models import User, Citizenship, Occupation, IDType
-from worker_side.models import Book, Movie, SoundRecording
+from worker_side.models import Availability, Book, Movie, SoundRecording
 from django.utils import timezone
 
 class Client(models.Model):
@@ -33,6 +33,7 @@ class BookOrder(models.Model):
     item = models.ForeignKey(Book, on_delete=models.CASCADE, verbose_name="Book")
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Order placed at")
     status = ForeignKey(Status, on_delete=models.SET_NULL, null=True, verbose_name="Book order status")
+    default_availability = models.ForeignKey(Availability, verbose_name="Item's default availability", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return "{} (ID: {}) by {} (E-mail: {}) (status: {})".format(self.item.title, self.item.id, self.client.user.first_name + self.client.user.last_name, self.client.user.email, self.status.name)
@@ -42,6 +43,7 @@ class MovieOrder(models.Model):
     item = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name="Movie")
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Order placed at")
     status = ForeignKey(Status, on_delete=models.SET_NULL, null=True, verbose_name="Movie order status")
+    default_availability = models.ForeignKey(Availability, verbose_name="Item's default availability", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return "{} (ID: {}) by {} (E-mail: {}) (status: {})".format(self.item.title, self.item.id, self.client.user.first_name + self.client.user.last_name, self.client.user.email, self.status.name)
@@ -51,6 +53,7 @@ class SoundRecordingOrder(models.Model):
     item = models.ForeignKey(SoundRecording, on_delete=models.CASCADE, verbose_name="Sound recording")
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Order placed at")
     status = ForeignKey(Status, on_delete=models.SET_NULL, null=True, verbose_name="Sound recording order status")
+    default_availability = models.ForeignKey(Availability, verbose_name="Item's default availability", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return "{} (ID: {}) by {} (E-mail: {}) (status: {})".format(self.item.title, self.item.id, self.client.user.first_name + self.client.user.last_name, self.client.user.email, self.status.name)

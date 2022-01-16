@@ -14,8 +14,13 @@
                 <th>No.</th>
                 <th>Item info</th>
                 <th>Client info</th>
-                <th>Placed at</th>
-                <th></th>
+                <th>
+                    {% if title == 'Borrowed items' %}
+                        Due date
+                    {% else %}
+                        Placed at
+                    {% endif %}
+                <th>
             </tr>
             {% for item in items %}
                 <tr id="{{item.item_type}}-{{item.id}}" class="exists">                

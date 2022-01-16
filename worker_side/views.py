@@ -1,4 +1,4 @@
-from django.db.models import Value
+from django.db.models import Value, SET_NULL
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import JsonResponse 
@@ -142,7 +142,6 @@ def placed_orders(request):
                 client_email = movie.client.user.email
                 movie.save()
             elif item == "Sound recording":
-                print('!!!!KURWA!!!!!!')
                 sr = SoundRecordingOrder.objects.get(id=itemID)
                 sr.status = status
                 item_type = "sound recording"
@@ -168,7 +167,7 @@ def placed_orders(request):
             #send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
             return JsonResponse(["OK!", item+'-'+itemID], safe=False)
         except:
-            JsonResponse("ERROR!", safe=False)
+            return  JsonResponse("ERROR!", safe=False)
         
 
 def waiting_orders(request):
@@ -185,24 +184,34 @@ def waiting_orders(request):
         try: 
             item, itemID = json.loads(request.body)['itemID'].split("-")
             status = Status.objects.get(id=3)
-
             if item == "Book":
-                book = BookOrder.objects.get(id=itemID)            
-                book.status = status
+                book_order = BookOrder.objects.get(id=itemID)  
+                book = book_order.item
+                book.due_date = datetime.today() + timedelta(31)    
+                book_order.timestamp = datetime.today() + timedelta(31)
+                book_order.status = status
+                book_order.save()
                 book.save()
             elif item == "Movie/Film":
-                movie = MovieOrder.objects.get(id=itemID)
-                movie.status = status
+                movie_order = MovieOrder.objects.get(id=itemID)
+                movie = movie_order.item
+                movie.due_date = datetime.today() + timedelta(31) 
+                movie_order.timestamp = datetime.today() + timedelta(31)
+                movie_order.status = status
                 movie.save()
+                movie_order.save()
             elif item == "Sound recording":
-                
-                sr = SoundRecordingOrder.objects.get(id=itemID)
-                sr.status = status
+                sr_order = SoundRecordingOrder.objects.get(id=itemID)
+                sr = sr_order.item
+                sr_order.timestamp = datetime.today() + timedelta(31)
+                sr.due_date = datetime.today() + timedelta(31) 
+                sr_order.status = status
                 sr.save()
+                sr_order.save()
             
             return JsonResponse(["OK!", item+'-'+itemID], safe=False)
         except:
-            JsonResponse("ERROR!", safe=False)
+            return JsonResponse("ERROR!", safe=False)
 
 
 def borrowed_items(request):
@@ -216,30 +225,39 @@ def borrowed_items(request):
 
         return render(request, template_name="worker_side/orders.html", context=context)
     else:
-        try: 
-            item, itemID = json.loads(request.body)['itemID'].split("-")
+        item, itemID = json.loads(request.body)['itemID'].split("-")
 
-            if item == "Book":
-                book = BookOrder.objects.get(id=itemID)
-                client = book.client    
-                client.current_borrows -= 1 
-                book.delete()
-                client.save()
-            elif item == "Movie/Film":
-                movie = MovieOrder.objects.get(id=itemID)
-                client = movie.client
-                client.current_borrows -= 1
-                movie.delete()
-                client.save()
-            elif item == "Sound recording":
-                sr = SoundRecordingOrder.objects.get(id=itemID)
-                client = sr.client
-                client.current_borrows -= 1
-                sr.delete()
-                client.save()
-            
-            return JsonResponse(["OK!", item+'-'+itemID], safe=False)
-        except:
-            JsonResponse("ERROR!", safe=False)
+        if item == "Book":
+            book_order = BookOrder.objects.get(id=itemID)
+            client = book_order.client    
+            book = book_order.item
+            book.due_date = None
+            book.availability = book_order.default_availability
+            book.save()
+            client.current_borrows -= 1 
+            book_order.delete()
+            client.save()
+        elif item == "Movie/Film":
+            movie_order = MovieOrder.objects.get(id=itemID)
+            client = movie_order.client
+            movie = movie_order.item
+            movie.due_date = None
+            movie.availability = movie_order.default_availability
+            movie.save()
+            client.current_borrows -= 1
+            movie_order.delete()
+            client.save()
+        elif item == "Sound recording":
+            sr_order = SoundRecordingOrder.objects.get(id=itemID)
+            client = sr_order.client
+            sr = sr_order.item
+            sr.due_date = None
+            sr.availability = sr_order.default_availability
+            sr.save()
+            client.current_borrows -= 1
+            sr_order.delete()
+            client.save()
+        
+        return JsonResponse(["OK!", item+'-'+itemID], safe=False)
 
 
