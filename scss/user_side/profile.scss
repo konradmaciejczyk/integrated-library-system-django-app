@@ -11,16 +11,7 @@ h1{
 
 h1:nth-of-type(2){
     margin-top: 60px;
-    position: relative;
 }
-
-// h1:nth-of-type(2):before{
-//     position: absolute;
-//     content: '';
-//     width: 800px; height: 1px;
-//     background-color: $main-green;
-//     top: -10px;
-// }
 
 main{
     width: 70vw; min-height: 200px;
@@ -36,7 +27,7 @@ nav{
     width: 100%;
 }
 
-.nav_button{
+.nav_tab{
     box-sizing: border-box;
     background-color: $main-green;
     padding: 10px;
@@ -79,10 +70,9 @@ li{
 
 .edit_button{
     display: inline-block;
-    width: 30px; height: 20px;
     background-color: $main-green;
     font-size: 12px;
-    vertical-align: middle; line-height: 20px;
+    padding: 5px;
     text-align: center;
     color: white;
     border-radius: 3px;
@@ -92,5 +82,40 @@ li{
         cursor: pointer;
         filter: brightness(120%);
     }
-
 }
+
+input[type="text"]{
+    border: 0;
+    border-bottom: 2px solid silver;
+    transition: border-bottom .5s;
+    width: 350px;
+    padding-bottom: 2px;
+    padding-left: 1px;
+    display: inline-block;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+    
+    &:focus{
+        border-bottom: 2px solid $main-green;
+    }
+}
+
+button{
+    display: block;
+    width: 80px; height: 35px;
+    border: 0;
+    float: right;
+    margin-right: 50px;
+    background-color: $main-green;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 3px;
+    visibility: hidden;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(120%);
+    }
+}
+
+@include text_inputs;

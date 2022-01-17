@@ -9,10 +9,10 @@
 {% block content %} 
     <main>
         <nav>
-            <div id="information_button" class="nav_button active">
+            <div id="informations_tab" class="nav_tab active">
                 User's informations
             </div>
-            <div id="borrows_button" class="nav_button">
+            <div id="borrows_tab" class="nav_tab">
                 User's borrows
             </div>
         </nav>
@@ -23,13 +23,13 @@
                     <span class="info_label">Name and surname:</span> {{ user.first_name }} {{ user.last_name }}
                 </li>
                 <li>
-                    <span class="info_label">Email address:</span> {{ user.email }} <div class="edit_button" id="change_email"><i class="far fa-edit"></i></div>
+                    <span class="info_label">Email address:</span> {{ user.email }}<i class="far fa-edit edit_button" id="change_email"></i></div>
                 </li>
                 <li>
-                    <span class="info_label">Phone number:</span> {{ user.phone_number }} <div class="edit_button" id="change_phone_num"><i class="far fa-edit"></i></div>
+                    <span class="info_label">Phone number:</span> {{ user.phone_number }}<i class="far fa-edit edit_button" id="change_phone_num"></i>
                 </li>
                 <li>
-                    <span class="info_label">Correspondance address:</span> {{ client.corr_address }} <div class="edit_button" id="change_addr"><i class="far fa-edit"></i></div>
+                    <span class="info_label">Correspondance address:</span> {{ client.corr_address }}<i class="far fa-edit edit_button" id="change_addr"></i>
                 </li>
                 <li>
                     <span class="info_label">Date of birth:</span> {{ client.date_of_birth }}
@@ -53,23 +53,57 @@
                     <span class="info_label">Current amount of borrowed items:</span> {{ client.current_borrows }}
                 </li>
             </ul>
+            <button id="save_button">Save</button><div style="clear: both;"></div>
         </section>
+        <section id="user_borrows">XD</section>
     </main>
-
+    {{ user_data|json_script:"user_data_to_change" }}
     <a href="{% url 'user_side-cart' %}" title="Proceed to order summary" target="_blanc">
         <div class="cart" >
             <i class="fas fa-shopping-bag"></i> <span id="items_number" class="text_bold">{{ cart_status }}</span> item(s) selected
         </div>
     </a>
-
+    <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
     <script type="text/javascript">
         const edit_buttons = document.querySelectorAll('.edit_button');
+        const user_data_to_change = JSON.parse(document.getElementById('user_data_to_change').textContent);
+        const save_button = document.getElementById('save_button');
+
+        const tabs_buttons = new Array(document.getElementById('informations_tab'), document.getElementById('borrows_tab'));
+        tabs_buttons[0].addEventListener('click', (tab) => {
+            tab.target.classList.add('active');
+            tabs_buttons[1].classList.remove('active');
+            toggleDivs('user_borrows', 'user_info', 15);
+        })
+
+        tabs_buttons[1].addEventListener('click', (tab) => {
+            tab.target.classList.add('active');
+            tabs_buttons[0].classList.remove('active');
+            toggleDivs('user_info', 'user_borrows', 15);
+        })
+        
+        
 
         function activate_input(button){
+            let pElement = button.target.parentNode;
             switch(button.target.id){
                 case 'change_email':{
-                    pElement = button.target.parentNode;
-                    pElement.innerHTML = `<span class="info_label">Email address:</span><input type="text"></div>`
+                    pElement.innerHTML = `<span class="info_label">Email address:</span><input id="email_input" type="text">`;
+                    let email_input = document.getElementById('email_input');
+                    email_input.value = user_data_to_change['email'];
+                    email_input.focus();
+                    break;
+                }case 'change_phone_num':{                    
+                    pElement.innerHTML = `<span class="info_label">Phone number:</span><input id="phone_input" type="text">`;
+                    let phone_input = document.getElementById('phone_input');
+                    phone_input.value = user_data_to_change['phone_num'];
+                    phone_input.focus();
+                    break;
+                }case 'change_addr':{
+                    pElement.innerHTML = `<span class="info_label">Correspondance address:</span><input id="addr_input" type="text">`;
+                    let addr_input = document.getElementById('addr_input');
+                    addr_input.value= user_data_to_change['corr_address'];
+                    addr_input.focus()
                     break;
                 }
             }
@@ -77,20 +111,10 @@
 
         edit_buttons.forEach((button) => {
             button.addEventListener('click', (item) => {
+                save_button.style.visibility = 'visible';
                 activate_input(item);
             })
         })
-
-
-
-
-
-
-
-
-
-
-
 
         function initiate_cart(){
             const cart_status = document.getElementById('items_number').innerHTML;

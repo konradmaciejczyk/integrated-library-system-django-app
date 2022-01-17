@@ -163,7 +163,6 @@ h1 {
 
 h1:nth-of-type(2) {
   margin-top: 60px;
-  position: relative;
 }
 
 main {
@@ -181,7 +180,7 @@ nav {
   width: 100%;
 }
 
-.nav_button {
+.nav_tab {
   box-sizing: border-box;
   background-color: #31655a;
   padding: 10px;
@@ -190,7 +189,7 @@ nav {
   flex-grow: 0;
   transition: filter 0.3s;
 }
-.nav_button:hover {
+.nav_tab:hover {
   cursor: pointer;
   filter: brightness(120%);
 }
@@ -225,12 +224,9 @@ li {
 
 .edit_button {
   display: inline-block;
-  width: 30px;
-  height: 20px;
   background-color: #31655a;
   font-size: 12px;
-  vertical-align: middle;
-  line-height: 20px;
+  padding: 5px;
   text-align: center;
   color: white;
   border-radius: 3px;
@@ -239,4 +235,95 @@ li {
 .edit_button:hover {
   cursor: pointer;
   filter: brightness(120%);
+}
+
+input[type=text] {
+  border: 0;
+  border-bottom: 2px solid silver;
+  transition: border-bottom 0.5s;
+  width: 350px;
+  padding-bottom: 2px;
+  padding-left: 1px;
+  display: inline-block;
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
+}
+input[type=text]:focus {
+  border-bottom: 2px solid #31655a;
+}
+
+button {
+  display: block;
+  width: 80px;
+  height: 35px;
+  border: 0;
+  float: right;
+  margin-right: 50px;
+  background-color: #31655a;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  border-radius: 3px;
+  visibility: hidden;
+}
+button:hover {
+  cursor: pointer;
+  filter: brightness(120%);
+}
+
+/* For styling placeholders and on focus in text inputs*/
+input[type=text]::-webkit-input-placeholder {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:-moz-placeholder {
+  /*Firefox < 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]::-moz-placeholder {
+  /*Firefox > 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:-ms-input-placeholder {
+  /*Internet Explorer 10*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=text]:focus {
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+/* For styling placeholders and on focus in password inputs*/
+input[type=password]:focus {
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+input[type=password]::-webkit-input-placeholder {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]:-moz-placeholder {
+  /*Firefox < 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]::-moz-placeholder {
+  /*Firefox > 19*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+input[type=password]:-ms-input-placeholder {
+  /*Internet Explorer 10*/
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }

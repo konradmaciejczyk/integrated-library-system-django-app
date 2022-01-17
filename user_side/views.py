@@ -185,7 +185,12 @@ def profile(request):
     client = Client.objects.get(user=request.user)
     context = {
         'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
-        'client': client
+        'client': client,
+        'user_data': {
+            'email': request.user.email,
+            'phone_num': request.user.phone_number,
+            'corr_address': client.corr_address
+        }
     }
     return render(request, "user_side/profile.html", context=context)
 
