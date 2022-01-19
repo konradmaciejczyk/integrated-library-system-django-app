@@ -3,13 +3,15 @@ from django.http.response import JsonResponse
 import json
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from user_side.forms import SearchForm
+from user_side.forms import SearchForm, UpdateClientForm, UpdateUserForm
 from user_side.models import Client
 from worker_side.models import Availability, Book, Movie, SoundRecording
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from accounts.models import User
 from django.contrib import messages
 from user_side.models import BookOrder, SoundRecordingOrder, MovieOrder, Status 
+from django.db.models import Value
+from django.db import connection
 
 def get_books(title, author, output, authors, availability):
     results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
@@ -44,6 +46,7 @@ def get_movies(title, director_screenwriter, output, authors, availability):
     results = Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(director.name) LIKE LOWER (%s)"+availability, ["%"+title+"%", director_screenwriter+"%"]) if director_screenwriter else Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
 
     if len(results) < 1:
+        print("!!!!!")
         results = Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_screenwriter AS movie_screenwriter ON movie.id=movie_screenwriter.movie_id INNER JOIN worker_side_screenwriter AS screenwriter ON screenwriter.id=movie_screenwriter.screenwriter_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(screenwriter.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", director_screenwriter+"%"])
         
         
@@ -122,8 +125,6 @@ def search(request):
             output = []
             authors = set()
 
-            print("CO PRZYSZŁO: ", data)
-
             if data['book']:
                 get_books(data['title'], data['author'], output, authors, ' ;' if data['not_available'] else " AND book.availability_id != 3;")
                 sets.append("books")
@@ -183,16 +184,37 @@ def log_in(request):
 @login_required
 def profile(request):
     client = Client.objects.get(user=request.user)
-    context = {
-        'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
-        'client': client,
-        'user_data': {
-            'email': request.user.email,
-            'phone_num': request.user.phone_number,
-            'corr_address': client.corr_address
+    if request.method == "GET":
+        u_form = UpdateUserForm()
+        c_form = UpdateClientForm()
+        client_items = list(BookOrder.objects.all().annotate(item_type=Value('Book')).filter(client=client)) + list(MovieOrder.objects.all().annotate(item_type=Value('Movie/Film')).filter(client=client)) + list(SoundRecordingOrder.objects.all().annotate(item_type=Value("Sound recording")).filter(client=client))
+        context = {
+            'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
+            'client': client,
+            'user_data': {
+                'email': request.user.email,
+                'phone_num': request.user.phone_number,
+                'corr_address': client.corr_address
+            },
+            'client_items': client_items,
         }
-    }
-    return render(request, "user_side/profile.html", context=context)
+        return render(request, "user_side/profile.html", context=context)
+    else:
+        u_form = UpdateUserForm(request.POST, instance=request.user)
+        c_form = UpdateClientForm(request.POST, instance=client)
+
+        print(u_form.errors)
+        print(c_form.errors)
+
+        if u_form.is_valid() and c_form.is_valid():
+            u_form.save()
+            c_form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('user_side-profile') 
+        else:
+            print(u_form.errors, c_form.errors)
+            messages.error(request, "The data you've sent is not correct. Check your inputs and try again.")
+            return redirect('user_side-profile')    
 
 def home(request):
     context = {

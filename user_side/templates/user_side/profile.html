@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock styles %}
 {% block content %} 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="op_status {{ message.tags }}"><i class="fas fa-info"></i>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
     <main>
         <nav>
             <div id="informations_tab" class="nav_tab active">
@@ -55,8 +60,51 @@
             </ul>
             <button id="save_button">Save</button><div style="clear: both;"></div>
         </section>
-        <section id="user_borrows">XD</section>
+        <section id="user_borrows">
+            <table>
+                <tr>
+                    <th>
+                        No.
+                    </th>
+                    <th>
+                        Item info
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+                {% for client_item in client_items %}
+                    <tr>
+                        <td>
+                            {{ forloop.counter }}.
+                        </td>
+                        <td>
+                            <ul>
+                                <li>
+                                    {{ client_item.item_type }}
+                                </li>
+                                <li>
+                                    {{ client_item.item.title }}
+                                </li>
+                                <li>
+                                    ID: {{ client_item.item.id }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            {{ client_item.status.name }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
     </main>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="email" value="{{ user_data.email }}">
+        <input type="hidden" name="corr_address" value="{{ user_data.corr_address }}">
+        <input type="hidden" name="phone_number" value="{{ user_data.phone_num }}">
+    </form>
     {{ user_data|json_script:"user_data_to_change" }}
     <a href="{% url 'user_side-cart' %}" title="Proceed to order summary" target="_blanc">
         <div class="cart" >
@@ -68,6 +116,20 @@
         const edit_buttons = document.querySelectorAll('.edit_button');
         const user_data_to_change = JSON.parse(document.getElementById('user_data_to_change').textContent);
         const save_button = document.getElementById('save_button');
+
+        save_button.addEventListener('click', () => {
+            let email = document.getElementsByName('email')[0];
+            let phone_num = document.getElementsByName('phone_number')[0];
+            let corr_address = document.getElementsByName('corr_address')[0];
+
+            email.value = user_data_to_change['email'];
+            phone_num.value = user_data_to_change['phone_num'];
+            corr_address.value = user_data_to_change['corr_address'];
+
+            console.log(email); console.log(phone_num); console.log(corr_address);
+
+            document.querySelector('form').submit();
+        })
 
         const tabs_buttons = new Array(document.getElementById('informations_tab'), document.getElementById('borrows_tab'));
         tabs_buttons[0].addEventListener('click', (tab) => {
@@ -87,23 +149,36 @@
         function activate_input(button){
             let pElement = button.target.parentNode;
             switch(button.target.id){
-                case 'change_email':{
+                case 'change_email':{                    
                     pElement.innerHTML = `<span class="info_label">Email address:</span><input id="email_input" type="text">`;
                     let email_input = document.getElementById('email_input');
-                    email_input.value = user_data_to_change['email'];
+                    email_input.value = user_data_to_change['email']
                     email_input.focus();
+
+                    email_input.addEventListener('blur', (item) => {
+                        user_data_to_change['email'] = item.target.value;
+                    })
+                   
                     break;
                 }case 'change_phone_num':{                    
                     pElement.innerHTML = `<span class="info_label">Phone number:</span><input id="phone_input" type="text">`;
                     let phone_input = document.getElementById('phone_input');
                     phone_input.value = user_data_to_change['phone_num'];
                     phone_input.focus();
+
+                    phone_input.addEventListener('blur', (item) => {
+                        user_data_to_change['phone_num'] = item.target.value;
+                    })
                     break;
                 }case 'change_addr':{
                     pElement.innerHTML = `<span class="info_label">Correspondance address:</span><input id="addr_input" type="text">`;
                     let addr_input = document.getElementById('addr_input');
                     addr_input.value= user_data_to_change['corr_address'];
                     addr_input.focus()
+
+                    addr_input.addEventListener('blur', (item) => {
+                        user_data_to_change['corr_address'] = item.target.value;
+                    })
                     break;
                 }
             }
@@ -125,6 +200,8 @@
                 cart.style.transform = 'scale(0)';
             }
         }
+
+
 
         initiate_cart();
     </script>

@@ -14,7 +14,7 @@ h1:nth-of-type(2){
 }
 
 main{
-    width: 70vw; min-height: 200px;
+    width: 70vw; min-height: 600px;
     background-color: white;
     margin: 50px auto 0px auto;
     padding-bottom: 100px;
@@ -116,6 +116,48 @@ button{
         cursor: pointer;
         filter: brightness(120%);
     }
+}
+#user_borrows{
+    display: none;
+    color: black;
+}
+
+table{
+    margin: 40px auto 0px auto;
+    width: 90%;
+    border-spacing: 0;
+    border-radius: 5px 5px 0px 0xp;
+    border-bottom: 3px solid $main-green;
+}
+
+th{
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 20px;
+    padding: 10px;
+    color:white;
+    background-color: $main-green;
+}
+
+td{
+    padding: 5px 5px 5px 10px;
+}
+td:last-child{
+    border-right: 0;
+}
+
+tr:nth-of-type(odd){
+    background-color: rgb(218, 218, 218);    
+}
+table tr td ul{
+    margin: 0;
+}
+table tr td ul li{
+    margin: 0 0 0 0;
+    font-size: 15px;
+}
+#message{
+    visibility: hidden;
 }
 
 @include text_inputs;
