@@ -81,18 +81,25 @@
                         <td>
                             <ul>
                                 <li>
-                                    {{ client_item.item_type }}
+                                    {{ client_item.0.item_type }}
                                 </li>
                                 <li>
-                                    {{ client_item.item.title }}
+                                    {{ client_item.0.item.title }}
                                 </li>
                                 <li>
-                                    ID: {{ client_item.item.id }}
+                                    ID: {{ client_item.0.item.id }}
                                 </li>
                             </ul>
                         </td>
                         <td>
-                            {{ client_item.status.name }}
+                            {% if client_item.0.status.id == 3 %}
+                                Borrowed until: {{ client_item.0.item.due_date }}
+                            {% else %}
+                                {{ client_item.0.status.name }}
+                            {% endif %}
+                            {% if client_item.1 is True %}
+                                </br><span class="prolong" data-prolong="{{ client_item.0.item_type }}-{{ client_item.0.item.id }}">Prolong</span>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -114,6 +121,7 @@
     <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
     <script type="text/javascript">
         const edit_buttons = document.querySelectorAll('.edit_button');
+        const prolong_buttons = document.querySelectorAll('.prolong');
         const user_data_to_change = JSON.parse(document.getElementById('user_data_to_change').textContent);
         const save_button = document.getElementById('save_button');
 
@@ -144,6 +152,29 @@
             toggleDivs('user_info', 'user_borrows', 15);
         })
         
+        prolong_buttons.forEach((button) => {
+            button.addEventListener('click', (item) => {
+                prolong(item.target.dataset.prolong);
+            })
+        })
+
+        function prolong(item){
+            let csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            fetch("/profile/prolong-item/", {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf_token
+                },
+                body: JSON.stringify({'item': item})
+            }).then((response) => {
+                return response.json()
+            }).then((response_json) => {
+                if (response_json === 'OK!'){
+                    window.location.reload();
+                }
+            })
+        }
         
 
         function activate_input(button){

@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.fields.files import ImageField
 from PIL import Image
 
 class Condition(models.Model):
@@ -55,6 +54,16 @@ class Book(models.Model):
     cover = models.ImageField(default="no_image.png", upload_to="books_covers", verbose_name="books_covers")
     due_date = models.DateField(null=True, verbose_name="Return date")
 
+    def save(self):
+        super().save()
+
+        img = Image.open(self.cover.path)
+
+        if img.height > 500 or img.width > 332:
+            output_size = (332, 500)
+            img.thumbnail(output_size)
+            img.save(self.cover.path)
+
     def __str__(self):
         return self.title
 
@@ -70,6 +79,16 @@ class SoundRecording(models.Model):
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL, verbose_name="Availability status")
     cover = models.ImageField(default="no_image.png", upload_to="sound_recordings_covers")
     due_date = models.DateField(null=True, verbose_name="Return date")
+
+    def save(self):
+        super().save()
+
+        img = Image.open(self.cover.path)
+
+        if img.height > 500 or img.width > 332:
+            output_size = (332, 500)
+            img.thumbnail(output_size)
+            img.save(self.cover.path)
 
     def __str__(self):
         return self.title

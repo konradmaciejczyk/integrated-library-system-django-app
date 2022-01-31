@@ -1,8 +1,10 @@
 # Konrad Maciejczyk, 2021-2022
+from datetime import datetime, timedelta
 from django.http.response import JsonResponse
 import json
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from flask import request
 from user_side.forms import SearchForm, UpdateClientForm, UpdateUserForm
 from user_side.models import Client
 from worker_side.models import Availability, Book, Movie, SoundRecording
@@ -11,7 +13,6 @@ from accounts.models import User
 from django.contrib import messages
 from user_side.models import BookOrder, SoundRecordingOrder, MovieOrder, Status 
 from django.db.models import Value
-from django.db import connection
 
 def get_books(title, author, output, authors, availability):
     results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
@@ -169,7 +170,7 @@ def search(request):
                 'last_page': paginator.num_pages,
                 'start_loop': divide_by * (results.number - 1),
                 'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
-                'cart_items': request.session['cart'] if 'cart' in request.session else 'Ni ma'
+                'cart_items': request.session['cart'] if 'cart' in request.session else False
             }
 
             return render(request, "user_side/search.html", context)
@@ -188,6 +189,12 @@ def profile(request):
         u_form = UpdateUserForm()
         c_form = UpdateClientForm()
         client_items = list(BookOrder.objects.all().annotate(item_type=Value('Book')).filter(client=client)) + list(MovieOrder.objects.all().annotate(item_type=Value('Movie/Film')).filter(client=client)) + list(SoundRecordingOrder.objects.all().annotate(item_type=Value("Sound recording")).filter(client=client))
+
+        for index, client_item in enumerate(client_items):
+            prolong = True if (client_item.item.due_date - datetime.today().date()).days < 7 and client_item.prolongs < 4 else False
+            client_items[index] = (client_item, prolong)
+            print(client_items[index])
+
         context = {
             'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
             'client': client,
@@ -196,15 +203,12 @@ def profile(request):
                 'phone_num': request.user.phone_number,
                 'corr_address': client.corr_address
             },
-            'client_items': client_items,
+            'client_items': client_items
         }
         return render(request, "user_side/profile.html", context=context)
     else:
         u_form = UpdateUserForm(request.POST, instance=request.user)
         c_form = UpdateClientForm(request.POST, instance=client)
-
-        print(u_form.errors)
-        print(c_form.errors)
 
         if u_form.is_valid() and c_form.is_valid():
             u_form.save()
@@ -214,7 +218,39 @@ def profile(request):
         else:
             print(u_form.errors, c_form.errors)
             messages.error(request, "The data you've sent is not correct. Check your inputs and try again.")
-            return redirect('user_side-profile')    
+            return redirect('user_side-profile')   
+
+def prolong(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        item_type, item_id = data['item'].split('-')
+        print(item_type, item_id)
+
+        if item_type == "Book":
+            book_order = BookOrder.objects.get(id=item_id)
+            book = book_order.item
+            book.due_date = book.due_date + timedelta(31)
+            book_order.prolongs += 1
+            book_order.save()
+            book.save()
+        elif item_type == "Movie/Film":
+            movie_order = MovieOrder.objects.get(id=item_id)
+            movie = movie_order.item
+            movie.due_date = movie.due_date + timedelta(31)
+            movie_order.prolongs += 1
+            movie_order.save()
+            movie.save()
+        elif item_type == "Sound recording":
+            sr_order = SoundRecordingOrder.objects.get(id=item_id)
+            sr = sr_order.item
+            sr.due_date = sr.due_date + timedelta(31)
+            sr_order.prolongs += 1
+            sr_order.save()
+            sr.save()
+
+        return JsonResponse("OK!", safe=False)
+    else:
+        return redirect('user_side-profile')
 
 def home(request):
     context = {
@@ -237,8 +273,26 @@ def update_item(request):
         elif action == 2:
             if data['productID'] in request.session['cart']:
                 request.session['cart'].remove(data['productID'])
+        elif action == 3:
+            item_type, item_id = data['productID'].split("-")
 
-        print("KOSZYK: ", request.session['cart'])
+            if item_type == "1":
+                book = Book.objects.get(id=item_id)
+                book_order = BookOrder.objects.get(item=book)
+                book_order.reserved_by = Client.objects.get(user=request.user)
+                book_order.save()
+            elif item_type == "2":
+                movie = Movie.objects.get(id=item_id)
+                movie_order = MovieOrder.objects.get(item=movie)
+                movie_order.reserved_by = Client.objects.get(user=request.user)
+                movie_order.save()
+            elif item_type == "3":
+                sound_recording = SoundRecording.objects.get(id=item_id)
+                sound_recording_order = SoundRecordingOrder.objects.get(item=sound_recording)
+                sound_recording_order.reserved_by = Client.objects.get(user=request.user)
+                sound_recording_order.save()
+
+            return JsonResponse("Item reserved: {}".format(data['productID']), safe=False)
 
         request.session.modified = True
 

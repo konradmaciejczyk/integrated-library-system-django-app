@@ -59,8 +59,7 @@
                         {% if user.is_staff is False and user.is_authenticated and result.availability != "Not available" %}
                             <input type="checkbox" autocomplete="off" class="add_to_cart" title="Add to order list" data-item="{{ result.type }}-{{ result.id }}">
                         {% endif %}
-                    </div>
-                
+                    </div>                
                         <div class="item_info"> 
                             <ul>
                                 <li><span class="text_bold">ID: </span>{{ result.id }}</li>
@@ -80,10 +79,11 @@
                                     <span class="text_bold" style="color: rgb(211, 0, 0);">
                                 {% else %}
                                 <span class="text_bold green">
-                                {% endif %}
-                                    {{ result.availability }} 
+                                {% endif %}                                    
                                     {% if result.due_date %}
-                                        (Borrowed until: {{ result.due_date }})
+                                        Borrowed until: {{ result.due_date }} 
+                                    {% else %}
+                                        {{ result.availability }}
                                     {% endif %}
                                     
                                 </span></li>                                
@@ -221,7 +221,7 @@
         }
         const csrftoken = getCookie('csrftoken');
         /*===========END GETTING CSRF TOKEN==============*/
-        
+        /*===========CART===============*/
         const add_to_cart = document.querySelectorAll('.add_to_cart');
         const cart_status = document.getElementById('items_number').innerHTML;
         const cart = document.querySelector('.cart');
@@ -247,6 +247,28 @@
             }
         }
 
+        for(let i=0; i< add_to_cart.length; i++){
+            if(cart_items.includes(add_to_cart[i].dataset.item)){
+                add_to_cart[i].checked = true;
+            }
+
+            add_to_cart[i].addEventListener('click', function(){
+                if (this.checked){
+                    update_user_order(add_to_cart[i].dataset.item, 1)
+                }else{
+                    update_user_order(add_to_cart[i].dataset.item, 2)
+                }
+            })
+        }
+        /*==============END CART================*/
+
+        const reserve_links = document.querySelectorAll('.reserve');
+        reserve_links.forEach((reserve_link) => {
+            reserve_link.addEventListener('click',(item) => {
+                update_user_order(reserve_link.dataset.item, 3);
+            })
+        })
+
         function update_user_order(item, action){
             fetch(url, {
                 method: 'POST',
@@ -263,19 +285,7 @@
             })
         }
 
-        for(let i=0; i< add_to_cart.length; i++){
-            if(cart_items.includes(add_to_cart[i].dataset.item)){
-                add_to_cart[i].checked = true;
-            }
-
-            add_to_cart[i].addEventListener('click', function(){
-                if (this.checked){
-                    update_user_order(add_to_cart[i].dataset.item, 1)
-                }else{
-                    update_user_order(add_to_cart[i].dataset.item, 2)
-                }
-            })
-        }
+        
 
         initiate_cart();
     </script>
