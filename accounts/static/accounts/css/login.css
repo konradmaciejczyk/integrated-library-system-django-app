@@ -128,10 +128,10 @@ main {
   width: 100vw;
 }
 main #box_logging {
-  display: none;
+  display: block;
   box-sizing: border-box;
   width: 500px;
-  height: 350px;
+  height: 370px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 15vh;
@@ -168,17 +168,81 @@ main #box_logging input[type=password] {
   margin-top: 30px;
 }
 main #box_logging input[type=submit] {
-  display: block;
   float: right;
-  width: 20%;
+  width: 100px;
   height: 40px;
   border-radius: 5px;
-  margin-top: 30px;
-  margin-right: 100px;
   font-size: 18px;
   transition: background-color 0.4s, color 0.4s;
+  margin: 10px 100px 0px 0px;
 }
 main #box_logging input[type=submit]:hover {
+  cursor: pointer;
+  color: #194973;
+  background-color: #F8D872;
+}
+main #box_logging a {
+  float: left;
+  margin: 10px auto 10px 100px;
+  width: 250px;
+  color: white;
+  transition: color 0.4s;
+}
+main #box_logging a:hover {
+  cursor: pointer;
+  color: #F8D872;
+}
+main #box_request_password {
+  box-sizing: border-box;
+  width: 500px;
+  height: 270px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15vh;
+  background-color: #194973;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 30px -10px #194973;
+  -moz-box-shadow: 0px 0px 30px -10px #194973;
+  box-shadow: 0px 0px 30px -10px #194973;
+  padding-top: 50px;
+}
+main #box_request_password #request_sign {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 100;
+}
+main #box_request_password input[type=email] {
+  display: block;
+  width: 60%;
+  height: 40px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+main #box_request_password #go_back {
+  float: left;
+  margin: 20px 0px 20px 100px;
+}
+main #box_request_password #go_back:hover {
+  transition: color 0.4s;
+}
+main #box_request_password #go_back:hover:hover {
+  cursor: pointer;
+  color: #F8D872;
+}
+main #box_request_password input[type=submit] {
+  float: right;
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  margin: 10px 100px 0px 0px;
+  font-size: 15px;
+  transition: background-color 0.4s, color 0.4s;
+}
+main #box_request_password input[type=submit]:hover {
   cursor: pointer;
   color: #194973;
   background-color: #F8D872;
@@ -258,6 +322,31 @@ footer {
   main #box_logging input[type=submit] {
     margin-right: 8%;
     width: 80px;
+  }
+  main #box_logging p {
+    margin: 10px 0px 0px 25px;
+  }
+  main #box_request_password {
+    margin-top: 5vh;
+    width: 85vw;
+  }
+  main #box_request_password #request_sign {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 100;
+  }
+  main #box_request_password input[type=email] {
+    width: 85%;
+    height: 35px;
+  }
+  main #box_request_password input[type=submit] {
+    margin: 10px 0px 0px 25px;
+    width: 175px;
+  }
+  main #box_request_password #go_back {
+    margin: 20px 0px 0px 25px;
   }
 }
 /* For styling placeholders and on focus in text inputs*/

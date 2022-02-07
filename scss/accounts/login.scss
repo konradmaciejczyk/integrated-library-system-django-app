@@ -13,9 +13,9 @@ main{
     width: 100vw;
 
     #box_logging{
-        display:none;
+        display:block;
         box-sizing: border-box;
-        width: 500px; height: 350px;
+        width: 500px; height: 370px;
         margin-left: auto; margin-right: auto;
         margin-top: 15vh;
         background-color: $main-blue;
@@ -47,12 +47,79 @@ main{
         }
 
         & input[type="submit"]{
-            display: block;
-            float: right;
-            width: 20%; height: 40px;
+            float:right;
+            width: 100px; height: 40px;
             border-radius: 5px;
-            margin-top: 30px; margin-right: 100px;
             font-size: 18px;
+            transition: background-color .4s, color .4s;
+            margin: 10px 100px 0px 0px;
+
+            &:hover{
+                cursor: pointer;
+                color: $main-blue;
+                background-color: $main-yellow;
+            }
+        }
+
+        a{
+            float:left;
+            margin: 10px auto 10px 100px;
+            width: 250px;
+            color: $main-font-color-light;
+            transition: color .4s;
+
+            &:hover{
+                cursor: pointer;
+                color: $main-yellow;
+            }
+        }
+    }
+
+    #box_request_password{
+        box-sizing: border-box;
+        width: 500px; height: 270px;
+        margin-left: auto; margin-right: auto;
+        margin-top: 15vh;
+        background-color: $main-blue;
+        border-radius: 5px;
+        @include shadow($main-blue);
+        padding-top: 50px;
+
+        #request_sign{
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 30px; font-weight: 100;    
+        }
+
+        & input[type="email"]{
+            display: block;
+            width: 60%; height: 40px;
+            border-radius: 5px;
+            margin-left: auto; margin-right: auto;
+            margin-top: 30px;
+        }
+
+        #go_back{
+            float: left;
+            margin: 20px 0px 20px 100px;
+
+            &:hover{
+                transition: color .4s;
+
+                &:hover{
+                    cursor: pointer;
+                    color: $main-yellow;
+                }
+            }
+        }
+
+        & input[type="submit"]{
+            float: right;
+            width: 200px; height: 40px;
+            border-radius: 5px;
+            margin: 10px 100px 0px 0px;
+            font-size: 15px;
             transition: background-color .4s, color .4s;
 
             &:hover{
@@ -63,6 +130,8 @@ main{
         }
     }
 }
+
+
 
 .error{
     display: block;
@@ -141,7 +210,39 @@ footer{
                 margin-right: 8%;     
                 width: 80px;   
             }
+
+            p{
+                margin: 10px 0px 0px 25px;
+            }
         }
+
+        #box_request_password{
+            margin-top: 5vh;
+            width: 85vw;
+
+            #request_sign{
+                display: block;
+                width: 100%;
+                text-align: center;
+                font-size: 20px; font-weight: 100;    
+            }
+
+            & input[type="email"]{
+                width: 85%;
+                height: 35px;
+            }
+
+            & input[type="submit"]{
+                margin: 10px 0px 0px 25px;  
+                width: 175px;   
+            }
+
+            #go_back{
+                margin: 20px 0px 0px 25px;
+            }
+        }
+
+
     }
 }
 

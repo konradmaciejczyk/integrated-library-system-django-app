@@ -170,7 +170,7 @@ def search(request):
                 'last_page': paginator.num_pages,
                 'start_loop': divide_by * (results.number - 1),
                 'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
-                'cart_items': request.session['cart'] if 'cart' in request.session else False
+                'cart_items': request.session['cart'] if 'cart' in request.session else []
             }
 
             return render(request, "user_side/search.html", context)
@@ -191,7 +191,11 @@ def profile(request):
         client_items = list(BookOrder.objects.all().annotate(item_type=Value('Book')).filter(client=client)) + list(MovieOrder.objects.all().annotate(item_type=Value('Movie/Film')).filter(client=client)) + list(SoundRecordingOrder.objects.all().annotate(item_type=Value("Sound recording")).filter(client=client))
 
         for index, client_item in enumerate(client_items):
-            prolong = True if (client_item.item.due_date - datetime.today().date()).days < 7 and client_item.prolongs < 4 else False
+            prolong = None
+            if client_item.item.due_date:
+                prolong = True if (client_item.item.due_date - datetime.today().date()).days < 7 and client_item.prolongs < 4 else False
+            else:
+                prolong = False
             client_items[index] = (client_item, prolong)
             print(client_items[index])
 

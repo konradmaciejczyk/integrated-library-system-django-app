@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.db import models
 from django.db.models.fields.related import ForeignKey
 from accounts.models import User, Citizenship, Occupation, IDType

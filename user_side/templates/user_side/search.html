@@ -248,6 +248,7 @@
         }
 
         for(let i=0; i< add_to_cart.length; i++){
+            console.log(cart_items);
             if(cart_items.includes(add_to_cart[i].dataset.item)){
                 add_to_cart[i].checked = true;
             }

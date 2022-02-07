@@ -196,7 +196,7 @@ nav {
 
 .active {
   color: #31655a;
-  font-size: 500;
+  font-weight: 700;
   background-color: white;
 }
 .active:hover {
@@ -373,6 +373,46 @@ table tr td ul li {
   #logging #log_in_button:hover {
     color: #F8D872;
     cursor: pointer;
+  }
+
+  nav {
+    font-size: 15px;
+  }
+
+  li {
+    flex-direction: column;
+    margin-left: 5px;
+  }
+
+  ul {
+    margin-left: 10px;
+    font-size: 12px;
+  }
+
+  h1 {
+    margin: 25px 0 0 0;
+    font-weight: 500;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  #save_button {
+    margin: 0 auto 0 auto;
+    float: none;
+  }
+
+  input[type=text] {
+    width: 85vw;
+  }
+
+  table {
+    width: 97vw;
+  }
+  table tr th {
+    font-size: 15px;
+  }
+  table tr td, table tr td ul li {
+    font-size: 12px;
   }
 }
 /* For styling placeholders and on focus in text inputs*/

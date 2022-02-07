@@ -25,28 +25,28 @@
             <h1>{{ user.first_name }}'s personal informations</h1>
             <ul>
                 <li>
-                    <span class="info_label">Name and surname:</span> {{ user.first_name }} {{ user.last_name }}
+                    <span class="info_label">Name and surname:</span><span class="info_content">{{ user.first_name }} {{ user.last_name }}</span>
                 </li>
                 <li>
-                    <span class="info_label">Email address:</span> {{ user.email }}<i class="far fa-edit edit_button" id="change_email"></i></div>
+                    <span class="info_label">Email address:</span><span class="info_content">{{ user.email }}<i class="far fa-edit edit_button" id="change_email"></i></span>
                 </li>
                 <li>
-                    <span class="info_label">Phone number:</span> {{ user.phone_number }}<i class="far fa-edit edit_button" id="change_phone_num"></i>
+                    <span class="info_label">Phone number:</span><span class="info_content">{{ user.phone_number }}<i class="far fa-edit edit_button" id="change_phone_num"></i></span>
                 </li>
                 <li>
-                    <span class="info_label">Correspondance address:</span> {{ client.corr_address }}<i class="far fa-edit edit_button" id="change_addr"></i>
+                    <span class="info_label">Correspondance address:</span><span class="info_content">{{ client.corr_address }}<i class="far fa-edit edit_button" id="change_addr"></i></span>
                 </li>
                 <li>
-                    <span class="info_label">Date of birth:</span> {{ client.date_of_birth }}
+                    <span class="info_label">Date of birth:</span><span class="info_content">{{ client.date_of_birth }}</span>
                 </li>
                 <li>
-                    <span class="info_label">Identity document:</span> {{ client.id_type }} ({{ client.id_number }})
+                    <span class="info_label">Identity document:</span><span class="info_content">{{ client.id_type }} ({{ client.id_number }})</span>
                 </li>
                 <li>
-                    <span class="info_label">Citizenship:</span> {{ client.citizenship.name }}
+                    <span class="info_label">Citizenship:</span><span class="info_content">{{ client.citizenship.name }}</span>
                 </li>
                 <li>
-                    <span class="info_label">Occupation:</span> {{ client.occupation.name }}
+                    <span class="info_label">Occupation:</span><span class="info_content">{{ client.occupation.name }}</span>
                 </li>
             </ul>
             <h1>Account data</h1>
@@ -93,12 +93,12 @@
                         </td>
                         <td>
                             {% if client_item.0.status.id == 3 %}
-                                Borrowed until: {{ client_item.0.item.due_date }}
+                                Return date: {{ client_item.0.item.due_date }}
                             {% else %}
                                 {{ client_item.0.status.name }}
                             {% endif %}
                             {% if client_item.1 is True %}
-                                </br><span class="prolong" data-prolong="{{ client_item.0.item_type }}-{{ client_item.0.item.id }}">Prolong</span>
+                                </br><span class="prolong" data-prolong="{{ client_item.0.item_type }}-{{ client_item.0.id }}">Prolong</span>
                             {% endif %}
                         </td>
                     </tr>
@@ -181,7 +181,7 @@
             let pElement = button.target.parentNode;
             switch(button.target.id){
                 case 'change_email':{                    
-                    pElement.innerHTML = `<span class="info_label">Email address:</span><input id="email_input" type="text">`;
+                    pElement.innerHTML = `<input id="email_input" type="text">`;
                     let email_input = document.getElementById('email_input');
                     email_input.value = user_data_to_change['email']
                     email_input.focus();
@@ -192,7 +192,7 @@
                    
                     break;
                 }case 'change_phone_num':{                    
-                    pElement.innerHTML = `<span class="info_label">Phone number:</span><input id="phone_input" type="text">`;
+                    pElement.innerHTML = `<input id="phone_input" type="text">`;
                     let phone_input = document.getElementById('phone_input');
                     phone_input.value = user_data_to_change['phone_num'];
                     phone_input.focus();
@@ -202,7 +202,7 @@
                     })
                     break;
                 }case 'change_addr':{
-                    pElement.innerHTML = `<span class="info_label">Correspondance address:</span><input id="addr_input" type="text">`;
+                    pElement.innerHTML = `<input id="addr_input" type="text">`;
                     let addr_input = document.getElementById('addr_input');
                     addr_input.value= user_data_to_change['corr_address'];
                     addr_input.focus()

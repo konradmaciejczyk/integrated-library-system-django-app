@@ -8,18 +8,22 @@
 {% for error in form.non_field_errors %}
     <span class="error">{{ error }}</span>
 {% endfor %}
-
     <main>
-        <div id="box_logging" style="display: block;">
+        <div id="box_logging">
                 <span  id="log_in_sign">Sign in</span>
                 <form method="POST">
                     {% csrf_token %}
                     <input type="email" placeholder="E-mail address" onfocus="this.placeholder = '';" onblur="this.placeholder='E-mail address'" name="username" required>
                     <input type="password" placeholder="Password" onfocus="this.placeholder = '';" onblur="this.placeholder='Password'" name="password" required>
-                    <input type="submit"  value="Sign in"/>
-                </form>
-        </div>            
+                    <a href="{% url 'password_reset' %}" id="request_password">I don't remember my password</a>
+                    <input type="submit" value="Sign in"/>                    
+                </form>                
+        </div>        
     </main>    
     <footer>2021-2022 by <a href="https://www.github.com/konradmaciejczyk" rel="author" target="_blank" title="github profile">Konrad Maciejczyk</a>, University of Silesia</footer>
-        <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
+    <form action="{% url 'password_reset' %}">
+        <input type="hidden" name="csrfmiddlewaretoken">
+        <input type="hidden" name="email">
+    </form>
+    <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
 {% endblock content %}
