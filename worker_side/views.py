@@ -1,4 +1,4 @@
-from django.db.models import Value, SET_NULL
+from django.db.models import Value
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import JsonResponse 
@@ -6,10 +6,12 @@ from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
-from worker_side.models import Author, Book, Director, Publisher, Screenwriter
+from worker_side.models import Author, Director, Publisher, Screenwriter
 from django.core.mail import send_mail
+from accounts.decorators import is_staff_user
 import json
 
+@is_staff_user
 def home(request):
     status = Status.objects.get(id=1)
     number_of_orders = len(BookOrder.objects.all().filter(status=status)) + len(SoundRecordingOrder.objects.all().filter(status=status)) + len(MovieOrder.objects.all().filter(status=status))
@@ -20,9 +22,8 @@ def home(request):
     else:
         return render(request, 'worker_side/home.html', context={'number_of_orders':number_of_orders})
 
- 
+@is_staff_user 
 def register_user(request):
-    #password = None
     if request.method == 'POST':
         form = ClientRegistrationForm(request.POST)
         if form.is_valid():
@@ -59,6 +60,7 @@ def register_user(request):
         
         return render(request, 'worker_side/register_user.html', context)
 
+@is_staff_user
 def add_book(request):
     context = {'authors': Author.objects.all(),
                'publishers': Publisher.objects.all(),
@@ -76,6 +78,7 @@ def add_book(request):
         form = AddBookForm(request.POST, request.FILES)
         return render(request, template_name='worker_side/add_book.html', context=context)
 
+@is_staff_user
 def add_movie(request):
     context = {'directors': Director.objects.all(),
                'screenwriters': Screenwriter.objects.all(),
@@ -93,6 +96,7 @@ def add_movie(request):
         form = AddMovieForm(request.POST, request.FILES)
         return render(request, template_name='worker_side/add_movie.html', context=context)
 
+@is_staff_user
 def add_sound_recording(request):
     context = {'form': AddSoundRecordingForm(),
     'authors': Author.objects.all(),
@@ -110,6 +114,7 @@ def add_sound_recording(request):
         form = AddSoundRecordingForm(request.POST, request.FILES)
         return render(request, template_name='worker_side/add_sound_recording.html', context=context)
 
+@is_staff_user
 def placed_orders(request):
     status = Status.objects.get(id=1)
     if request.method == "GET":
@@ -169,7 +174,7 @@ def placed_orders(request):
         except:
             return  JsonResponse("ERROR!", safe=False)
         
-
+@is_staff_user
 def waiting_orders(request):
     status = Status.objects.get(id=2)
     if request.method == "GET":
@@ -213,7 +218,7 @@ def waiting_orders(request):
         except:
             return JsonResponse("ERROR!", safe=False)
 
-
+@is_staff_user
 def borrowed_items(request):
     status = Status.objects.get(id=3)
     if request.method == "GET":

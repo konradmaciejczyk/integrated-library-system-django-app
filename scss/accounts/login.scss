@@ -9,6 +9,15 @@ body{
 
 @include _header;
 
+h1{
+    text-align: center;
+    margin: 50px auto 0px auto;
+    background-color: $op_success_background;
+    border: 2px solid darken($op_success_background, 10%);
+    min-height: 50px; width: 1000px;
+    vertical-align: middle; line-height: 50px;
+}
+
 main{
     width: 100vw;
 
@@ -61,7 +70,7 @@ main{
             }
         }
 
-        a{
+        #request_password{
             float:left;
             margin: 10px auto 10px 100px;
             width: 250px;
@@ -131,6 +140,31 @@ main{
     }
 }
 
+#password_note{
+    margin: 5px 0px 10px 100px;
+    font-size: 12px;
+}
+
+#password_reset_submit{
+    margin-top: 50px;
+}
+
+#go_to_login{
+    display: block;
+    background-color: $main-green;
+    color: white;
+    margin: 50px auto 0px auto;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color .4s;
+
+    &:hover{
+        cursor: pointer;
+        background-color: $main-blue;
+    }
+}
+
 
 
 .error{
@@ -191,6 +225,18 @@ footer{
         }
     }
 
+    h1{
+        display: block;
+        width: 100vw;
+        min-height: 80px;
+        font-size: 20px;
+    }
+
+    #password_note{
+        margin: 5px 0px 10px 8vw;
+        font-size: 12px;
+    }
+
     main{
         #box_logging{
             margin-top: 5vh;
@@ -211,8 +257,8 @@ footer{
                 width: 80px;   
             }
 
-            p{
-                margin: 10px 0px 0px 25px;
+            #request_password{
+                margin: 10px 0px 0px 8%;
             }
         }
 
@@ -233,7 +279,7 @@ footer{
             }
 
             & input[type="submit"]{
-                margin: 10px 0px 0px 25px;  
+                margin: 10px 8% 0px 25px;  
                 width: 175px;   
             }
 

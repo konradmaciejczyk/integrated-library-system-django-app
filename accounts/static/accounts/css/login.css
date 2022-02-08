@@ -124,6 +124,17 @@ header {
   cursor: pointer;
 }
 
+h1 {
+  text-align: center;
+  margin: 50px auto 0px auto;
+  background-color: #10b346;
+  border: 2px solid #0c8434;
+  min-height: 50px;
+  width: 1000px;
+  vertical-align: middle;
+  line-height: 50px;
+}
+
 main {
   width: 100vw;
 }
@@ -181,14 +192,14 @@ main #box_logging input[type=submit]:hover {
   color: #194973;
   background-color: #F8D872;
 }
-main #box_logging a {
+main #box_logging #request_password {
   float: left;
   margin: 10px auto 10px 100px;
   width: 250px;
   color: white;
   transition: color 0.4s;
 }
-main #box_logging a:hover {
+main #box_logging #request_password:hover {
   cursor: pointer;
   color: #F8D872;
 }
@@ -246,6 +257,30 @@ main #box_request_password input[type=submit]:hover {
   cursor: pointer;
   color: #194973;
   background-color: #F8D872;
+}
+
+#password_note {
+  margin: 5px 0px 10px 100px;
+  font-size: 12px;
+}
+
+#password_reset_submit {
+  margin-top: 50px;
+}
+
+#go_to_login {
+  display: block;
+  background-color: #31655a;
+  color: white;
+  margin: 50px auto 0px auto;
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.4s;
+}
+#go_to_login:hover {
+  cursor: pointer;
+  background-color: #194973;
 }
 
 .error {
@@ -307,6 +342,18 @@ footer {
     cursor: pointer;
   }
 
+  h1 {
+    display: block;
+    width: 100vw;
+    min-height: 80px;
+    font-size: 20px;
+  }
+
+  #password_note {
+    margin: 5px 0px 10px 8vw;
+    font-size: 12px;
+  }
+
   main #box_logging {
     margin-top: 5vh;
     width: 85vw;
@@ -323,8 +370,8 @@ footer {
     margin-right: 8%;
     width: 80px;
   }
-  main #box_logging p {
-    margin: 10px 0px 0px 25px;
+  main #box_logging #request_password {
+    margin: 10px 0px 0px 8%;
   }
   main #box_request_password {
     margin-top: 5vh;
@@ -342,7 +389,7 @@ footer {
     height: 35px;
   }
   main #box_request_password input[type=submit] {
-    margin: 10px 0px 0px 25px;
+    margin: 10px 8% 0px 25px;
     width: 175px;
   }
   main #box_request_password #go_back {

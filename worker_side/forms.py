@@ -9,8 +9,8 @@ from django.db import transaction
 import string, random
 import re
 
-def get_borrows_limit(occupation, citizenship):
-    """Auxillary function, that detreminates (basing on client's occupation and citizenship) 
+def get_borrows_limit(occupation):
+    """Auxillary function, that detreminates (basing on client's occupation) 
     client's upper limit of items,that can be borrowed at the same time.
 
     Parameters:
@@ -21,16 +21,10 @@ def get_borrows_limit(occupation, citizenship):
     Int(2, 5, 10)
     """
 
-    if citizenship == 164 and occupation in (1, 2): #polish student/academic teacher
+    if occupation in (1, 2): #student/academic teacher
         return 10
-    elif citizenship != 164 and occupation in (1, 2): #foreign student
+    elif occupation == 3: #person nor student or academic teacher
         return 5
-    elif citizenship != 164 and occupation == 2: #foreign teacher
-        return 10
-    elif citizenship == 164 and occupation == 3: #person nor student or academic teacher
-        return 5
-    else: #foreign person nor student or academic teacher
-        return 2
 
 password_generator = lambda N: ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N))
 password_generator.__doc__ = "A function, that generate random string of N values.\n\nParameters:\nN: (int) string length\n\nReturns:\nString"
@@ -92,7 +86,7 @@ class ClientRegistrationForm(ModelForm):
         corr_address = self.cleaned_data['corr_address']
         id_number = self.cleaned_data["id_number"]
 
-        client = Client.objects.create(user=client, borrows_max = get_borrows_limit(self.cleaned_data['occupation'], self.cleaned_data['citizenship']), date_of_birth = date_of_birth,
+        client = Client.objects.create(user=client, borrows_max = get_borrows_limit(self.cleaned_data['occupation']), date_of_birth = date_of_birth,
         citizenship = citizenship, occupation = occupation, corr_address = corr_address, id_type = id_type, id_number = id_number)
         
         data_to_summary = {
