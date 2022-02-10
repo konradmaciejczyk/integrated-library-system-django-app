@@ -1,0 +1,144 @@
+{% extends 'worker_side/base.html' %}
+{% load static %}
+{% block title %}Modify item - Online Library Catalog for librarian{% endblock title %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/modify_item.css' %}" media="screen"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock styles %}
+{% block content %}
+    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Modify item</div>
+    <main>
+        <h1>Modify item</h1>
+        <div class="search_bar">
+            <input type="text" placeholder="Search in database" onfocus="this.placeholder='';" onblur="this.placeholder='Search in database';" id="phrase"></input>
+            <select id="phrase_type">
+                <option value="Name/Title">Name/Title</option>
+                <option value="ID">ID</option>
+            </select>
+            <select id="item_type">
+                <option value="Book">Book</option>
+                <option value="Movie/Film">Movie/Film</option>
+                <option value="Spund recording">Sound recording</option>
+                <option value="Author">Author</option>
+                <option value="Director">Director</option>
+                <option value="Screenwriter">Screenwriter</option>
+                <option value="Publisher">Publisher</option>
+            </select>
+        </div>
+        <button id="search_button">Search</button>
+        <section></section>
+        
+        <section>
+            <p class="results">Results:</p>
+            <div class="field"><label>ISBN: </label>
+                <input type="text" placeholder="9780590353427">
+                <label><input type="checkbox" name="no_isbn" id="no_isbn" autocomplete="off">No ISBN available</label>
+            </div>
+
+            <div class="field"><label>Author: </label>
+                <input type="text" placeholder="Adam Mickiewicz"></div>
+                <datalist id="authors_list">
+                    {% for author in authors %}
+                      <option datavalue="{{ author }}">{{ author }}</option>
+                    {% endfor %}
+                </datalist>
+                <label><input type="checkbox" name="no_author" id="no_author" autocomplete="off">Author(s) unknown</label> 
+            </div>
+            
+            <div class="field"><label>Title: </label><input type="text" placeholder="Dziady III"></div>
+            <div class="field"><label>Full title: </label><input type="text" placeholder="Adam Mickiewicz - Dziady III"></div>
+            <div class="field"><label>Publication year: </label><input type="number" placeholder="1822"></div>
+            <div class="field"><label>Publisher: </label>
+                <input type="text" placeholder="Adam Mickiewicz (1798-1855)">
+                <datalist id="publishers_list">
+                    {% for publisher in publishers %}
+                      <option data-value="{{ publisher }}">{{ publisher }}</option>
+                    {% endfor %}
+                </datalist>
+                <label><input type="checkbox" id="no_publisher" name="no_publisher" autocomplete="off">Publisher unknow</label> 
+            </div>
+            <div class="field"><label>Description: </label><input type="text" placeholder="Adam Mickiewicz (1798-1855)"></div>
+            <div class="field"><label>Condition: </label><input type="text" placeholder="Adam Mickiewicz (1798-1855)"></div>
+            <div class="field"><label>Availability: </label><input type="text" placeholder="Adam Mickiewicz (1798-1855)"></div>
+            <div class="field"><label>Cover image: </label><input type="text" placeholder="Adam Mickiewicz (1798-1855)"></div>
+            
+            <div style="clear: both;"></div>
+        </section>
+    </main>
+    {% csrf_token %}
+    <script type="text/javascript">
+        const token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        const section = document.querySelector('section');
+
+        function generate_form(result, type, content){
+            console.log(`${result}, ${type}, ${content['name']}`);
+            switch(result){
+                case "OK!":{
+                    switch(type){
+                        case "Author":{
+                            let html_content = `
+                            <p class="results">Results:</p>
+                            <div class="field"><label>Author: </label><input type="text" placeholder="${content['name']}"></div>
+                            <button id="save"><i class="fas fa-check"></i>Save</button>
+                            <div style="clear: both;"></div>`;
+                            section.innerHTML = html_content;  
+                            break;                                     
+                    }case "Publisher":{
+                        let html_content = `
+                            <p class="results">Results:</p>
+                            <div class="field"><label>Publisher: </label><input type="text" placeholder="${content['name']}"></div>
+                            <button id="save"><i class="fas fa-check"></i>Save</button>
+                            <div style="clear: both;"></div>`;
+                            section.innerHTML = html_content;
+                            break;
+                    }case "Director":{
+                        let html_content = `
+                            <p class="results">Results:</p>
+                            <div class="field"><label>Director: </label><input type="text" placeholder="${content['name']}"></div>
+                            <button id="save"><i class="fas fa-check"></i>Save</button>
+                            <div style="clear: both;"></div>`;
+                            section.innerHTML = html_content;
+                            break;
+                    }case "Screenwriter":{
+                        let html_content = `
+                            <p class="results">Results:</p>
+                            <div class="field"><label>Screenwriter: </label><input type="text" placeholder="${content['name']}"></div>
+                            <button id="save"><i class="fas fa-check"></i>Save</button>
+                            <div style="clear: both;"></div>`;
+                            section.innerHTML = html_content;
+                            break;
+                    }             
+                } break;
+            } case "Error!":{
+                let = html_content = `<p class="no_results">No results.</p>`;
+                section.innerHTML = html_content;
+                break;
+            }
+        }
+    }
+
+
+        function send_data(){
+            const phrase = document.getElementById('phrase').value;
+            const phrase_type = document.getElementById('phrase_type').value;
+            const item_type = document.getElementById('item_type').value;
+
+            fetch('', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': token
+                },
+                body: JSON.stringify({'phrase': phrase, 'phrase_type': phrase_type, 'item_type': item_type})
+            }).then((response) => {
+                return response.json()
+            }).then((response_json) => {
+                console.log(response_json);
+                generate_form(response_json[0], response_json[1], response_json[2]);
+            })
+        }
+
+        const search_button = document.getElementById("search_button");
+        search_button.addEventListener('click', send_data);
+    </script>
+{% endblock content %}

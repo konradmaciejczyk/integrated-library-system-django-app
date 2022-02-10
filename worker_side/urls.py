@@ -9,5 +9,6 @@ urlpatterns = [
     path('add-sound-recording/', views.add_sound_recording, name="worker_side-add_sound_recording"),
     path('placed-orders', views.placed_orders, name="worker_side-placed_orders"),
     path('waiting-orders', views.waiting_orders, name="worker_side-waiting_orders"),
-    path('borrowed-items', views.borrowed_items, name="worker_side-borrowed_items")
+    path('borrowed-items', views.borrowed_items, name="worker_side-borrowed_items"),
+    path('modify-item/', views.modify_item, name="worker_side-modify_item")
 ]

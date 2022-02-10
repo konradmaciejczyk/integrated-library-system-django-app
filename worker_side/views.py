@@ -1,7 +1,8 @@
 from django.db.models import Value
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http.response import JsonResponse 
+from django.http.response import JsonResponse
+from flask import request_finished 
 from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
@@ -264,5 +265,38 @@ def borrowed_items(request):
             client.save()
         
         return JsonResponse(["OK!", item+'-'+itemID], safe=False)
+
+@is_staff_user
+def modify_item(request):
+    if request.method == "GET":
+        context = {'directors': Director.objects.all(),
+               'screenwriters': Screenwriter.objects.all(),
+               'authors': Author.objects.all(),
+               'publishers': Publisher.objects.all()}
+
+        return render(request, template_name="worker_side/modify_item.html", context=context)
+    else:
+        data = json.loads(request.body)
+        phrase = data['phrase']
+        item_type = data['item_type']
+        phrase_type = data['phrase_type']
+
+        result = None
+        if item_type == "Author":
+            item = Author.objects.get(id=phrase) if phrase_type == "ID" else Author.objects.get(name__icontains=phrase)
+            result = {'name': item.name}
+        elif item_type == "Publisher":
+            item = Publisher.objects.get(id=phrase) if phrase_type == 'ID' else Publisher.objects.get(name__icontains=phrase)
+            result = {'name': item.name}
+        elif item_type == "Director":
+            item = Director.objects.get(id=phrase) if phrase_type == 'ID' else Director.objects.get(name__icontains=phrase)
+            result = {'name': item.name}
+        elif item_type == "Screenwriter":
+            item = Screenwriter.objects.get(id=phrase) if phrase_type == 'ID' else Screenwriter.objects.get(name__icontains=phrase)
+            result = {'name': item.name}
+        print(result)
+
+        return JsonResponse(["OK!", item_type, result], safe=False)
+
 
 

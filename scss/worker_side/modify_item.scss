@@ -1,0 +1,132 @@
+@import 'defaults.scss';
+@include _header;
+
+main{
+    width: 1000px; min-height: 200px;
+    background-color: white;
+    @include shadow($main-blue);
+    padding: 50px;
+    margin: 50px auto 0px auto;
+    border-radius: 10px;
+}
+
+h1{
+    display: block;
+    font-weight: 300;
+    color: $main-blue;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search_bar{
+    width: 70%; height: 50px;
+    display: flex;
+    margin-left: auto; margin: auto;
+
+    input[type="text"]{
+        flex-grow: 10;
+        border-radius: 5px 5px 5px 5px;
+        font-size: 20px;
+        border: 2px solid $main-blue;
+        border-radius: 5px 0px 0px 5px;
+        border-right: 0px;
+        box-sizing: border-box;
+        padding-left: 2%;
+    }
+
+    select{
+        flex-basis: 100px;
+        border: 2px solid $main-blue;
+        border-right: 0px;
+        border-radius: 0px;
+        border-left: 0;
+        padding-left: 10px;
+    }
+
+    select:nth-of-type(2){
+        border-right: 2px solid $main-blue;
+        border-radius: 0px 5px 5px 0px;
+        background-color: rgb(218, 218, 218);
+    }
+
+}
+
+label{
+    flex-basis: 30%;
+    color: $main-blue;
+    margin: 0px 10px 10px 0pxs;
+
+    &:hover{
+        cursor: auto;
+    }
+}
+
+button{
+    display: block;
+    background-color: $main-blue;
+    width: 100px; height: 40px;
+    border-radius: 5px;
+    margin: 10px auto 20px auto;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    border: 0;
+    font-weight: 500;
+    font-size: 15px;
+    transition: filter .4s;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(120%);
+    }
+}
+
+section{
+    .no_results{
+        color: $main-blue;
+        display: block;
+        font-size: 45px;
+        margin: 50px auto 0px auto;
+        text-align: center;
+    }
+
+    .results{
+        color: $main-blue;
+        margin-left: 100px;
+        font-size: 25px;
+    }
+
+    .field{
+        margin: 25px auto 50px auto;
+        display: flex;
+        width: 70%;
+    }
+
+    input[type="text"]{
+        flex-basis: 70%;
+        flex-grow: 10;
+        border-radius: 5px 5px 5px 5px;
+        font-size: 20px;
+        border: 2px solid $main-blue;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding-left: 2%;
+        margin-left: 100px;
+        width: 600px; height: 40px;
+        font-size: 15px;
+    }
+
+    #save{
+        float: right;
+        margin-right: 150px;
+        background-color: rgb(38, 199, 57);
+        text-align: left;
+
+        i{
+            margin-left: 20px;
+            margin-right: 5px;
+        }
+    }
+}
+
+
+@include text_inputs;
