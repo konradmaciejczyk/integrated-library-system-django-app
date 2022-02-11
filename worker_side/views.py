@@ -7,7 +7,7 @@ from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
-from worker_side.models import Author, Director, Publisher, Screenwriter
+from worker_side.models import Author, Director, Publisher, Screenwriter, Book, Movie, SoundRecording
 from django.core.mail import send_mail
 from accounts.decorators import is_staff_user
 import json
@@ -294,7 +294,13 @@ def modify_item(request):
         elif item_type == "Screenwriter":
             item = Screenwriter.objects.get(id=phrase) if phrase_type == 'ID' else Screenwriter.objects.get(name__icontains=phrase)
             result = {'name': item.name}
+        elif item_type == "Book":
+            item = Book.objects.get(id=phrase) if phrase_type == "ID" else Book.objects.get(title__icontains=phrase)
+            authors = ",".join([author.name for author in item.author.all()])
+
+            result = {'isbn': item.isbn, 'title': item.title, 'full_title': item.full_title, 'author': authors, 'pub_year': item.pub_year, 'publisher': item.publisher.name, 'description': item.description, 'availability': 1 if item.availability.name == "Available to borrow" else 2, 'condition': 1 if item.condition.name == "Good" else 2}
         print(result)
+        #item.availability.name
 
         return JsonResponse(["OK!", item_type, result], safe=False)
 

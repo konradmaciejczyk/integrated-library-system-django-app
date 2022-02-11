@@ -345,31 +345,60 @@ section .results {
   font-size: 25px;
 }
 section .field {
-  margin: 25px auto 50px auto;
+  margin: 25px auto 0px auto;
   display: flex;
   width: 70%;
 }
-section input[type=text] {
-  flex-basis: 70%;
-  flex-grow: 10;
+section input[type=text], section input[type=number], section textarea, section select {
   border-radius: 5px 5px 5px 5px;
   font-size: 20px;
   border: 2px solid #194973;
   border-radius: 5px;
   box-sizing: border-box;
   padding-left: 2%;
+  padding-right: 2%;
   margin-left: 100px;
   width: 600px;
   height: 40px;
   font-size: 15px;
+  display: block;
 }
-section #save {
+section input[type=file] {
+  margin-left: 45px;
+}
+section .field:nth-of-type(7) {
+  height: 100px;
+}
+section .field:nth-of-type(7) textarea {
+  height: 100%;
+  padding-top: 5px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+section .field:nth-of-type(10) input[type=file] {
+  width: 80px;
+}
+section .buttons {
   float: right;
   margin-right: 150px;
+  margin-top: 20px;
+}
+section .buttons #save {
+  display: inline-block;
   background-color: #26c739;
   text-align: left;
 }
-section #save i {
+section .buttons #save i {
+  margin-left: 20px;
+  margin-right: 5px;
+}
+section .buttons #delete {
+  display: inline-block;
+  background-color: #c72626;
+  margin-right: 20px;
+  text-align: left;
+}
+section .buttons #delete i {
   margin-left: 20px;
   margin-right: 5px;
 }

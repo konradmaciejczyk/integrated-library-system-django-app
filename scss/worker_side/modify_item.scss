@@ -96,36 +96,72 @@ section{
     }
 
     .field{
-        margin: 25px auto 50px auto;
+        margin: 25px auto 0px auto;
         display: flex;
         width: 70%;
     }
-
-    input[type="text"]{
-        flex-basis: 70%;
-        flex-grow: 10;
+    input[type="text"], input[type="number"], textarea, select{
         border-radius: 5px 5px 5px 5px;
         font-size: 20px;
         border: 2px solid $main-blue;
         border-radius: 5px;
         box-sizing: border-box;
-        padding-left: 2%;
+        padding-left: 2%; padding-right: 2%;
         margin-left: 100px;
         width: 600px; height: 40px;
         font-size: 15px;
+        display: block;
     }
 
-    #save{
-        float: right;
-        margin-right: 150px;
-        background-color: rgb(38, 199, 57);
-        text-align: left;
+    input[type="file"]{
+        margin-left: 45px;
+    }
 
-        i{
-            margin-left: 20px;
-            margin-right: 5px;
+    .field:nth-of-type(7){
+        height: 100px;
+
+        textarea{
+            height: 100%;
+            padding-top: 5px;
+            font-family: "Roboto", sans-serif;
+            font-weight: 300;
         }
     }
+
+    .field:nth-of-type(10){
+        input[type="file"]{
+            width: 80px;
+        }
+    }
+
+    .buttons{
+        float:right;
+        margin-right: 150px; margin-top: 20px;
+        #save{
+            display: inline-block;
+            background-color: rgb(38, 199, 57);
+            text-align: left;
+    
+            i{
+                margin-left: 20px;
+                margin-right: 5px;
+            }
+        }
+
+        #delete{
+            display: inline-block;
+            background-color: rgb(199, 38, 38);
+            margin-right: 20px;
+            text-align: left;
+    
+            i{
+                margin-left: 20px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    
 }
 
 
