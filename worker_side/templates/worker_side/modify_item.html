@@ -18,7 +18,7 @@
             <select id="item_type">
                 <option value="Book">Book</option>
                 <option value="Movie/Film">Movie/Film</option>
-                <option value="Spund recording">Sound recording</option>
+                <option value="Sound recording">Sound recording</option>
                 <option value="Author">Author</option>
                 <option value="Director">Director</option>
                 <option value="Screenwriter">Screenwriter</option>
@@ -33,162 +33,266 @@
     <script type="text/javascript">
         const token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
         const section = document.querySelector('section');
+        var current_form_type = null;
+
+        function check_if_numeric(item, starts_with_0){
+            const regex_with_0 = new RegExp('[0-9]+');
+            const regex_without_0 = new RegExp('^[1-9][0-9]+');
+            return starts_with_0 ? regex_with_0.test(item.value) : regex_without_0.test(item.value);
+        }
+
+        function check_form(){
+            console.log(current_form_type);
+            switch(current_form_type){
+                case ("Author"):{
+                    return document.getElementById('name_').value === '' ? false : true;
+                }case ("Screenwriter"):{
+                    return document.getElementById('name_').value === '' ? false : true;
+                }case ("Director"):{
+                    return document.getElementById('name_').value === '' ? false : true;
+                }case ("Publisher"):{
+                    return document.getElementById('name_').value === '' ? false : true;
+                }case ("Book"):{
+                    let isbn = document.getElementById('isbn');
+                    isbn = (check_if_numeric(isbn, true) && (isbn.value.length === 10 || isbn.value.length === 13)) || isbn.value === '';
+                    let title = document.getElementById('title').value !== '';
+                    let full_title = document.getElementById('full_title').value !== '';
+                    let pub_year = document.getElementById('pub_year');
+                    pub_year = check_if_numeric(pub_year) || pub_year.value === '';
+                    let description = document.getElementById('description').value !== '';
+                    return isbn && title && full_title && pub_year && description;                    
+                }case ("Movie/Film"):{
+                    let title = document.getElementById('title').value !== '';
+                    let full_title = document.getElementById('full_title').value !== '';
+                    let pub_year = document.getElementById('pub_year');
+                    pub_year = check_if_numeric(pub_year) || pub_year.value === '';
+                    let description = document.getElementById('description').value !== '';
+                    return title && full_title && pub_year && description;
+                }case ("Sound recording"):{
+                    let title = document.getElementById('title').value !== '';
+                    let full_title = document.getElementById('full_title').value !== '';
+                    let pub_year = document.getElementById('pub_year');
+                    pub_year = check_if_numeric(pub_year) || pub_year.value === '';
+                    let description = document.getElementById('description').value !== '';
+                    return title && full_title && pub_year && description;
+                }
+            }
+        }
 
         function generate_form(result, type, content){
             console.log(`${result}, ${type}, ${content['name']}`);
-            availability_ = content["availability"] === 1 ? new Array("selected", "") : new Array("", "selected");
-            condition_ = content["condition"] === 1 ? new Array("selected", "") : new Array("", "selected");
-            switch(result){
-                case "OK!":{
-                    switch(type){
-                        case "Author":{
-                            let html_content = `
-                            <p class="results">Results:</p>
-                            <div class="field"><label>Author: </label><input type="text" value="${content['name']}"></div>
-                            <div class="buttons">
-                                <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                                <button id="save"><i class="fas fa-check"></i>Save</button>                
-                            </div>
-                            <div style="clear: both;"></div>`;
-                            section.innerHTML = html_content;  
-                            break;                                     
-                    }case "Publisher":{
-                        let html_content = `
-                            <p class="results">Results:</p>
-                            <div class="field"><label>Publisher: </label><input type="text" value="${content['name']}"></div>
-                            <div class="buttons">
-                                <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                                <button id="save"><i class="fas fa-check"></i>Save</button>                
-                            </div>
-                            <div style="clear: both;"></div>`;
-                            section.innerHTML = html_content;
-                            break;
-                    }case "Director":{
-                        let html_content = `
-                            <p class="results">Results:</p>
-                            <div class="field"><label>Director: </label><input type="text" value="${content['name']}"></div>
-                            <div class="buttons">
-                                <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                                <button id="save"><i class="fas fa-check"></i>Save</button>                
-                            </div>
-                            <div style="clear: both;"></div>`;
-                            section.innerHTML = html_content;
-                            break;
-                    }case "Screenwriter":{
-                        let html_content = `
-                            <p class="results">Results:</p>
-                            <div class="field"><label>Screenwriter: </label><input type="text" value="${content['name']}"></div>
-                            <div class="buttons">
-                                <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                                <button id="save"><i class="fas fa-check"></i>Save</button>                
-                            </div>
-                            <div style="clear: both;"></div>`;
-                            section.innerHTML = html_content;
-                            break;
-                    }case "Book":{
-                        let html_content = `
-                        <p class="results">Results:</p>
-                        <div class="field"><label>ISBN: </label>
-                            <input type="text" value="${content['isbn']}">
-                        </div>
-                        <div class="field"><label>Author: </label>
-                            <input type="text" list="authors_list" value="${content["author"]}"></div>
-                            <datalist id="authors_list">
-                                {% for author in authors %}
-                                <option datavalue="{{ author }}">{{ author }}</option>
-                                {% endfor %}
-                            </datalist>
-                        </div>                        
-                        <div class="field"><label>Title: </label><input type="text" value="${content["title"]}"></div>
-                        <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}"></div>
-                        <div class="field"><label>Publication year: </label><input type="number" value="${content["pub_year"]}"></div>
-                        <div class="field"><label>Publisher: </label>
-                            <input type="text" value="${content["publisher"]}" list="publishers_list">
-                            <datalist id="publishers_list">
-                                {% for publisher in publishers %}
-                                <option data-value="{{ publisher }}">{{ publisher }}</option>
-                                {% endfor %}
-                            </datalist>
-                        </div>
-                        <div class="field"><label>Description: </label><textarea>${content["description"]}</textarea></div>                        
-                        <div class="field">
-                            <label>Availability: </label>
-                            <select selected="${content["availability"]}">
-                                <option>---Describe availability--</option>
-                                <option value="1" ${availability_[0]}>Available to borrow</option>
-                                <option value="2 ${availability_[1]}">Library use only</option>
-                            </select>
-                        </div>
-                        <div class="field"><label>Condition: </label>
-                            <select selected="${content["condition"]}">
-                                <option>---Describe book condition---</option>
-                                <option value="1" ${condition_[0]}>Good</option>
-                                <option value="2" ${condition_[1]}>Damaged</option>
-                            </select>
-                        </div>
-                        <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover"><label><input type="checkbox">No cover available</label></div>
-                        <div class="buttons">
-                                <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                                <button id="save"><i class="fas fa-check"></i>Save</button>                
-                        </div>
-                        <div style="clear: both;"></div>`;
-                        section.innerHTML = html_content;
-                        break;
-                    }case "Movie":{
-                        let html_content = `
-                        <p class="results">Results:</p>
-                        <div class="field"><label>Author: </label>
-                            <input type="text" list="authors_list" value="${content["author"]}"></div>
-                            <datalist id="authors_list">
-                                {% for author in authors %}
-                                <option datavalue="{{ author }}">{{ author }}</option>
-                                {% endfor %}
-                            </datalist>
-                        </div>                        
-                        <div class="field"><label>Title: </label><input type="text" value="${content["title"]}"></div>
-                        <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}"></div>
-                        <div class="field"><label>Publication year: </label><input type="number" value="${content["pub_year"]}"></div>
-                        <div class="field"><label>Publisher: </label>
-                            <input type="text" value="${content["publisher"]}" list="publishers_list">
-                            <datalist id="publishers_list">
-                                {% for publisher in publishers %}
-                                <option data-value="{{ publisher }}">{{ publisher }}</option>
-                                {% endfor %}
-                            </datalist>
-                        </div>
-                        <div class="field"><label>Description: </label><textarea>${content["description"]}</textarea></div>                        
-                        <div class="field">
-                            <label>Availability: </label>
-                            <select selected="${content["availability"]}">
-                                <option>---Describe availability--</option>
-                                <option value="1" ${availability_[0]}>Available to borrow</option>
-                                <option value="2 ${availability_[1]}">Library use only</option>
-                            </select>
-                        </div>
-                        <div class="field"><label>Condition: </label>
-                            <select selected="${content["condition"]}">
-                                <option>---Describe book condition---</option>
-                                <option value="1" ${condition_[0]}>Good</option>
-                                <option value="2" ${condition_[1]}>Damaged</option>
-                            </select>
-                        </div>
-                        <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover"><label><input type="checkbox">No cover available</label></div>
-                        <div class="buttons">
-                                <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                                <button id="save"><i class="fas fa-check"></i>Save</button>                
-                        </div>
-                        <div style="clear: both;"></div>`;
-                }
-                
-                break;    
-                }
-            } case "Error!":{
-                let = html_content = `<p class="no_results">No results.</p>`;
-                section.innerHTML = html_content;
-                break;
+            let availability_ = content["availability"] === 1 ? new Array("selected", "") : new Array("", "selected");
+            let condition_ = content["condition"] === 1 ? new Array("selected", "") : new Array("", "selected");
+            let cover_ = content['cover'] === 1 ? "checked" : "";
+
+            switch(type){
+                case "Author":{
+                    let html_content = `
+                    <p class="results">Results:</p>
+                    <div class="field"><label>Author: </label><input id="name_" type="text" value="${content['name']}"></div>
+                    <div class="buttons">
+                        <button id="delete"><i class="fas fa-times"></i>Delete</button>
+                        <button id="save"><i class="fas fa-check"></i>Save</button>                
+                    </div>
+                    <div style="clear: both;"></div>`;
+                    section.innerHTML = html_content;  
+                    current_form_type = "Author";
+                    break;                                     
+                }case "Publisher":{
+                    let html_content = `
+                    <p class="results">Results:</p>
+                    <div class="field"><label>Publisher: </label><input id="name_" type="text" value="${content['name']}"></div>
+                    <div class="buttons">
+                        <button id="delete"><i class="fas fa-times"></i>Delete</button>
+                        <button id="save"><i class="fas fa-check"></i>Save</button>                
+                    </div>
+                    <div style="clear: both;"></div>`;
+                    section.innerHTML = html_content;
+                    current_form_type = "Publisher";
+                    break;
+                }case "Director":{
+                    let html_content = `
+                    <p class="results">Results:</p>
+                    <div class="field"><label>Director: </label><input id="name_" type="text" value="${content['name']}"></div>
+                    <div class="buttons">
+                        <button id="delete"><i class="fas fa-times"></i>Delete</button>
+                        <button id="save"><i class="fas fa-check"></i>Save</button>                
+                    </div>
+                    <div style="clear: both;"></div>`;
+                    section.innerHTML = html_content;
+                    current_form_type = "Director";
+                    break;
+                }case "Screenwriter":{
+                    let html_content = `
+                    <p class="results">Results:</p>
+                    <div class="field"><label>Screenwriter: </label><input id="name_" type="text" value="${content['name']}"></div>
+                    <div class="buttons">
+                        <button id="delete"><i class="fas fa-times"></i>Delete</button>
+                        <button id="save"><i class="fas fa-check"></i>Save</button>                
+                    </div>
+                    <div style="clear: both;"></div>`;
+                    section.innerHTML = html_content;
+                    current_form_type = "Screenwriter";
+                    break;
+                }case "Book":{
+                    let html_content = `
+                    <p class="results">Results:</p>
+                    <div class="field"><label>ISBN: </label>
+                        <input type="text" value="${content['isbn']}" id="isbn">
+                    </div>
+                    <div class="field"><label>Author: </label>
+                        <input type="text" list="authors_list" value="${content["author"]}" id="author"></div>
+                        <datalist id="authors_list">
+                            {% for author in authors %}
+                            <option datavalue="{{ author }}">{{ author }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>                        
+                    <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title"></div>
+                    <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title"></div>
+                    <div class="field"><label>Publication year: </label><input type="number" value="${content["pub_year"]}" id="pub_year"></div>
+                    <div class="field"><label>Publisher: </label>
+                        <input type="text" value="${content["publisher"]}" list="publishers_list" id="publisher">
+                        <datalist id="publishers_list">
+                            {% for publisher in publishers %}
+                            <option data-value="{{ publisher }}">{{ publisher }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="field"><label>Description: </label><textarea id="description">${content["description"]}</textarea></div>                        
+                    <div class="field">
+                        <label>Availability: </label>
+                        <select selected="${content["availability"]}" id="availability">
+                            <option>Currently borrowed</option>
+                            <option value="1" ${availability_[0]}>Available to borrow</option>
+                            <option value="2 ${availability_[1]}">Library use only</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Condition: </label>
+                        <select selected="${content["condition"]}" id="condition">
+                            <option>Describe book condition</option>
+                            <option value="1" ${condition_[0]}>Good</option>
+                            <option value="2" ${condition_[1]}>Damaged</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" ${cover_} id="no_cover">No cover available</label></div>
+                    <div class="buttons">
+                            <button id="delete"><i class="fas fa-times"></i>Delete</button>
+                            <button id="save"><i class="fas fa-check"></i>Save</button>                
+                    </div>
+                    <div style="clear: both;"></div>`;
+                    section.innerHTML = html_content;
+                    current_form_type = "Book";
+                    break;
+                }case "Movie/Film":{
+                    let html_content = `
+                    <p class="results">Results:</p>
+                    <div class="field"><label>Director(s): </label>
+                        <input type="text" list="directors_list" value="${content["director"]}" id="director"></div>
+                        <datalist id="directors_list">
+                            {% for director in directors %}
+                            <option datavalue="{{ director }}">{{ director }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="field"><label>Screenwriter(s): </label>
+                        <input type="text" list="screenwriters_list" value="${content["screenwriter"]}" id="screenwriter"></div>
+                        <datalist id="screenwriters_list">
+                            {% for screenwriter in screenwriters %}
+                            <option datavalue="{{ screenwriter }}">{{ screenwriter }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>                                  
+                    <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title"></div>
+                    <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title"></div>
+                    <div class="field"><label>Release year: </label><input type="number" value="${content["pub_year"]}" id="pub_year"></div>
+                    <div class="field"><label>Description: </label><textarea id="description">${content["description"]}</textarea></div>                        
+                    <div class="field">
+                        <label>Availability: </label>
+                        <select selected="${content["availability"]}" id="availability">
+                            <option>---Currently borrowed--</option>
+                            <option value="1" ${availability_[0]}>Available to borrow</option>
+                            <option value="2 ${availability_[1]}">Library use only</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Condition: </label>
+                        <select selected="${content["condition"]}" id="condition">
+                            <option>Describe book condition</option>
+                            <option value="1" ${condition_[0]}>Good</option>
+                            <option value="2" ${condition_[1]}>Damaged</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" id="no_cover">No cover available</label></div>
+                    <div class="buttons">
+                            <button id="delete"><i class="fas fa-times"></i>Delete</button>
+                            <button id="save"><i class="fas fa-check"></i>Save</button>                
+                    </div>
+                    <div style="clear: both;"></div>`;
+                    section.innerHTML = html_content;
+                    current_form_type = "Movie/Film";
+                    break;
+                }case "Sound recording":{
+                    let html_content = `
+                    <p class="results">Results:</p>
+                    <div class="field"><label>Author: </label>
+                        <input type="text" list="authors_list" value="${content["author"]}" id="author"></div>
+                        <datalist id="authors_list">
+                            {% for author in authors %}
+                            <option datavalue="{{ author }}">{{ author }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="field"><label>Cast: </label>
+                        <input type="text" value="${content['cast']}" id="cast">
+                    </div>                        
+                    <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title"></div>
+                    <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title"></div>
+                    <div class="field"><label>Publication year: </label><input type="number" value="${content["pub_year"]}" id="pub_year"></div>
+                    <div class="field"><label>Publisher: </label>
+                        <input type="text" value="${content["publisher"]}" list="publishers_list" id="publisher">
+                        <datalist id="publishers_list">
+                            {% for publisher in publishers %}
+                            <option data-value="{{ publisher }}">{{ publisher }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="field"><label>Description: </label><textarea id="description">${content["description"]}</textarea></div>                        
+                    <div class="field">
+                        <label>Availability: </label>
+                        <select selected="${content["availability"]}" id="availability">
+                            <option>---Currently borrowed--</option>
+                            <option value="1" ${availability_[0]}>Available to borrow</option>
+                            <option value="2 ${availability_[1]}">Library use only</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Condition: </label>
+                        <select selected="${content["condition"]}" id="condition">
+                            <option>---Describe book condition---</option>
+                            <option value="1" ${condition_[0]}>Good</option>
+                            <option value="2" ${condition_[1]}>Damaged</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" id="no_cover">No cover available</label></div>
+                    <div class="buttons">
+                            <button id="delete"><i class="fas fa-times"></i>Delete</button>
+                            <button id="save"><i class="fas fa-check"></i>Save</button>                
+                    </div>
+                    <div style="clear: both;"></div>`;
+                    section.innerHTML = html_content;
+                    current_form_type = "Sound recording";
+                    break;
+                }       
             }
+
+            let save_button = document.getElementById("save");
+            save_button.addEventListener('click', () => {
+                if(check_form()){
+                    console.log("Inputs correct!");
+                }else{
+                    window.alert("Invalid inputs!");
+                }
+            })
         }
-    }
 
 
         function send_data(){
@@ -207,7 +311,13 @@
                 return response.json()
             }).then((response_json) => {
                 console.log(response_json);
-                generate_form(response_json[0], response_json[1], response_json[2]);
+                if(response_json[0] === "OK!"){
+                    generate_form(response_json[0], response_json[1], response_json[2]);
+                }else{
+                    let = html_content = `<p class="no_results">No results.</p>`;
+                    section.innerHTML = html_content;
+                }
+                
             })
         }
 

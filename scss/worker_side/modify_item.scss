@@ -116,22 +116,16 @@ section{
     input[type="file"]{
         margin-left: 45px;
     }
-
-    .field:nth-of-type(7){
+    textarea{
+        height: 100%;
+        padding-top: 5px;
+        font-family: "Roboto", sans-serif;
+        font-weight: 300;
         height: 100px;
-
-        textarea{
-            height: 100%;
-            padding-top: 5px;
-            font-family: "Roboto", sans-serif;
-            font-weight: 300;
-        }
     }
-
-    .field:nth-of-type(10){
-        input[type="file"]{
-            width: 80px;
-        }
+    
+    input[type="file"]{
+        width: 80px;
     }
 
     .buttons{
