@@ -222,6 +222,13 @@ main #box_searching fieldset {
   margin-top: 20px;
 }
 
+.go_to_working_side {
+  position: absolute;
+  color: #30516e !important;
+  bottom: 50px;
+  right: 20px;
+}
+
 footer {
   margin-top: auto;
   background-color: #31655a;

@@ -30,12 +30,31 @@ main{
     margin: 50px auto 0 auto;
     width: 800px;
     display: grid;
-    grid-template-areas: "search search search"
-                         "user1 user2 user3"
-                         "item1 item2 item3"
-                         "borrow1 borrow2 borrow3";
-
     column-gap: 10px; row-gap: 20px;
+
+    .top{
+        display: grid;
+        grid-template-areas: "search search search"
+                             "user1 user2 user3";
+        column-gap: 10px; row-gap: 20px;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .middle{
+        display: grid;
+        grid-template-areas: "item1 item2";
+        column-gap: 10px; row-gap: 20px;
+        grid-template-columns: 1fr 1fr;
+    }
+    .bottom{
+        display: grid;
+        grid-template-areas: "borrow1 borrow2 borrow3";
+        column-gap: 10px; row-gap: 20px;
+        grid-template-columns: 1fr 1fr 1fr;
+
+        .option_box.borrows:nth-of-type(1){
+            position: relative;
+        }
+    }
 }
 
 .notification{
@@ -71,9 +90,7 @@ main{
     }
 }
 
-.option_box.borrows:nth-of-type(7){
-    position: relative;
-}
+
 
 .option_box.search{
     grid-area: search;

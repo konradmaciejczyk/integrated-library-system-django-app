@@ -31,7 +31,10 @@
         <div class="cart" >
             <i class="fas fa-shopping-bag"></i> <span id="items_number" class="text_bold">{{ cart_status }}</span> item(s) selected
         </div>
-    </a>    
+    </a> 
+    {% if user.is_authenticated and user.is_staff %}   
+        <a class="go_to_working_side" href="{% url 'worker_side-home' %}">Go to librarian hub</a>
+    {% endif %}
     <footer>2021-2022 by <a href="https://www.github.com/konradmaciejczyk" rel="author" target="_blank" title="github profile">Konrad Maciejczyk</a>, University of Silesia</footer>
     <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
     <script type="text/javascript">

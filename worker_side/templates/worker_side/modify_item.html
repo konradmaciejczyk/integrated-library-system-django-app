@@ -79,20 +79,19 @@
             }
         }
 
-        function generate_form(result, type, content){
-            console.log(`${result}, ${type}, ${content['name']}`);
+        function generate_form(type, content){
             let availability_ = content["availability"] === 1 ? new Array("selected", "") : new Array("", "selected");
             let condition_ = content["condition"] === 1 ? new Array("selected", "") : new Array("", "selected");
             let cover_ = content['cover'] === 1 ? "checked" : "";
-
-            switch(type){
+            console.log(type);
+            switch(type['item']){
                 case "Author":{
                     let html_content = `
                     <p class="results">Results:</p>
                     <div class="field"><label>Author: </label><input id="name_" type="text" value="${content['name']}"></div>
                     <div class="buttons">
-                        <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                        <button id="save"><i class="fas fa-check"></i>Save</button>                
+                        <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
+                        <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
                     </div>
                     <div style="clear: both;"></div>`;
                     section.innerHTML = html_content;  
@@ -103,8 +102,8 @@
                     <p class="results">Results:</p>
                     <div class="field"><label>Publisher: </label><input id="name_" type="text" value="${content['name']}"></div>
                     <div class="buttons">
-                        <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                        <button id="save"><i class="fas fa-check"></i>Save</button>                
+                        <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
+                        <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
                     </div>
                     <div style="clear: both;"></div>`;
                     section.innerHTML = html_content;
@@ -115,8 +114,8 @@
                     <p class="results">Results:</p>
                     <div class="field"><label>Director: </label><input id="name_" type="text" value="${content['name']}"></div>
                     <div class="buttons">
-                        <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                        <button id="save"><i class="fas fa-check"></i>Save</button>                
+                        <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
+                        <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
                     </div>
                     <div style="clear: both;"></div>`;
                     section.innerHTML = html_content;
@@ -127,8 +126,8 @@
                     <p class="results">Results:</p>
                     <div class="field"><label>Screenwriter: </label><input id="name_" type="text" value="${content['name']}"></div>
                     <div class="buttons">
-                        <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                        <button id="save"><i class="fas fa-check"></i>Save</button>                
+                        <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
+                        <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
                     </div>
                     <div style="clear: both;"></div>`;
                     section.innerHTML = html_content;
@@ -177,8 +176,8 @@
                     </div>
                     <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" ${cover_} id="no_cover">No cover available</label></div>
                     <div class="buttons">
-                            <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                            <button id="save"><i class="fas fa-check"></i>Save</button>                
+                            <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
+                            <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
                     </div>
                     <div style="clear: both;"></div>`;
                     section.innerHTML = html_content;
@@ -224,8 +223,8 @@
                     </div>
                     <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" id="no_cover">No cover available</label></div>
                     <div class="buttons">
-                            <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                            <button id="save"><i class="fas fa-check"></i>Save</button>                
+                            <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
+                            <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
                     </div>
                     <div style="clear: both;"></div>`;
                     section.innerHTML = html_content;
@@ -274,8 +273,8 @@
                     </div>
                     <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" id="no_cover">No cover available</label></div>
                     <div class="buttons">
-                            <button id="delete"><i class="fas fa-times"></i>Delete</button>
-                            <button id="save"><i class="fas fa-check"></i>Save</button>                
+                            <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
+                            <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
                     </div>
                     <div style="clear: both;"></div>`;
                     section.innerHTML = html_content;
@@ -285,43 +284,57 @@
             }
 
             let save_button = document.getElementById("save");
-            save_button.addEventListener('click', () => {
+            save_button.addEventListener('click', (button) => {
                 if(check_form()){
-                    console.log("Inputs correct!");
+                    if(window.confirm("Do you really want to update this item in database?")){
+                        send_data(button.target.dataset.item, 1);
+                    }
                 }else{
                     window.alert("Invalid inputs!");
+                }
+
+            })
+
+            let delete_button = document.getElementById('delete');
+            delete_button.addEventListener('click', (button) => {
+                if(window.confirm('Do you really want to remove this item from database?')){
+                    send_data(button.target.dataset.item, 2);
                 }
             })
         }
 
-
-        function send_data(){
-            const phrase = document.getElementById('phrase').value;
-            const phrase_type = document.getElementById('phrase_type').value;
-            const item_type = document.getElementById('item_type').value;
-
+        function send_data(item, action){
+            console.log(item);
             fetch('', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': token
                 },
-                body: JSON.stringify({'phrase': phrase, 'phrase_type': phrase_type, 'item_type': item_type})
+                body: JSON.stringify({"item": item, "action": action})
             }).then((response) => {
-                return response.json()
+                return response.json();
             }).then((response_json) => {
-                console.log(response_json);
-                if(response_json[0] === "OK!"){
-                    generate_form(response_json[0], response_json[1], response_json[2]);
-                }else{
-                    let = html_content = `<p class="no_results">No results.</p>`;
-                    section.innerHTML = html_content;
-                }
-                
+                console.log(response_json);                
             })
         }
 
+        async function fetch_result(){
+            const phrase = document.getElementById('phrase').value;
+            const phrase_type = document.getElementById('phrase_type').value;
+            const item_type = document.getElementById('item_type').value;
+
+            let results = await fetch(`?phrase=${phrase}&phrase_type=${phrase_type}&item_type=${item_type}`);
+            let results_json = await results.json();
+            if(results_json[0] === "OK!"){
+                generate_form(results_json[1], results_json[2]);
+            }else{
+                let = html_content = `<p class="no_results">No results.</p>`;
+                section.innerHTML = html_content;
+            }
+        }
+
         const search_button = document.getElementById("search_button");
-        search_button.addEventListener('click', send_data);
+        search_button.addEventListener('click', fetch_result);
     </script>
 {% endblock content %}

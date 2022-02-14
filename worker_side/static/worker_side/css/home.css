@@ -276,9 +276,39 @@ main {
   margin: 50px auto 0 auto;
   width: 800px;
   display: grid;
-  grid-template-areas: "search search search" "user1 user2 user3" "item1 item2 item3" "borrow1 borrow2 borrow3";
   column-gap: 10px;
   row-gap: 20px;
+}
+main .top {
+  display: grid;
+  grid-template-areas: "search search search" "user1 user2 user3";
+  column-gap: 10px;
+  row-gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+main .middle {
+  display: grid;
+  grid-template-areas: "item1 item2";
+  column-gap: 10px;
+  row-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+main .bottom {
+  display: grid;
+  grid-template-areas: "borrow1 borrow2 borrow3";
+  column-gap: 10px;
+  row-gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+main .bottom .option_box.borrows:nth-of-type(1) {
+  position: relative;
+}
+
+.go_to_working_side {
+  position: absolute;
+  color: #194973;
+  bottom: 50px;
+  right: 20px;
 }
 
 .notification {
@@ -313,10 +343,6 @@ main {
 }
 .option_box a:hover {
   color: white;
-}
-
-.option_box.borrows:nth-of-type(7) {
-  position: relative;
 }
 
 .option_box.search {

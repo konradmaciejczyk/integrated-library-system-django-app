@@ -67,6 +67,12 @@ main{
     }
 }
 
+.go_to_working_side{
+    position: absolute;
+    color: $main-blue !important;
+    bottom: 50px; right: 20px;
+}
+
 footer{
     margin-top: auto;
     background-color: $main-green;

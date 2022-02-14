@@ -15,7 +15,7 @@ from user_side.models import BookOrder, SoundRecordingOrder, MovieOrder, Status
 from django.db.models import Value
 
 def get_books(title, author, output, authors, availability):
-    results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
+    results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
 
     book = {}
 
@@ -47,9 +47,8 @@ def get_movies(title, director_screenwriter, output, authors, availability):
     results = Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(director.name) LIKE LOWER (%s)"+availability, ["%"+title+"%", director_screenwriter+"%"]) if director_screenwriter else Movie.objects.raw("SELECT * FROM worker_side_movie movie JOIN worker_side_movie_director movie_director ON movie.id=movie_director.movie_id JOIN worker_side_director director ON director.id=movie_director.director_id WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
 
     if len(results) < 1:
-        print("!!!!!")
-        results = Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_screenwriter AS movie_screenwriter ON movie.id=movie_screenwriter.movie_id INNER JOIN worker_side_screenwriter AS screenwriter ON screenwriter.id=movie_screenwriter.screenwriter_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(screenwriter.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", director_screenwriter+"%"])
-        
+        results = Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_screenwriter AS movie_screenwriter ON movie.id=movie_screenwriter.movie_id INNER JOIN worker_side_screenwriter AS screenwriter ON screenwriter.id=movie_screenwriter.screenwriter_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(screenwriter.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", director_screenwriter+"%"]) if director_screenwriter else Movie.objects.raw("SELECT * FROM worker_side_movie movie WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
+        print(results)
         
     movie = {}
 
@@ -83,7 +82,7 @@ def get_movies(title, director_screenwriter, output, authors, availability):
         movie = {}
 
 def get_sound_recordings(title, author, output, authors, availability):    
-    results = SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(author.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else  SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
+    results = SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording AS soundrecording INNER JOIN worker_side_soundrecording_author AS soundrecording_author ON soundrecording.id=soundrecording_author.soundrecording_id INNER JOIN worker_side_author AS author ON author.id=soundrecording_author.author_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(author.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else SoundRecording.objects.raw("SELECT * FROM worker_side_soundrecording soundrecording WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
 
     soundrecording = {}
 

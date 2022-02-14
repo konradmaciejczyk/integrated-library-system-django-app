@@ -2,7 +2,6 @@ from django.db.models import Value
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import JsonResponse
-from flask import request_finished 
 from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
 from datetime import datetime, timedelta
@@ -269,55 +268,87 @@ def borrowed_items(request):
 @is_staff_user
 def modify_item(request):
     if request.method == "GET":
-        context = {'directors': Director.objects.all(),
-               'screenwriters': Screenwriter.objects.all(),
-               'authors': Author.objects.all(),
-               'publishers': Publisher.objects.all()}
+        if 'phrase' in request.GET and 'phrase_type' in request.GET and 'item_type' in request.GET:
+            item_type = request.GET['item_type']
+            phrase = request.GET['phrase']
+            phrase_type = request.GET['phrase_type']
+            print(item_type, phrase_type, phrase)
+            try:
+                result = None
+                item_info = None
+                if item_type == "Author":
+                    item = Author.objects.get(id=phrase) if phrase_type == "ID" else Author.objects.get(name__icontains=phrase)
+                    item_info = {'item': "Author", "id": item.id}
+                    result = {'name': item.name}
+                elif item_type == "Publisher":
+                    item = Publisher.objects.get(id=phrase) if phrase_type == 'ID' else Publisher.objects.get(name__icontains=phrase)
+                    item_info = {'item': "Publisher", "id": item.id}
+                    result = {'name': item.name}
+                elif item_type == "Director":
+                    item = Director.objects.get(id=phrase) if phrase_type == 'ID' else Director.objects.get(name__icontains=phrase)
+                    item_info = {'item': "Director", "id": item.id}
+                    result = {'name': item.name}
+                elif item_type == "Screenwriter":
+                    item = Screenwriter.objects.get(id=phrase) if phrase_type == 'ID' else Screenwriter.objects.get(name__icontains=phrase)
+                    item_info = {'item': "Screenwriter", "id": item.id}
+                    result = {'name': item.name}
+                elif item_type == "Book":
+                    item = Book.objects.get(id=phrase) if phrase_type == "ID" else Book.objects.get(full_title__icontains=phrase)
+                    authors = ",".join([author.name for author in item.author.all()])
+                    item_info = {'item': "Book", "id": item.id}
+                    result = {'isbn': item.isbn, 'title': item.title, 'full_title': item.full_title, 'author': authors, 'pub_year': item.pub_year, 'publisher': item.publisher.name, 'description': item.description, 'availability': 1 if item.availability.name == "Available to borrow" else 2, 'condition': 1 if item.condition.name == "Good" else 2, 'cover': 1 if item.cover == "no_image.png" else 0}
+                elif item_type == "Movie/Film":
+                    item = Movie.objects.get(id=phrase) if phrase_type == "ID" else Movie.objects.get(full_title__icontains = phrase)
+                    directors = ", ".join([director.name for director in item.director.all()])
+                    screenwriters = ", ".join([screenwriter.name for screenwriter in item.screenwriter.all()])
+                    item_info = {'item': "Movie/Film", "id": item.id}
+                    result = {"director": directors, "screenwriter": screenwriters, "title": item.title, "full_title": item.full_title, "pub_year": item.pub_year, "description": item.description, 'availability': 1 if item.availability.name == "Available to borrow" else 2, 'condition': 1 if item.condition.name == "Good" else 2, 'cover': 1 if item.cover == "no_image.png" else 0}
+                elif item_type == "Sound recording":
+                    item = SoundRecording.objects.get(id=phrase) if phrase_type == "ID" else SoundRecording.objects.get(full_title__icontains=phrase)
+                    authors = ", ".join([author.name for author in item.author.all()])
+                    item_info = {'item': "Sound recording", "id": item.id}
+                    result = {'title': item.title, "cast": item.cast, 'full_title': item.full_title, 'author': authors, 'pub_year': item.pub_year, 'publisher': item.publisher.name, 'description': item.description, 'availability': 1 if item.availability.name == "Available to borrow" else 2, 'condition': 1 if item.condition.name == "Good" else 2, 'cover': 1 if item.cover == "no_image.png" else 0}
+                return JsonResponse(["OK!", item_info, result], safe=False)
+            except:
+                return JsonResponse(["Error!"], safe=False)
+        else:
+            context = {'directors': Director.objects.all(),
+            'screenwriters': Screenwriter.objects.all(),
+            'authors': Author.objects.all(),
+            'publishers': Publisher.objects.all()}
 
-        return render(request, template_name="worker_side/modify_item.html", context=context)
+            return render(request, template_name="worker_side/modify_item.html", context=context)
     else:
         data = json.loads(request.body)
-        phrase = data['phrase']
-        item_type = data['item_type']
-        phrase_type = data['phrase_type']
+        action = data['action']
+        print(data)
+        item, item_id = data['item'].split("-")
 
-        try:
-            result = None
-            if item_type == "Author":
-                item = Author.objects.get(id=phrase) if phrase_type == "ID" else Author.objects.get(name__icontains=phrase)
-                result = {'name': item.name}
-            elif item_type == "Publisher":
-                item = Publisher.objects.get(id=phrase) if phrase_type == 'ID' else Publisher.objects.get(name__icontains=phrase)
-                result = {'name': item.name}
-            elif item_type == "Director":
-                item = Director.objects.get(id=phrase) if phrase_type == 'ID' else Director.objects.get(name__icontains=phrase)
-                result = {'name': item.name}
-            elif item_type == "Screenwriter":
-                item = Screenwriter.objects.get(id=phrase) if phrase_type == 'ID' else Screenwriter.objects.get(name__icontains=phrase)
-                result = {'name': item.name}
-            elif item_type == "Book":
-                item = Book.objects.get(id=phrase) if phrase_type == "ID" else Book.objects.get(full_title__icontains=phrase)
-                authors = ",".join([author.name for author in item.author.all()])
-                result = {'isbn': item.isbn, 'title': item.title, 'full_title': item.full_title, 'author': authors, 'pub_year': item.pub_year, 'publisher': item.publisher.name, 'description': item.description, 'availability': 1 if item.availability.name == "Available to borrow" else 2, 'condition': 1 if item.condition.name == "Good" else 2, 'cover': 1 if item.cover == "no_image.png" else 0}
-            elif item_type == "Movie/Film":
-                item = Movie.objects.get(id=phrase) if phrase_type == "ID" else Movie.objects.get(full_title__icontains = phrase)
-                directors = ", ".join([director.name for director in item.director.all()])
-                screenwriters = ", ".join([screenwriter.name for screenwriter in item.screenwriter.all()])
-                result = {"director": directors, "screenwriter": screenwriters, "title": item.title, "full_title": item.full_title, "pub_year": item.pub_year, "description": item.description, 'availability': 1 if item.availability.name == "Available to borrow" else 2, 'condition': 1 if item.condition.name == "Good" else 2, 'cover': 1 if item.cover == "no_image.png" else 0}
-            elif item_type == "Sound recording":
-                item = SoundRecording.objects.get(id=phrase) if phrase_type == "ID" else SoundRecording.objects.get(full_title__icontains=phrase)
-                authors = ", ".join([author.name for author in item.author.all()])
-                result = {'title': item.title, "cast": item.cast, 'full_title': item.full_title, 'author': authors, 'pub_year': item.pub_year, 'publisher': item.publisher.name, 'description': item.description, 'availability': 1 if item.availability.name == "Available to borrow" else 2, 'condition': 1 if item.condition.name == "Good" else 2, 'cover': 1 if item.cover == "no_image.png" else 0}
-            return JsonResponse(["OK!", item_type, result], safe=False)
-        except:
-            return JsonResponse(["Error!"], safe=False)
+        if action == 2:
+            print("!!!")
+            if item == "Author":
+                item = Author.objects.get(id=item_id)
+                item.delete()
+            elif item == "Director":
+                item = Director.objects.get(id=item_id)
+                item.delete()
+            elif item == "Screenwriter":
+                item = Screenwriter.objects.get(id=item_id)
+                item.delete()
+            elif item == "Publisher":
+                item = Publisher.objects.get(id=item_id)
+                item.delete()
+            elif item == "Book":
+                item = Book.objects.get(id=item_id)
+                item.delete()
+            elif item == "Movie/Film":
+                item = Movie.objects.get(id=item_id)
+                item.delete()
+            elif item == "Sound recording":
+                item = SoundRecording.objects.get(id=item_id)
+                item.delete()
 
 
-            
-        print(result)
-        #item.availability.name
-
-        return JsonResponse(["OK!", item_type, result], safe=False)
-
+        return JsonResponse("OK!", safe=False)
 
 

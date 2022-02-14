@@ -15,37 +15,43 @@
         {% endfor %}
     {% endif %}
     <main>
-        <div class="option_box search">
-            <a href="{% url 'user_side-home' %}"><i class="fas fa-search"></i></br>Search in resources</a>
+        <div class="top">
+            <div class="option_box search">
+                <a href="{% url 'user_side-home' %}"><i class="fas fa-search"></i></br>Search in resources</a>
+            </div>
+            <div class="option_box user" style="grid-area: user1">
+                <a href="{% url 'worker_side-register_user' %}"><i class="fas fa-user-plus"></i><br>Register new user</a>            
+            </div>     
+            <div class="option_box user" style="grid-area: user2">
+                <a href="#"><i class="fas fa-user-edit"></i></br>Change user data</a>            
+            </div>
+            <div class="option_box user" style="grid-area: user3">
+                <a href="#"><i class="fas fa-user-minus"></i></br>Delete user</a>            
+            </div>
+        </div>           
+        <div class="middle">
+            <div class="option_box item" style="grid-area: item1">
+                <a href="{% url 'worker_side-add_book' %}"><i class="fas fa-plus-square"></i></br>Add item to catalog</a>            
+            </div>
+            <div class="option_box item" style="grid-area: item2">
+                <a href="{% url 'worker_side-modify_item' %}"><i class="fas fa-pen-square"></i></br>Edit item data</a>            
+            </div>
         </div>
-        <div class="option_box user" style="grid-area: user1">
-            <a href="{% url 'worker_side-register_user' %}"><i class="fas fa-user-plus"></i><br>Register new user</a>            
-        </div>     
-        <div class="option_box user" style="grid-area: user2">
-             <a href="#"><i class="fas fa-user-edit"></i></br>Change user data</a>            
-        </div>
-        <div class="option_box user" style="grid-area: user3">
-            <a href="#"><i class="fas fa-user-minus"></i></br>Delete user</a>            
-        </div>
-        <div class="option_box item" style="grid-area: item1">
-            <a href="{% url 'worker_side-add_book' %}"><i class="fas fa-plus-square"></i></br>Add item to catalog</a>            
-        </div>
-        <div class="option_box item" style="grid-area: item2">
-            <a href="{% url 'worker_side-modify_item' %}"><i class="fas fa-pen-square"></i></br>Edit item data</a>            
-        </div>
-        <div class="option_box borrows" style="grid-area: borrow1">
-            <a href="{% url 'worker_side-placed_orders' %}">
-                <div class="notification">5</div>
-                <i class="fas fa-exclamation"></i>
-            </br>New orders
-        </a>
-        </div>
-        <i class="fas fa-book-reader"></i>
-        <div class="option_box borrows" style="grid-area: borrow2">
-            <a href="{% url 'worker_side-waiting_orders' %}"><i class="fas fa-clock"></i></br>Pending orders</a>
-        </div>
-        <div class="option_box borrows" style="grid-area: borrow3">                
-            <a href="{% url 'worker_side-borrowed_items' %}"><i class="fas fa-book-reader"></i></br>Currently borrowed items</a>
+        <div class="bottom">
+            <div class="option_box borrows" style="grid-area: borrow1">
+                <a href="{% url 'worker_side-placed_orders' %}">
+                    <div class="notification">5</div>
+                    <i class="fas fa-exclamation"></i>
+                </br>New orders
+            </a>
+            </div>
+            <i class="fas fa-book-reader"></i>
+            <div class="option_box borrows" style="grid-area: borrow2">
+                <a href="{% url 'worker_side-waiting_orders' %}"><i class="fas fa-clock"></i></br>Pending orders</a>
+            </div>
+            <div class="option_box borrows" style="grid-area: borrow3">                
+                <a href="{% url 'worker_side-borrowed_items' %}"><i class="fas fa-book-reader"></i></br>Currently borrowed items</a>
+            </div>
         </div>           
     </main>
     {{ number_of_orders|json_script:"orders_amount" }}
