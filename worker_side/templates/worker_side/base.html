@@ -26,8 +26,17 @@
         <header>
             <div id="logo"><a href="{% url 'worker_side-home' %}"><img src="{% static 'user_side/img/logo.png' %}"><span>Online</br>Library</br>Catalog <span class="for_librarian">for librarian</span></span></a></div>
             <div id="logging">
-                <span id="user_status">Hello, Konrad</span>
-                <div id="log_in_button"><a href="{% url 'log_out' %}">sign out</a></div>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff is False %}
+                        <span id="user_status">Hello, <a href="{% url 'user_side-profile' %}" title="{{ user.first_name }}'s information page"> {{ user.first_name }}</span>
+                    {% else %}
+                        <span id="user_status">Hello, {{ user.first_name }}</span>
+                    {% endif %}
+                    <div id="log_in_button"><a href="{% url 'log_out' %}">sign out</a></div>
+                {% else %}
+                    <span id="user_status">you are browsing as guest user</span>
+                    <div id="log_in_button"><a href="{% url 'log_in' %}">sign in</a></div>
+                {% endif %}
             </div>            
         </header> 
         {% block content %} {% endblock content %}

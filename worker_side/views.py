@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import JsonResponse
 from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status
-from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm
+from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm, ModifyAuthorForm, ModifyBookForm, ModifyDirectorForm, ModifyPublisherForm, ModifyScreenwriterForm, ModifySoundRecordingForm, ModifyMovieForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship
 from worker_side.models import Author, Director, Publisher, Screenwriter, Book, Movie, SoundRecording
@@ -320,12 +320,9 @@ def modify_item(request):
             return render(request, template_name="worker_side/modify_item.html", context=context)
     else:
         data = json.loads(request.body)
-        action = data['action']
-        print(data)
         item, item_id = data['item'].split("-")
-
-        if action == 2:
-            print("!!!")
+        
+        try:
             if item == "Author":
                 item = Author.objects.get(id=item_id)
                 item.delete()
@@ -348,7 +345,111 @@ def modify_item(request):
                 item = SoundRecording.objects.get(id=item_id)
                 item.delete()
 
+            return JsonResponse("OK!", safe=False)
+        except:
+            return JsonResponse("Error!", safe=False)
 
-        return JsonResponse("OK!", safe=False)
+@is_staff_user
+def edit_author(request):
+    print("author")
+    if request.method == "GET":
+        return redirect('worker_side-modify_item')
+    else:
+        form = ModifyAuthorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Author successfully updated!')
+            return redirect('worker_side-modify_item')
+        else:
+            messages.error(request, 'An error encountered during data update!')
+            return redirect('worker_side-modify_item')
 
+@is_staff_user
+def edit_screenwriter(request):
+    print("screenwriter")
+    if request.method == "GET":
+        return redirect('worker_side-modify_item')
+    else:
+        form = ModifyScreenwriterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Screenwriter successfully updated!')
+            return redirect('worker_side-modify_item')
+        else:
+            messages.error(request, 'An error encountered during data update!')
+            return redirect('worker_side-modify_item')
 
+@is_staff_user
+def edit_director(request):
+    print("director")
+    if request.method == "GET":
+        return redirect('worker_side-modify_item')
+    else:
+        form = ModifyDirectorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Director successfully updated!')
+            return redirect('worker_side-modify_item')
+        else:
+            messages.error(request, 'An error encountered during data update!')
+            return redirect('worker_side-modify_item')
+
+@is_staff_user
+def edit_publisher(request):
+    print("publisher")
+    if request.method == "GET":
+        return redirect('worker_side-modify_item')
+    else:
+        form = ModifyPublisherForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Publisher successfully updated!')
+            return redirect('worker_side-modify_item')
+        else:
+            messages.error(request, 'An error encountered during data update!')
+            return redirect('worker_side-modify_item')
+
+@is_staff_user
+def edit_book(request):
+    if request.method == "GET":
+        return redirect('worker_side-modify_item')
+    else:
+        form = ModifyBookForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Book successfully updated!')
+            return redirect('worker_side-modify_item')
+        else:
+            print(form.cleaned_data)
+            messages.error(request, 'An error encountered during data update!')
+            return redirect('worker_side-modify_item')
+
+@is_staff_user
+def edit_sound_recording(request):
+    if request.method == "GET":
+        return redirect('worker_side-modify_item')
+    else:
+        form = ModifySoundRecordingForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Sound recording successfully updated!')
+            return redirect('worker_side-modify_item')
+        else:
+            print(form.cleaned_data)
+            messages.error(request, 'An error encountered during data update!')
+            return redirect('worker_side-modify_item')
+
+@is_staff_user
+def edit_movie(request):
+    if request.method == "GET":
+        return redirect('worker_side-modify_item')
+    else:
+        form = ModifyMovieForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Movie successfully updated!')
+            return redirect('worker_side-modify_item')
+        else:
+            print(form.cleaned_data)
+            messages.error(request, 'An error encountered during data update!')
+            return redirect('worker_side-modify_item')

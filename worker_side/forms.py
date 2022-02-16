@@ -161,7 +161,7 @@ class AddBookForm(forms.Form):
         
         book.save()
 
-        authors = self.cleaned_data['author'].split(', ') 
+        authors = self.cleaned_data['author'].split(',') 
         new_authors = []
 
         for author in authors:
@@ -237,7 +237,7 @@ class AddMovieForm(forms.Form):
 
         movie.save()
 
-        directors = self.cleaned_data['director'].split(", ")
+        directors = self.cleaned_data['director'].split(",")
         for director in directors:
             try:
                 director = Director.objects.filter(name=director)[0]
@@ -250,7 +250,7 @@ class AddMovieForm(forms.Form):
                 else:
                     director = None
 
-        screenwriters = self.cleaned_data['screenwriter'].split(", ")
+        screenwriters = self.cleaned_data['screenwriter'].split(",")
         for screenwriter in screenwriters:
             try:
                 screenwriter = Screenwriter.objects.filter(name=screenwriter)[0]
@@ -353,7 +353,7 @@ class AddSoundRecordingForm(forms.Form):
         sound_recording.availability = Availability.objects.get(id=self.cleaned_data['availability'])
 
         sound_recording.save()
-        authors = self.cleaned_data['author'].split(', ') 
+        authors = self.cleaned_data['author'].split(',') 
         for author in authors:
             try:
                 author = Author.objects.filter(name=author)[0]
@@ -381,3 +381,211 @@ class AddSoundRecordingForm(forms.Form):
           }
         }
         return data_to_summary
+
+class ModifyAuthorForm(forms.Form):
+    id = forms.CharField(required=True)
+    author = forms.CharField(required=True)
+
+    def save(self):
+        item = Author.objects.get(id=self.cleaned_data['id'])
+        item.name = self.cleaned_data['author']
+        item.save()
+
+class ModifyDirectorForm(forms.Form):
+    id = forms.CharField(required=True)
+    author = forms.CharField(required=True)
+
+    def save(self):
+        item = Director.objects.get(id=self.cleaned_data['id'])
+        item.name = self.cleaned_data['author']
+        item.save()
+
+class ModifyScreenwriterForm(forms.Form):
+    id = forms.CharField(required=True)
+    author = forms.CharField(required=True)
+
+    def save(self):
+        item = Screenwriter.objects.get(id=self.cleaned_data['id'])
+        item.name = self.cleaned_data['author']
+        item.save()
+
+class ModifyPublisherForm(forms.Form):
+    id = forms.CharField(required=True)
+    author = forms.CharField(required=True)
+
+    def save(self):
+        item = Publisher.objects.get(id=self.cleaned_data['id'])
+        item.name = self.cleaned_data['author']
+        item.save()
+
+class ModifyBookForm(forms.Form):
+    id = forms.CharField(required=True)
+    isbn = forms.CharField(required=False)  
+    author = forms.CharField(required=False)
+    title = forms.CharField(required=True)
+    full_title = forms.CharField(required=True)
+    pub_year = forms.IntegerField(required=False)
+    publisher = forms.CharField(required=False)
+    description = forms.CharField(required=False)
+    condition = forms.IntegerField(required=True)
+    availability = forms.IntegerField(required=True)
+    cover = forms.ImageField(required=False)
+    no_cover = forms.BooleanField(required=False)
+   
+    def save(self):
+        book = Book.objects.get(id=self.cleaned_data['id'])
+        
+        book.isbn = self.cleaned_data["isbn"]
+        book.title = self.cleaned_data['title']
+        book.full_title = self.cleaned_data['full_title']
+        book.pub_year = self.cleaned_data['pub_year']
+
+        publisher = None
+        try:
+            publisher = Publisher.objects.get(name=self.cleaned_data['publisher']) 
+        except:
+            if self.cleaned_data['publisher'] != "":
+                publisher = Publisher.objects.create(name=self.cleaned_data['publisher'])
+            else:
+                publisher = None
+
+        book.publisher = publisher
+        book.description = self.cleaned_data['description']
+        book.condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        book.availability = Availability.objects.get(id=self.cleaned_data['availability'])
+
+        cover = self.cleaned_data['cover'] 
+        if(cover != None):
+            book.cover = cover
+        
+        book.save()
+
+        book.author.clear()
+        authors = self.cleaned_data['author'].split(',') 
+        for author in authors:
+            try:
+                author = Author.objects.filter(name=author)[0]
+                book.author.add(author)
+            except:
+                if author != "":
+                    author = Author.objects.create(name=author)
+                    book.author.add(author)
+                else:
+                    author = None
+
+class ModifySoundRecordingForm(forms.Form):
+    id = forms.CharField(required=True)
+    title = forms.CharField(required=True)
+    author = forms.CharField(required=False)
+    full_title = forms.CharField(required=True)
+    cast = forms.CharField(required=False)
+    pub_year = forms.IntegerField(required=False)
+    publisher = forms.CharField(required=False)
+    description = forms.CharField(required=False)
+
+    condition = forms.IntegerField(required=True)
+    availability = forms.IntegerField(required=True)
+    cover = forms.ImageField(required=False)
+    
+    @transaction.atomic
+    def save(self):
+        sound_recording = SoundRecording.objects.get(id=self.cleaned_data['id'])
+
+        sound_recording.title = self.cleaned_data['title']
+        sound_recording.full_title = self.cleaned_data['full_title']
+        sound_recording.pub_year = self.cleaned_data['pub_year']
+        sound_recording.cast = self.cleaned_data['cast']
+        sound_recording.description = self.cleaned_data['description']
+        sound_recording.condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        sound_recording.availability = Availability.objects.get(id=self.cleaned_data['availability'])
+
+        cover = self.cleaned_data['cover']
+        if(cover != None):
+            sound_recording.cover = self.cleaned_data['cover'] 
+        
+        publisher = None
+        try:
+            publisher = Publisher.objects.get(name=self.cleaned_data['publisher']) 
+        except:
+            if self.cleaned_data['publisher'] != "":
+                publisher = Publisher.objects.create(name=self.cleaned_data['publisher'])
+            else:
+                publisher = None
+
+        sound_recording.publisher = publisher
+
+        sound_recording.description = self.cleaned_data['description']
+        sound_recording.condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        sound_recording.availability = Availability.objects.get(id=self.cleaned_data['availability'])
+
+        sound_recording.save()
+        authors = self.cleaned_data['author'].split(',') 
+
+        sound_recording.author.clear()
+        for author in authors:
+            try:
+                author = Author.objects.filter(name=author)[0]
+                sound_recording.author.add(author)
+            except:
+                if author != "":
+                    author = Author.objects.create(name=author)
+                    sound_recording.author.add(author)
+                else:
+                    author = None
+
+class ModifyMovieForm(forms.Form):
+    id = forms.CharField(required=True)
+    director = forms.CharField(required=False)
+    screenwriter = forms.CharField(required=False)
+    title = forms.CharField(required=True)
+    full_title = forms.CharField(required=True)
+    pub_year = forms.IntegerField(required=False)
+    description = forms.CharField(required=False)
+    condition = forms.IntegerField(required=True)
+    availability = forms.IntegerField(required=True)
+    cover = forms.ImageField(required=False)
+    
+    @transaction.atomic
+    def save(self):
+        movie = Movie.objects.get(id=self.cleaned_data['id'])
+
+        movie.title = self.cleaned_data['title']
+        movie.full_title = self.cleaned_data['full_title']
+        movie.pub_year = self.cleaned_data['pub_year']
+        movie.description = self.cleaned_data['description']
+        movie.condition = Condition.objects.get(id=self.cleaned_data['condition'])
+        movie.availability = Availability.objects.get(id=self.cleaned_data['availability'])
+
+        cover = self.cleaned_data['cover'] 
+        if(cover != None):
+            movie.cover = cover
+
+        movie.save()
+        movie.director.clear()
+        directors = self.cleaned_data['director'].split(",")
+        for director in directors:
+            try:
+                director = Director.objects.filter(name=director)[0]
+                movie.director.add(director)
+            except:
+                if director != "":
+                    director = Director.objects.create(name=director)
+                    movie.director.add(director)
+                else:
+                    director = None
+
+        movie.screenwriter.clear()
+        screenwriters = self.cleaned_data['screenwriter'].split(",")
+        for screenwriter in screenwriters:
+            try:
+                screenwriter = Screenwriter.objects.filter(name=screenwriter)[0]
+                movie.screenwriter.add(screenwriter)
+            except:
+                if screenwriter != "":
+                    screenwriter = Screenwriter.objects.create(name=screenwriter)
+                    movie.screenwriter.add(screenwriter)
+                else:
+                    screenwriter = None
+
+
+

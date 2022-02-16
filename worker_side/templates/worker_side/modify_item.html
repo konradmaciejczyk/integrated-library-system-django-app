@@ -7,6 +7,11 @@
 {% endblock styles %}
 {% block content %}
     <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Modify item</div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="op_status {{ message.tags }}" id="message"><i class="fas fa-info"></i>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
     <main>
         <h1>Modify item</h1>
         <div class="search_bar">
@@ -45,13 +50,13 @@
             console.log(current_form_type);
             switch(current_form_type){
                 case ("Author"):{
-                    return document.getElementById('name_').value === '' ? false : true;
+                    return document.getElementById('author').value === '' ? false : true;
                 }case ("Screenwriter"):{
-                    return document.getElementById('name_').value === '' ? false : true;
+                    return document.getElementById('screenwriter').value === '' ? false : true;
                 }case ("Director"):{
-                    return document.getElementById('name_').value === '' ? false : true;
+                    return document.getElementById('director').value === '' ? false : true;
                 }case ("Publisher"):{
-                    return document.getElementById('name_').value === '' ? false : true;
+                    return document.getElementById('publisher').value === '' ? false : true;
                 }case ("Book"):{
                     let isbn = document.getElementById('isbn');
                     isbn = (check_if_numeric(isbn, true) && (isbn.value.length === 10 || isbn.value.length === 13)) || isbn.value === '';
@@ -83,12 +88,17 @@
             let availability_ = content["availability"] === 1 ? new Array("selected", "") : new Array("", "selected");
             let condition_ = content["condition"] === 1 ? new Array("selected", "") : new Array("", "selected");
             let cover_ = content['cover'] === 1 ? "checked" : "";
+            let token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
             console.log(type);
             switch(type['item']){
                 case "Author":{
                     let html_content = `
                     <p class="results">Results:</p>
-                    <div class="field"><label>Author: </label><input id="name_" type="text" value="${content['name']}"></div>
+                    <form action="edit-author/" method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
+                        <input type="hidden" name="id" value="${type['id']}">
+                        <div class="field"><label>Author: </label><input id="author" name="author" type="text" value="${content['name']}"></div>
+                    </form>
                     <div class="buttons">
                         <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
                         <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
@@ -100,7 +110,11 @@
                 }case "Publisher":{
                     let html_content = `
                     <p class="results">Results:</p>
-                    <div class="field"><label>Publisher: </label><input id="name_" type="text" value="${content['name']}"></div>
+                    <form action="edit-publisher/" method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
+                        <input type="hidden" name="id" value="${type['id']}">
+                        <div class="field"><label>Publisher: </label><input id="publisher" name="publisher" type="text" value="${content['name']}"></div>
+                    </form>
                     <div class="buttons">
                         <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
                         <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
@@ -112,7 +126,11 @@
                 }case "Director":{
                     let html_content = `
                     <p class="results">Results:</p>
-                    <div class="field"><label>Director: </label><input id="name_" type="text" value="${content['name']}"></div>
+                    <form action="edit-director/">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
+                        <input type="hidden" name="id" value="${type['id']}">
+                        <div class="field"><label>Director: </label><input id="director" name="director" type="text" value="${content['name']}"></div>
+                    </form>
                     <div class="buttons">
                         <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
                         <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
@@ -124,7 +142,11 @@
                 }case "Screenwriter":{
                     let html_content = `
                     <p class="results">Results:</p>
-                    <div class="field"><label>Screenwriter: </label><input id="name_" type="text" value="${content['name']}"></div>
+                    <form action="edit-screenwriter/" method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
+                        <input type="hidden" name="id" value="${type['id']}">
+                        <div class="field"><label>Screenwriter: </label><input id="screenwriter" name="screenwriter type="text" value="${content['name']}"></div>
+                    </form>
                     <div class="buttons">
                         <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
                         <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
@@ -136,45 +158,49 @@
                 }case "Book":{
                     let html_content = `
                     <p class="results">Results:</p>
-                    <div class="field"><label>ISBN: </label>
-                        <input type="text" value="${content['isbn']}" id="isbn">
-                    </div>
-                    <div class="field"><label>Author: </label>
-                        <input type="text" list="authors_list" value="${content["author"]}" id="author"></div>
-                        <datalist id="authors_list">
-                            {% for author in authors %}
-                            <option datavalue="{{ author }}">{{ author }}</option>
-                            {% endfor %}
-                        </datalist>
-                    </div>                        
-                    <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title"></div>
-                    <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title"></div>
-                    <div class="field"><label>Publication year: </label><input type="number" value="${content["pub_year"]}" id="pub_year"></div>
-                    <div class="field"><label>Publisher: </label>
-                        <input type="text" value="${content["publisher"]}" list="publishers_list" id="publisher">
-                        <datalist id="publishers_list">
-                            {% for publisher in publishers %}
-                            <option data-value="{{ publisher }}">{{ publisher }}</option>
-                            {% endfor %}
-                        </datalist>
-                    </div>
-                    <div class="field"><label>Description: </label><textarea id="description">${content["description"]}</textarea></div>                        
-                    <div class="field">
-                        <label>Availability: </label>
-                        <select selected="${content["availability"]}" id="availability">
-                            <option>Currently borrowed</option>
-                            <option value="1" ${availability_[0]}>Available to borrow</option>
-                            <option value="2 ${availability_[1]}">Library use only</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>Condition: </label>
-                        <select selected="${content["condition"]}" id="condition">
-                            <option>Describe book condition</option>
-                            <option value="1" ${condition_[0]}>Good</option>
-                            <option value="2" ${condition_[1]}>Damaged</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" ${cover_} id="no_cover">No cover available</label></div>
+                    <form action="edit-book/" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
+                        <input type="hidden" name="id" value="${type['id']}">
+                        <div class="field"><label>ISBN: </label>
+                            <input type="text" value="${content['isbn']}" id="isbn" name="isbn">
+                        </div>
+                        <div class="field"><label>Author: </label>
+                            <input type="text" list="authors_list" value="${content["author"]}" id="author" name="author" ></div>
+                            <datalist id="authors_list">
+                                {% for author in authors %}
+                                <option datavalue="{{ author }}">{{ author }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>                        
+                        <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title" name="title"></div>
+                        <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title" name="full_title"></div>
+                        <div class="field"><label>Publication year: </label><input type="number" value="${content["pub_year"]}" id="pub_year" name="pub_year"></div>
+                        <div class="field"><label>Publisher: </label>
+                            <input type="text" value="${content["publisher"]}" list="publishers_list" id="publisher" name="publisher">
+                            <datalist id="publishers_list">
+                                {% for publisher in publishers %}
+                                <option data-value="{{ publisher }}">{{ publisher }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="field"><label>Description: </label><textarea id="description" name="description">${content["description"]}</textarea></div>                        
+                        <div class="field">
+                            <label>Availability: </label>
+                            <select selected="${content["availability"]}" id="availability" name="availability">
+                                <option>Currently borrowed</option>
+                                <option value="1" ${availability_[0]}>Available to borrow</option>
+                                <option value="2" ${availability_[1]}>Library use only</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Condition: </label>
+                            <select selected="${content["condition"]}" id="condition" name="condition">
+                                <option>Describe book condition</option>
+                                <option value="1" ${condition_[0]}>Good</option>
+                                <option value="2" ${condition_[1]}>Damaged</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover"></div>
+                    </form>
                     <div class="buttons">
                             <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
                             <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
@@ -186,42 +212,46 @@
                 }case "Movie/Film":{
                     let html_content = `
                     <p class="results">Results:</p>
-                    <div class="field"><label>Director(s): </label>
-                        <input type="text" list="directors_list" value="${content["director"]}" id="director"></div>
-                        <datalist id="directors_list">
-                            {% for director in directors %}
-                            <option datavalue="{{ director }}">{{ director }}</option>
-                            {% endfor %}
-                        </datalist>
-                    </div>
-                    <div class="field"><label>Screenwriter(s): </label>
-                        <input type="text" list="screenwriters_list" value="${content["screenwriter"]}" id="screenwriter"></div>
-                        <datalist id="screenwriters_list">
-                            {% for screenwriter in screenwriters %}
-                            <option datavalue="{{ screenwriter }}">{{ screenwriter }}</option>
-                            {% endfor %}
-                        </datalist>
-                    </div>                                  
-                    <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title"></div>
-                    <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title"></div>
-                    <div class="field"><label>Release year: </label><input type="number" value="${content["pub_year"]}" id="pub_year"></div>
-                    <div class="field"><label>Description: </label><textarea id="description">${content["description"]}</textarea></div>                        
-                    <div class="field">
-                        <label>Availability: </label>
-                        <select selected="${content["availability"]}" id="availability">
-                            <option>---Currently borrowed--</option>
-                            <option value="1" ${availability_[0]}>Available to borrow</option>
-                            <option value="2 ${availability_[1]}">Library use only</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>Condition: </label>
-                        <select selected="${content["condition"]}" id="condition">
-                            <option>Describe book condition</option>
-                            <option value="1" ${condition_[0]}>Good</option>
-                            <option value="2" ${condition_[1]}>Damaged</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" id="no_cover">No cover available</label></div>
+                    <form action="edit-movie/" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
+                        <input type="hidden" name="id" value="${type['id']}">
+                        <div class="field"><label>Director(s): </label>
+                            <input type="text" list="directors_list" value="${content["director"]}" id="director" name="director"></div>
+                            <datalist id="directors_list">
+                                {% for director in directors %}
+                                <option datavalue="{{ director }}">{{ director }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="field"><label>Screenwriter(s): </label>
+                            <input type="text" list="screenwriters_list" value="${content["screenwriter"]}" id="screenwriter" name="screenwriter"></div>
+                            <datalist id="screenwriters_list">
+                                {% for screenwriter in screenwriters %}
+                                <option datavalue="{{ screenwriter }}">{{ screenwriter }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>                                  
+                        <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title" name="title"></div>
+                        <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title" name="full_title"></div>
+                        <div class="field"><label>Release year: </label><input type="number" value="${content["pub_year"]}" id="pub_year" name="pub_year"></div>
+                        <div class="field"><label>Description: </label><textarea id="description" name="description">${content["description"]}</textarea></div>                        
+                        <div class="field">
+                            <label>Availability: </label>
+                            <select selected="${content["availability"]}" id="availability" name="availability">
+                                <option>---Currently borrowed--</option>
+                                <option value="1" ${availability_[0]}>Available to borrow</option>
+                                <option value="2 ${availability_[1]}">Library use only</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Condition: </label>
+                            <select selected="${content["condition"]}" id="condition" name="condition">
+                                <option>Describe book condition</option>
+                                <option value="1" ${condition_[0]}>Good</option>
+                                <option value="2" ${condition_[1]}>Damaged</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover"></div>
+                    </form>
                     <div class="buttons">
                             <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
                             <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
@@ -233,45 +263,49 @@
                 }case "Sound recording":{
                     let html_content = `
                     <p class="results">Results:</p>
-                    <div class="field"><label>Author: </label>
-                        <input type="text" list="authors_list" value="${content["author"]}" id="author"></div>
-                        <datalist id="authors_list">
-                            {% for author in authors %}
-                            <option datavalue="{{ author }}">{{ author }}</option>
-                            {% endfor %}
-                        </datalist>
-                    </div>
-                    <div class="field"><label>Cast: </label>
-                        <input type="text" value="${content['cast']}" id="cast">
-                    </div>                        
-                    <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title"></div>
-                    <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title"></div>
-                    <div class="field"><label>Publication year: </label><input type="number" value="${content["pub_year"]}" id="pub_year"></div>
-                    <div class="field"><label>Publisher: </label>
-                        <input type="text" value="${content["publisher"]}" list="publishers_list" id="publisher">
-                        <datalist id="publishers_list">
-                            {% for publisher in publishers %}
-                            <option data-value="{{ publisher }}">{{ publisher }}</option>
-                            {% endfor %}
-                        </datalist>
-                    </div>
-                    <div class="field"><label>Description: </label><textarea id="description">${content["description"]}</textarea></div>                        
-                    <div class="field">
-                        <label>Availability: </label>
-                        <select selected="${content["availability"]}" id="availability">
-                            <option>---Currently borrowed--</option>
-                            <option value="1" ${availability_[0]}>Available to borrow</option>
-                            <option value="2 ${availability_[1]}">Library use only</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>Condition: </label>
-                        <select selected="${content["condition"]}" id="condition">
-                            <option>---Describe book condition---</option>
-                            <option value="1" ${condition_[0]}>Good</option>
-                            <option value="2" ${condition_[1]}>Damaged</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover" id="cover"><label><input type="checkbox" id="no_cover">No cover available</label></div>
+                    <form action="edit-sound-recording/" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
+                        <input type="hidden" name="id" value="${type['id']}">
+                        <div class="field"><label>Author: </label>
+                            <input type="text" list="authors_list" value="${content["author"]}" id="author" name="author"></div>
+                            <datalist id="authors_list">
+                                {% for author in authors %}
+                                <option datavalue="{{ author }}">{{ author }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="field"><label>Cast: </label>
+                            <input type="text" value="${content['cast']}" id="cast" name="cast">
+                        </div>                        
+                        <div class="field"><label>Title: </label><input type="text" value="${content["title"]}" id="title" name="title"></div>
+                        <div class="field"><label>Full title: </label><input type="text" value="${content["full_title"]}" id="full_title" name="full_title"></div>
+                        <div class="field"><label>Publication year: </label><input type="number" value="${content["pub_year"]}" id="pub_year" name="pub_year"></div>
+                        <div class="field"><label>Publisher: </label>
+                            <input type="text" value="${content["publisher"]}" list="publishers_list" id="publisher" name="publisher">
+                            <datalist id="publishers_list">
+                                {% for publisher in publishers %}
+                                <option data-value="{{ publisher }}">{{ publisher }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="field"><label>Description: </label><textarea id="description" name="description">${content["description"]}</textarea></div>                        
+                        <div class="field">
+                            <label>Availability: </label>
+                            <select selected="${content["availability"]}" id="availability" name="availability">
+                                <option>---Currently borrowed--</option>
+                                <option value="1" ${availability_[0]}>Available to borrow</option>
+                                <option value="2" ${availability_[1]}>Library use only</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Condition: </label>
+                            <select selected="${content["condition"]}" id="condition" name="condition">
+                                <option>---Describe book condition---</option>
+                                <option value="1" ${condition_[0]}>Good</option>
+                                <option value="2" ${condition_[1]}>Damaged</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Cover image: </label><input type="file" id="cover" name="cover"></div>
+                    </form>
                     <div class="buttons">
                             <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>
                             <button id="save" data-item="${type['item']}-${type['id']}"><i class="fas fa-check"></i>Save</button>                
@@ -287,7 +321,7 @@
             save_button.addEventListener('click', (button) => {
                 if(check_form()){
                     if(window.confirm("Do you really want to update this item in database?")){
-                        send_data(button.target.dataset.item, 1);
+                        send_data(button.target.dataset.item, 1)                        
                     }
                 }else{
                     window.alert("Invalid inputs!");
@@ -303,20 +337,28 @@
             })
         }
 
-        function send_data(item, action){
-            console.log(item);
-            fetch('', {
+        function send_data(item, action){   
+            let token = document.getElementsByName('csrfmiddlewaretoken')[0].value;                  
+            if(action===1){
+                let form = document.querySelector('form')   
+                form.submit();
+            }else if(action===2){
+                fetch('', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': token
                 },
-                body: JSON.stringify({"item": item, "action": action})
+                body: JSON.stringify({'item': item})
             }).then((response) => {
-                return response.json();
+                return response.json()
             }).then((response_json) => {
-                console.log(response_json);                
+                if(response_json === 'OK!'){
+                    window.location.reload();
+                }
             })
+            }
+            
         }
 
         async function fetch_result(){

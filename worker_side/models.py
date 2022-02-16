@@ -56,6 +56,7 @@ class Book(models.Model):
 
     def save(self):
         super().save()
+        print("TU KURWA: ", self.cover.path)
 
         img = Image.open(self.cover.path)
 
@@ -114,8 +115,6 @@ class Movie(models.Model):
             output_size = (332, 500)
             img.thumbnail(output_size)
             img.save(self.cover.path)
-
-
 
     def __str__(self):
         return self.title
