@@ -2,10 +2,10 @@ from django.db.models import Value
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import JsonResponse
-from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status
+from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status, Client
 from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm, ModifyAuthorForm, ModifyBookForm, ModifyDirectorForm, ModifyPublisherForm, ModifyScreenwriterForm, ModifySoundRecordingForm, ModifyMovieForm
 from datetime import datetime, timedelta
-from accounts.models import Citizenship
+from accounts.models import Citizenship, User
 from worker_side.models import Author, Director, Publisher, Screenwriter, Book, Movie, SoundRecording
 from django.core.mail import send_mail
 from accounts.decorators import is_staff_user
@@ -453,3 +453,25 @@ def edit_movie(request):
             print(form.cleaned_data)
             messages.error(request, 'An error encountered during data update!')
             return redirect('worker_side-modify_item')
+
+@is_staff_user
+def modify_client(request):
+    if request.method == "POST":
+        pass
+    else:
+        if 'email' in request.GET:
+            email = request.GET['email']
+            print(email)
+            user = User.objects.get(email = email)
+            client = Client.objects.get(user = user)
+
+            result = {
+                'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name, 'phone_num': user.phone_number, 'is_active': user.is_active, 'data_of_birth': client.date_of_birth, 'citizenship': client.citizenship.id, 'occupation': client.occupation.id, 'corr_address': client.corr_address, 'id_type': client.id_type.id, 'id_number': client.id_number
+            }
+
+            return JsonResponse(['OK!', result], safe=False)
+        else:
+            context = {
+                'citizenships': Citizenship.objects.all()
+            }
+        return render(request, template_name="worker_side/modify_client.html", context=context)

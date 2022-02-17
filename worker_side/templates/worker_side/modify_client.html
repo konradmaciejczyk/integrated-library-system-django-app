@@ -1,0 +1,161 @@
+{% extends 'worker_side/base.html' %}
+{% load static %}
+{% block title %}Modify client - Online Library Catalog for librarian{% endblock title %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/modify_client.css' %}" media="screen"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock styles %}
+{% block content %}
+    <div class="path">You are here: <a href="{% url 'worker_side-home' %}">Work desktop</a> > Modify client</div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="op_status {{ message.tags }}" id="message"><i class="fas fa-info"></i>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <main>
+        <h1>Modify client</h1>
+        <div class="search_bar">
+            <input type="text" placeholder="Search in database" onfocus="this.placeholder='';" onblur="this.placeholder='Search in database';" id="email"></input>
+        </div>
+        <button id="search_button">Search</button>
+        <section>                    
+        </section>
+    </main>
+    {% csrf_token %}
+    <script type="text/javascript">
+        const token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        const email = document.getElementById('email');
+        const section = document.querySelector('section');
+
+        function check_if_numeric(item, starts_with_0){
+            const regex_with_0 = new RegExp('[0-9]+');
+            const regex_without_0 = new RegExp('^[1-9][0-9]+');
+            return starts_with_0 ? regex_with_0.test(item.value) : regex_without_0.test(item.value);
+        }
+
+        function check_form(){
+            console.log("1");
+            
+        }
+
+        function generate_form(content){
+            let token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+            console.log(content)
+            let html_content =`
+            <p class="results">Results:</p>
+                    <form action="edit-user/" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
+                        <input type="hidden" name="id" value="${content['email']}">
+                        <div class="field"><label>E-mail address: </label>
+                            <input type="text" name="email" value="${content['email']}">
+                        </div>
+                        <div class="field"><label>First name: </label>
+                            <input type="text" name="first_name" value="${content['first_name']}">
+                        </div>
+                        <div class="field"><label>Last name: </label>
+                            <input type="text" name="last_name" value="${content['last_name']}">
+                        </div>
+                        <div class="field"><label>Date of birth: </label>
+                            <input type="date" name="date_of_birth" value="${content['date_of_birth']}">
+                        </div>
+                        <div class="field"><label>Citizenship: </label>
+                            <input type="text" name="citizenship">
+                        </div>
+                        <div class="field"><label>Identity document number: </label>
+                            <div class="doc_field">
+                                <select name="id_type">
+                                    <option value = "-1">---Select ID type---</option>
+                                    <option value = "1">ID card</option>
+                                    <option value = "2">ID number</option>
+                                </select>
+                                <input type="text" name="id_num" value="${content['id_num']}">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Citizenship: </label>
+                            <select id="citizenship" name="citizenship">
+                                <option value="-1" selected="selected">---Select citizenship---</option>
+                                {% for citizenship in citizenships %}
+                                    <option value="{{ citizenship.id }}"> {{ citizenship }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field"><label>Phone number: </label>
+                            <input type="phone" name="phone_num" value="${content['phone_num']}">
+                        </div>
+                        <div class="field"><label>Correspondance address: </label>
+                            <input type="text" name="corr_address" value="${content['corr_address']}">
+                        </div>
+                        <div class="field"><label>Is account active? </label>
+                            <input type="checkbox" name="account_active">
+                        </div>
+                        <div class="field"><label>Reset password: </label>
+                            <input type="checkbox" name="account_active" name="password_reset">
+                        </div>
+                    </form>
+                    <div class="buttons">
+                            <button id="delete" data-item="${content['email']}<i class="fas fa-times"></i>Delete</button>
+                            <button id="save" data-item="${content['email']}<i class="fas fa-check"></i>Save</button>                
+                    </div>
+                    <div style="clear: both;"></div>`;            
+                    section.innerHTML = html_content;
+
+            let save_button = document.getElementById("save");
+            save_button.addEventListener('click', (button) => {
+                if(check_form()){
+                    if(window.confirm("Do you really want to update this user in database?")){
+                        send_data(button.target.dataset.item, 1)                        
+                    }
+                }else{
+                    window.alert("Invalid inputs!");
+                }
+
+            })
+
+            let delete_button = document.getElementById('delete');
+            delete_button.addEventListener('click', (button) => {
+                if(window.confirm('Do you really want to remove this user from database?')){
+                    send_data(button.target.dataset.item, 2);
+                }
+            })
+        }
+
+        function send_data(item, action){   
+            let token = document.getElementsByName('csrfmiddlewaretoken')[0].value;                  
+            if(action===1){
+                let form = document.querySelector('form')   
+                form.submit();
+            }else if(action===2){
+                fetch('', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': token
+                },
+                body: JSON.stringify({'item': item})
+            }).then((response) => {
+                return response.json()
+            }).then((response_json) => {
+                if(response_json === 'OK!'){
+                    window.location.reload();
+                }
+            })
+            }
+            
+        }
+
+        async function fetch_result(){
+            let results = await fetch(`?email=${email.value}`);
+            let results_json = await results.json();
+            if(results_json[0] === "OK!"){
+                generate_form(results_json[1]);
+            }else{
+                let = html_content = `<p class="no_results">No results.</p>`;
+                section.innerHTML = html_content;
+            }
+        }
+
+        const search_button = document.getElementById("search_button");
+        search_button.addEventListener('click', fetch_result);
+    </script>
+{% endblock content %}

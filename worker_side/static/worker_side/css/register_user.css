@@ -162,39 +162,52 @@ fieldset {
 }
 
 header {
-  height: 60px;
+  position: relative;
+  background-color: #194973;
+  height: 120px;
+  width: 100vw;
 }
 
 #logo {
-  height: 60px;
-  width: 130px;
-  padding: 5px;
-  font-size: 13px;
+  box-sizing: border-box;
+  position: absolute;
+  width: 225px;
+  height: 120px;
+  top: 0px;
+  left: 0px;
+  padding: 10px;
+  font-size: 27px;
+  font-weight: 300;
+  float: left;
 }
 #logo img {
-  margin-right: 1vw;
-  width: 50px;
-  height: 50px;
+  margin-right: 10px;
+  width: 100px;
+  height: 100px;
+  float: left;
+}
+#logo a:hover {
+  color: #202321;
 }
 
 #logging {
-  height: 50px;
-  min-width: 10%;
-  margin-right: 2%;
+  position: absolute;
+  top: 20%;
+  right: 2%;
+  box-sizing: border-box;
+  font-weight: 300;
 }
 #logging #user_status {
   display: block;
-  font-size: 10px;
   font-weight: 100;
-  width: 100%;
-  text-align: right;
+  font-size: 20px;
 }
 #logging #log_in_button {
-  width: 80px;
-  height: 59px;
-  font-size: 16px;
-  margin-top: 5px;
+  float: right;
+  text-align: right;
   transition: color, 0.4s;
+  margin-top: 10px;
+  transition: color 0.4s;
 }
 #logging #log_in_button:hover {
   color: #F8D872;

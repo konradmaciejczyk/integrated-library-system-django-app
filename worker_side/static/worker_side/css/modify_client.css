@@ -298,23 +298,8 @@ h1 {
   border-radius: 5px 5px 5px 5px;
   font-size: 20px;
   border: 2px solid #194973;
-  border-radius: 5px 0px 0px 5px;
-  border-right: 0px;
   box-sizing: border-box;
   padding-left: 2%;
-}
-.search_bar select {
-  flex-basis: 100px;
-  border: 2px solid #194973;
-  border-right: 0px;
-  border-radius: 0px;
-  border-left: 0;
-  padding-left: 10px;
-}
-.search_bar select:nth-of-type(2) {
-  border-right: 2px solid #194973;
-  border-radius: 0px 5px 5px 0px;
-  background-color: #dadada;
 }
 
 label {
@@ -362,7 +347,8 @@ section .field {
   display: flex;
   width: 70%;
 }
-section input[type=text], section input[type=number], section textarea, section select {
+section input[type=text], section input[type=number], section input[type=phone], section textarea, section select {
+  flex-basis: 70%;
   border-radius: 5px 5px 5px 5px;
   font-size: 20px;
   border: 2px solid #194973;
@@ -376,18 +362,59 @@ section input[type=text], section input[type=number], section textarea, section 
   font-size: 15px;
   display: block;
 }
-section input[type=file] {
-  margin-left: 45px;
+section input[type=checkbox] {
+  margin-left: 80px;
 }
-section textarea {
+section input[type=date] {
+  font-size: 15px;
+  display: block;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-left: 100px;
+  border-top: 2px solid #194973;
+  border-bottom: 2px solid #194973;
+  width: 596px;
+  height: 40px;
+  flex-basis: 65%;
+}
+section .field:nth-of-type(6) {
+  display: flex;
+  margin-left: auto;
+  margin: auto;
+  margin: 25px auto 0px auto;
+}
+section .field:nth-of-type(6) label {
+  flex-basis: 30%;
+}
+section .field:nth-of-type(6) .doc_field {
+  height: 46px;
+  flex-basis: 70%;
+  display: inline-flex;
+}
+section .field:nth-of-type(6) .doc_field input[type=text] {
+  box-sizing: border-box;
+  border-radius: 0px 5px 5px 0px;
+  font-size: 20px;
+  border: 2px solid #194973;
+  border-radius: 0px 5px 5px 0px;
+  border-left: 0px;
+  box-sizing: border-box;
+  padding-left: 2%;
+  margin-left: 0px;
+  width: 62.5%;
   height: 100%;
-  padding-top: 5px;
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  height: 100px;
 }
-section input[type=file] {
-  width: 80px;
+section .field:nth-of-type(6) .doc_field select {
+  box-sizing: border-box;
+  border: 2px solid #194973;
+  border-radius: 5px 0px 0px 5px;
+  border-right: 0;
+  padding-left: 10px;
+  padding-bottom: 0px;
+  margin-left: 70px;
+  margin-right: 0px;
+  width: 22%;
+  height: 100%;
 }
 section .buttons {
   float: right;

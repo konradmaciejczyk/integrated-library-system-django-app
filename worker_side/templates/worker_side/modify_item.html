@@ -145,7 +145,7 @@
                     <form action="edit-screenwriter/" method="POST">
                         <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
                         <input type="hidden" name="id" value="${type['id']}">
-                        <div class="field"><label>Screenwriter: </label><input id="screenwriter" name="screenwriter type="text" value="${content['name']}"></div>
+                        <div class="field"><label>Screenwriter: </label><input id="screenwriter" name="screenwriter" type="text" value="${content['name']}"></div>
                     </form>
                     <div class="buttons">
                         <button id="delete" data-item="${type['item']}-${type['id']}"><i class="fas fa-times"></i>Delete</button>

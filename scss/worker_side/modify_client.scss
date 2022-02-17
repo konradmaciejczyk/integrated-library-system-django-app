@@ -1,0 +1,189 @@
+@import 'defaults.scss';
+@include _header;
+
+main{
+    width: 1000px; min-height: 200px;
+    background-color: white;
+    @include shadow($main-blue);
+    padding: 50px;
+    margin: 50px auto 0px auto;
+    border-radius: 10px;
+}
+
+h1{
+    display: block;
+    font-weight: 300;
+    color: $main-blue;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search_bar{
+    width: 70%; height: 50px;
+    display: flex;
+    margin-left: auto; margin: auto;
+
+    input[type="text"]{
+        flex-grow: 10;
+        border-radius: 5px 5px 5px 5px;
+        font-size: 20px;
+        border: 2px solid $main-blue;
+        box-sizing: border-box;
+        padding-left: 2%;
+    }
+}
+
+label{
+    flex-basis: 30%;
+    color: $main-blue;
+    margin: 0px 10px 10px 0pxs;
+
+    &:hover{
+        cursor: auto;
+    }
+}
+
+button{
+    display: block;
+    background-color: $main-blue;
+    width: 100px; height: 40px;
+    border-radius: 5px;
+    margin: 10px auto 20px auto;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    border: 0;
+    font-weight: 500;
+    font-size: 15px;
+    transition: filter .4s;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(120%);
+    }
+}
+
+section{
+    .no_results{
+        color: $main-blue;
+        display: block;
+        font-size: 45px;
+        margin: 50px auto 0px auto;
+        text-align: center;
+    }
+
+    .results{
+        color: $main-blue;
+        margin-left: 100px;
+        font-size: 25px;
+    }
+
+    .field{
+        margin: 25px auto 0px auto;
+        display: flex;
+        width: 70%;
+    }
+    input[type="text"], input[type="number"], input[type="phone"], textarea, select{
+        flex-basis: 70%;
+        border-radius: 5px 5px 5px 5px;
+        font-size: 20px;
+        border: 2px solid $main-blue;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding-left: 2%; padding-right: 2%;
+        margin-left: 100px;
+        width: 600px; height: 40px;
+        font-size: 15px;
+        display: block;
+    }
+
+    input[type="checkbox"]{
+        margin-left: 80px;
+    }
+
+    input[type="date"]{
+        font-size: 15px;
+        display: block;
+        padding-left: 2%; padding-right: 2%;
+        margin-left: 100px;
+        border-top: 2px solid $main-blue;
+        border-bottom: 2px solid $main-blue;
+        width: 596px; height: 40px;
+        flex-basis: 65%;
+        
+    }
+
+    .field:nth-of-type(6){
+        display: flex;
+        margin-left: auto; margin: auto;
+        margin: 25px auto 0px auto;
+
+        label{
+            flex-basis: 30%;
+        }
+
+        .doc_field{
+            height: 46px;
+            flex-basis: 70%;
+            display: inline-flex;
+
+            input[type="text"]{
+                box-sizing: border-box;
+                border-radius: 0px 5px 5px 0px;
+                font-size: 20px;
+                border: 2px solid $main-blue;
+                border-radius: 0px 5px 5px 0px;
+                border-left: 0px;
+                box-sizing: border-box;
+                padding-left: 2%;
+                margin-left: 0px;
+                width: 62.5%; height: 100%;
+            }
+        
+            select{
+                box-sizing: border-box;
+                border: 2px solid $main-blue;
+                border-radius: 5px 0px 0px 5px;
+                border-right: 0;
+                padding-left: 10px; padding-bottom: 0px;
+                margin-left: 70px;
+                margin-right: 0px;
+                width: 22%; height: 100%;
+            }   
+
+        }
+
+                        
+    }
+
+    .buttons{
+        float:right;
+        margin-right: 150px; margin-top: 20px;
+        #save{
+            display: inline-block;
+            background-color: rgb(38, 199, 57);
+            text-align: left;
+    
+            i{
+                margin-left: 20px;
+                margin-right: 5px;
+            }
+        }
+
+        #delete{
+            display: inline-block;
+            background-color: rgb(199, 38, 38);
+            margin-right: 20px;
+            text-align: left;
+    
+            i{
+                margin-left: 20px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    
+}
+
+
+@include text_inputs;
