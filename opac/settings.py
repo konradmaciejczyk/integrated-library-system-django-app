@@ -85,6 +85,8 @@ WSGI_APPLICATION = 'opac.wsgi.application'
 #     }
 # }
 
+CSRF_COOKIE_SECURE=False
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

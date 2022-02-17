@@ -347,7 +347,7 @@ section .field {
   display: flex;
   width: 70%;
 }
-section input[type=text], section input[type=number], section input[type=phone], section textarea, section select {
+section input[type=text], section input[type=number], section input[type=tel], section textarea, section select {
   flex-basis: 70%;
   border-radius: 5px 5px 5px 5px;
   font-size: 20px;

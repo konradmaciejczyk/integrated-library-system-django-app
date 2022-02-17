@@ -4,7 +4,6 @@ from django.http.response import JsonResponse
 import json
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from flask import request
 from user_side.forms import SearchForm, UpdateClientForm, UpdateUserForm
 from user_side.models import Client
 from worker_side.models import Availability, Book, Movie, SoundRecording

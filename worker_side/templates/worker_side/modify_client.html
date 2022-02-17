@@ -40,7 +40,19 @@
 
         function generate_form(content){
             let token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-            console.log(content)
+            console.log(content);
+            let is_active = content['is_active'] ? "checked": "";
+            let id_type = content['id_type'] === 1 ? new Array("selected", "") : new Array("", "selected");
+            let occupation = new Array("", "", "");
+            switch(content['occupation']){
+                case 1:{
+                    occupation[0] = "selected"; break;
+                }case 2:{
+                    occupation[1] = "selected"; break;
+                }case 3:{
+                    occupation[2] = "selected"; break;
+                }
+            }
             let html_content =`
             <p class="results">Results:</p>
                     <form action="edit-user/" method="POST" enctype="multipart/form-data">
@@ -58,17 +70,21 @@
                         <div class="field"><label>Date of birth: </label>
                             <input type="date" name="date_of_birth" value="${content['date_of_birth']}">
                         </div>
-                        <div class="field"><label>Citizenship: </label>
-                            <input type="text" name="citizenship">
+                        <div class="field"><label>Occupation: </label>
+                            <select name="occupation">
+                                <option value="1" ${occupation[0]}>Student</option>
+                                <option value="2" ${occupation[1]}>Academic teacher</option>
+                                <option value="3" ${occupation[2]}>Other</option>
+                            </select>
                         </div>
                         <div class="field"><label>Identity document number: </label>
                             <div class="doc_field">
                                 <select name="id_type">
                                     <option value = "-1">---Select ID type---</option>
-                                    <option value = "1">ID card</option>
-                                    <option value = "2">ID number</option>
+                                    <option value = "1" ${id_type[0]}>ID card</option>
+                                    <option value = "2" ${id_type[1]}>ID number</option>
                                 </select>
-                                <input type="text" name="id_num" value="${content['id_num']}">
+                                <input type="text" name="id_num" value="${content['id_number']}">
                             </div>
                         </div>
                         <div class="field">
@@ -81,24 +97,27 @@
                             </select>
                         </div>
                         <div class="field"><label>Phone number: </label>
-                            <input type="phone" name="phone_num" value="${content['phone_num']}">
+                            <input type="tel" name="phone_num" value="${content['phone_num']}">
                         </div>
                         <div class="field"><label>Correspondance address: </label>
                             <input type="text" name="corr_address" value="${content['corr_address']}">
                         </div>
                         <div class="field"><label>Is account active? </label>
-                            <input type="checkbox" name="account_active">
+                            <input type="checkbox" name="account_active" ${is_active} autocomplete="off">
                         </div>
                         <div class="field"><label>Reset password: </label>
-                            <input type="checkbox" name="account_active" name="password_reset">
+                            <input type="checkbox" name="account_active" name="password_reset" autocomplete="off">
                         </div>
                     </form>
                     <div class="buttons">
-                            <button id="delete" data-item="${content['email']}<i class="fas fa-times"></i>Delete</button>
-                            <button id="save" data-item="${content['email']}<i class="fas fa-check"></i>Save</button>                
+                            <button id="delete" data-item="${content['email']}"><i class="fas fa-times"></i>Delete</button>
+                            <button id="save" data-item="${content['email']}"><i class="fas fa-check"></i>Save</button>                
                     </div>
                     <div style="clear: both;"></div>`;            
                     section.innerHTML = html_content;
+                    let citizenship = content['citizenship'];
+                    let citizenship_option = document.querySelector(`option[value="${citizenship}"]`);
+                    citizenship_option.selected = true;
 
             let save_button = document.getElementById("save");
             save_button.addEventListener('click', (button) => {
@@ -132,11 +151,11 @@
                     'Content-Type': 'application/json',
                     'X-CSRFToken': token
                 },
-                body: JSON.stringify({'item': item})
+                body: JSON.stringify({'email': item})
             }).then((response) => {
                 return response.json()
             }).then((response_json) => {
-                if(response_json === 'OK!'){
+                if(response_json[0] === 'OK!'){
                     window.location.reload();
                 }
             })

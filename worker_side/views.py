@@ -457,19 +457,26 @@ def edit_movie(request):
 @is_staff_user
 def modify_client(request):
     if request.method == "POST":
-        pass
+        data = json.loads(request.body)
+        user = User.objects.get(email=data['email'])
+        #user.delete()
+        
+        return JsonResponse(["OK!"], safe=False)
     else:
         if 'email' in request.GET:
-            email = request.GET['email']
-            print(email)
-            user = User.objects.get(email = email)
-            client = Client.objects.get(user = user)
+            try:
+                email = request.GET['email']
+                print(email)
+                user = User.objects.get(email = email)
+                client = Client.objects.get(user = user)
 
-            result = {
-                'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name, 'phone_num': user.phone_number, 'is_active': user.is_active, 'data_of_birth': client.date_of_birth, 'citizenship': client.citizenship.id, 'occupation': client.occupation.id, 'corr_address': client.corr_address, 'id_type': client.id_type.id, 'id_number': client.id_number
-            }
+                result = {
+                    'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name, 'phone_num': user.phone_number, 'is_active': user.is_active, 'date_of_birth': client.date_of_birth, 'citizenship': client.citizenship.id, 'occupation': client.occupation.id, 'corr_address': client.corr_address, 'id_type': client.id_type.id, 'id_number': client.id_number
+                }
 
-            return JsonResponse(['OK!', result], safe=False)
+                return JsonResponse(['OK!', result], safe=False)
+            except:
+                return JsonResponse(['Error!'], safe=False)
         else:
             context = {
                 'citizenships': Citizenship.objects.all()

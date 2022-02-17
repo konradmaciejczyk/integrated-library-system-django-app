@@ -82,7 +82,7 @@ section{
         display: flex;
         width: 70%;
     }
-    input[type="text"], input[type="number"], input[type="phone"], textarea, select{
+    input[type="text"], input[type="number"], input[type="tel"], textarea, select{
         flex-basis: 70%;
         border-radius: 5px 5px 5px 5px;
         font-size: 20px;
