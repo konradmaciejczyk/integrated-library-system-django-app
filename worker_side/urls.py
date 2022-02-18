@@ -17,5 +17,6 @@ urlpatterns = [
     path('modify-item/edit-publisher/', views.edit_publisher, name="worker_side-edit_publisher"),
     path('modify-item/edit-book/', views.edit_book, name="worker_side-edit_book"),
     path('modify-item/edit-movie/', views.edit_movie, name="worker_side-edit_movie"),
-    path('modify-client', views.modify_client, name="worker_side-modify_client")
+    path('modify-client/', views.modify_client, name="worker_side-modify_client"),
+    path('modify-client/edit-client/', views.edit_client, name="worker_side-edit_client")
 ]

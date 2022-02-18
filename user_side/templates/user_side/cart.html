@@ -94,21 +94,8 @@
             overlay.style.display = 'block';
             pop_up.style.display = 'block';
         }
-
-        function update_cart(op){
-            switch(op){
-                case 1:{ 
-                    console.log("Item added ", items_amount);
-                    break;
-                }case 2:{                
-                    console.log("Item deleted ", items_amount);
-                    break;
-                }
-            }
-        }
         
         function validate_borrows(){
-            console.log(borrows_available);
             if (borrows_available - items_amount < 0){
                 order_button.style.opacity = '.2';
                 order_button.style.pointerEvents = 'none';
@@ -150,7 +137,6 @@
             }).then((response) =>{
                 return response.json()
             }).then((data) => {
-                console.log('data:', data);
                 items_amount = data.length;
                 validate_borrows();
                 

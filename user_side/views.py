@@ -47,7 +47,6 @@ def get_movies(title, director_screenwriter, output, authors, availability):
 
     if len(results) < 1:
         results = Movie.objects.raw("SELECT * FROM worker_side_movie AS movie INNER JOIN worker_side_movie_screenwriter AS movie_screenwriter ON movie.id=movie_screenwriter.movie_id INNER JOIN worker_side_screenwriter AS screenwriter ON screenwriter.id=movie_screenwriter.screenwriter_id WHERE LOWER(title) LIKE LOWER(%s) AND LOWER(screenwriter.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", director_screenwriter+"%"]) if director_screenwriter else Movie.objects.raw("SELECT * FROM worker_side_movie movie WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
-        print(results)
         
     movie = {}
 
@@ -195,7 +194,6 @@ def profile(request):
             else:
                 prolong = False
             client_items[index] = (client_item, prolong)
-            print(client_items[index])
 
         context = {
             'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
@@ -218,7 +216,6 @@ def profile(request):
             messages.success(request, 'Profile updated successfully.')
             return redirect('user_side-profile') 
         else:
-            print(u_form.errors, c_form.errors)
             messages.error(request, "The data you've sent is not correct. Check your inputs and try again.")
             return redirect('user_side-profile')   
 
@@ -226,7 +223,6 @@ def prolong(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         item_type, item_id = data['item'].split('-')
-        print(item_type, item_id)
 
         if item_type == "Book":
             book_order = BookOrder.objects.get(id=item_id)

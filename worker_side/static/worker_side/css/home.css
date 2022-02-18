@@ -287,17 +287,17 @@ header {
 
 main {
   margin: 50px auto 0 auto;
-  width: 800px;
   display: grid;
   column-gap: 10px;
   row-gap: 20px;
 }
 main .top {
+  width: 800px;
   display: grid;
-  grid-template-areas: "search search search" "user1 user2 user3";
+  grid-template-areas: "search search" "user1 user2";
   column-gap: 10px;
   row-gap: 20px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 main .middle {
   display: grid;

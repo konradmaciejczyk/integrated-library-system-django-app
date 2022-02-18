@@ -43,7 +43,6 @@
         function initiate_cart(){
             const cart_status = document.getElementById('items_number').innerHTML;
             const cart = document.querySelector('.cart');
-            console.log(cart_status);
             if (parseInt(cart_status) > 0){
                 cart.style.transform = 'scale(1)';
             }else{

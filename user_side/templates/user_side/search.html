@@ -228,7 +228,6 @@
         const items_number = document.getElementById('items_number');
         const url = '/update-item/';
         var cart_items = JSON.parse(document.getElementById('item_list').textContent);
-        console.log(cart_items);
 
         function initiate_cart(){            
             if (parseInt(cart_status) > 0){
@@ -248,7 +247,6 @@
         }
 
         for(let i=0; i< add_to_cart.length; i++){
-            console.log(cart_items);
             if(cart_items.includes(add_to_cart[i].dataset.item)){
                 add_to_cart[i].checked = true;
             }
@@ -282,7 +280,6 @@
                 return response.json()
             }).then((data) => {
                 update_cart(data.length);
-                console.log(data);
             })
         }
 

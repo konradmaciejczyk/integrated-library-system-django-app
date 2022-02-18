@@ -38,7 +38,6 @@ def vaildate_users_form(data):
     Returns:
     None (Asserts ValidationError when form is invalid)
     """
-
     try:#citizenship, occupation, id_type
         assert(data['citizenship'] in range(1, 226) and data['id_type'] in range(1, 3) and data['occupation'] in range(1, 4))
         #first_name, last_name
@@ -586,6 +585,51 @@ class ModifyMovieForm(forms.Form):
                     movie.screenwriter.add(screenwriter)
                 else:
                     screenwriter = None
+
+class ModifyClientForm(forms.Form):
+    id = forms.CharField(required=True)
+    email = forms.CharField(required=True)
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    date_of_birth = forms.DateField(required=True)
+    citizenship = forms.IntegerField(required=True)
+    occupation = forms.IntegerField(required=True)
+    corr_address = forms.CharField(required=True)
+    id_type = forms.IntegerField(required=True)
+    id_number = forms.CharField(required=True)
+    phone_number = forms.CharField(required=True)
+    account_active = forms.BooleanField(required=False)
+    password_reset = forms.BooleanField(required=False)
+
+    #@transaction.atomic
+    def save(self):
+        vaildate_users_form(self.cleaned_data)
+        user = User.objects.get(email=self.cleaned_data['id'])
+        client = Client.objects.get(user=user)
+
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.email = self.cleaned_data['email'].lower()
+        user.phone_number = self.cleaned_data['phone_number']
+        user.is_active = self.cleaned_data['account_active']
+
+        new_password = None
+        if self.cleaned_data['password_reset']:
+            new_password=password_generator(8)
+            user.set_password(new_password)
+        user.save()
+
+        client.date_of_birth = self.cleaned_data['date_of_birth']
+
+        client.citizenship = Citizenship.objects.get(id=self.cleaned_data["citizenship"])
+        client.occupation = Occupation.objects.get(id=self.cleaned_data["occupation"])
+        client.id_type = IDType.objects.get(id=self.cleaned_data["id_type"])
+        client.corr_address = self.cleaned_data['corr_address']
+        client.id_number = self.cleaned_data["id_number"]
+
+        client.save()
+
+        return new_password, user.first_name
 
 
 

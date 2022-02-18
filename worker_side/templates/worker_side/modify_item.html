@@ -47,7 +47,6 @@
         }
 
         function check_form(){
-            console.log(current_form_type);
             switch(current_form_type){
                 case ("Author"):{
                     return document.getElementById('author').value === '' ? false : true;
@@ -89,7 +88,6 @@
             let condition_ = content["condition"] === 1 ? new Array("selected", "") : new Array("", "selected");
             let cover_ = content['cover'] === 1 ? "checked" : "";
             let token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-            console.log(type);
             switch(type['item']){
                 case "Author":{
                     let html_content = `

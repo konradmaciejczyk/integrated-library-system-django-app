@@ -56,8 +56,6 @@ class Book(models.Model):
 
     def save(self):
         super().save()
-        print("TU KURWA: ", self.cover.path)
-
         img = Image.open(self.cover.path)
 
         if img.height > 500 or img.width > 332:

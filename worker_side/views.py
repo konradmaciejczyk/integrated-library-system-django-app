@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import JsonResponse
 from user_side.models import BookOrder, MovieOrder, SoundRecordingOrder, Status, Client
-from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm, ModifyAuthorForm, ModifyBookForm, ModifyDirectorForm, ModifyPublisherForm, ModifyScreenwriterForm, ModifySoundRecordingForm, ModifyMovieForm
+from .forms import  AddBookForm, ClientRegistrationForm, AddMovieForm, AddSoundRecordingForm, ModifyAuthorForm, ModifyBookForm, ModifyDirectorForm, ModifyPublisherForm, ModifyScreenwriterForm, ModifySoundRecordingForm, ModifyMovieForm, ModifyClientForm
 from datetime import datetime, timedelta
 from accounts.models import Citizenship, User
 from worker_side.models import Author, Director, Publisher, Screenwriter, Book, Movie, SoundRecording
@@ -15,7 +15,6 @@ import json
 def home(request):
     status = Status.objects.get(id=1)
     number_of_orders = len(BookOrder.objects.all().filter(status=status)) + len(SoundRecordingOrder.objects.all().filter(status=status)) + len(MovieOrder.objects.all().filter(status=status))
-    print(number_of_orders)
 
     if 'order_status' in request.GET:
         return JsonResponse(number_of_orders, safe=False)
@@ -272,7 +271,6 @@ def modify_item(request):
             item_type = request.GET['item_type']
             phrase = request.GET['phrase']
             phrase_type = request.GET['phrase_type']
-            print(item_type, phrase_type, phrase)
             try:
                 result = None
                 item_info = None
@@ -351,14 +349,13 @@ def modify_item(request):
 
 @is_staff_user
 def edit_author(request):
-    print("author")
     if request.method == "GET":
         return redirect('worker_side-modify_item')
     else:
         form = ModifyAuthorForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Author successfully updated!')
+            messages.success(request, 'Author successfully updated.')
             return redirect('worker_side-modify_item')
         else:
             messages.error(request, 'An error encountered during data update!')
@@ -366,14 +363,13 @@ def edit_author(request):
 
 @is_staff_user
 def edit_screenwriter(request):
-    print("screenwriter")
     if request.method == "GET":
         return redirect('worker_side-modify_item')
     else:
         form = ModifyScreenwriterForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Screenwriter successfully updated!')
+            messages.success(request, 'Screenwriter successfully updated.')
             return redirect('worker_side-modify_item')
         else:
             messages.error(request, 'An error encountered during data update!')
@@ -381,14 +377,13 @@ def edit_screenwriter(request):
 
 @is_staff_user
 def edit_director(request):
-    print("director")
     if request.method == "GET":
         return redirect('worker_side-modify_item')
     else:
         form = ModifyDirectorForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Director successfully updated!')
+            messages.success(request, 'Director successfully updated.')
             return redirect('worker_side-modify_item')
         else:
             messages.error(request, 'An error encountered during data update!')
@@ -396,14 +391,13 @@ def edit_director(request):
 
 @is_staff_user
 def edit_publisher(request):
-    print("publisher")
     if request.method == "GET":
         return redirect('worker_side-modify_item')
     else:
         form = ModifyPublisherForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Publisher successfully updated!')
+            messages.success(request, 'Publisher successfully updated.')
             return redirect('worker_side-modify_item')
         else:
             messages.error(request, 'An error encountered during data update!')
@@ -417,10 +411,9 @@ def edit_book(request):
         form = ModifyBookForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Book successfully updated!')
+            messages.success(request, 'Book successfully updated.')
             return redirect('worker_side-modify_item')
         else:
-            print(form.cleaned_data)
             messages.error(request, 'An error encountered during data update!')
             return redirect('worker_side-modify_item')
 
@@ -432,10 +425,9 @@ def edit_sound_recording(request):
         form = ModifySoundRecordingForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Sound recording successfully updated!')
+            messages.success(request, 'Sound recording successfully updated.')
             return redirect('worker_side-modify_item')
         else:
-            print(form.cleaned_data)
             messages.error(request, 'An error encountered during data update!')
             return redirect('worker_side-modify_item')
 
@@ -447,10 +439,9 @@ def edit_movie(request):
         form = ModifyMovieForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Movie successfully updated!')
+            messages.success(request, 'Movie successfully updated.')
             return redirect('worker_side-modify_item')
         else:
-            print(form.cleaned_data)
             messages.error(request, 'An error encountered during data update!')
             return redirect('worker_side-modify_item')
 
@@ -466,7 +457,6 @@ def modify_client(request):
         if 'email' in request.GET:
             try:
                 email = request.GET['email']
-                print(email)
                 user = User.objects.get(email = email)
                 client = Client.objects.get(user = user)
 
@@ -482,3 +472,34 @@ def modify_client(request):
                 'citizenships': Citizenship.objects.all()
             }
         return render(request, template_name="worker_side/modify_client.html", context=context)
+
+@is_staff_user
+def edit_client(request):
+    if request.method == "POST":
+        form = ModifyClientForm(request.POST)
+        if form.is_valid():
+            new_password, client_name = form.save()
+            if new_password:
+                subject = 'Online Library Catalog - Your new password'
+                message = """ 
+                Hello {},
+
+                You have requested new password.
+
+                Your new password: {new_password}
+
+
+
+                This message was created created automatically. Please do not respond.
+
+                Sincerly,
+                Online Library Catalog team
+                """.format(client_name, new_password)
+                send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
+            messages.success(request, "Client data updated successfully.")
+            return redirect("worker_side-modify_client")
+        else:
+            messages.error(request, "An error occured during client data update!")
+            return redirect("worker_side-modify_client")
+    else:
+        return redirect('worker_side-modify_client')

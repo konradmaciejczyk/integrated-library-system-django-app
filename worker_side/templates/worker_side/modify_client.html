@@ -33,14 +33,8 @@
             return starts_with_0 ? regex_with_0.test(item.value) : regex_without_0.test(item.value);
         }
 
-        function check_form(){
-            console.log("1");
-            
-        }
-
         function generate_form(content){
             let token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-            console.log(content);
             let is_active = content['is_active'] ? "checked": "";
             let id_type = content['id_type'] === 1 ? new Array("selected", "") : new Array("", "selected");
             let occupation = new Array("", "", "");
@@ -55,7 +49,7 @@
             }
             let html_content =`
             <p class="results">Results:</p>
-                    <form action="edit-user/" method="POST" enctype="multipart/form-data">
+                    <form action="edit-client/" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="csrfmiddlewaretoken" value="${token}">
                         <input type="hidden" name="id" value="${content['email']}">
                         <div class="field"><label>E-mail address: </label>
@@ -82,9 +76,9 @@
                                 <select name="id_type">
                                     <option value = "-1">---Select ID type---</option>
                                     <option value = "1" ${id_type[0]}>ID card</option>
-                                    <option value = "2" ${id_type[1]}>ID number</option>
+                                    <option value = "2" ${id_type[1]}>Passport</option>
                                 </select>
-                                <input type="text" name="id_num" value="${content['id_number']}">
+                                <input type="text" name="id_number" value="${content['id_number']}">
                             </div>
                         </div>
                         <div class="field">
@@ -97,7 +91,7 @@
                             </select>
                         </div>
                         <div class="field"><label>Phone number: </label>
-                            <input type="tel" name="phone_num" value="${content['phone_num']}">
+                            <input type="tel" name="phone_number" value="${content['phone_num']}">
                         </div>
                         <div class="field"><label>Correspondance address: </label>
                             <input type="text" name="corr_address" value="${content['corr_address']}">
@@ -120,13 +114,9 @@
                     citizenship_option.selected = true;
 
             let save_button = document.getElementById("save");
-            save_button.addEventListener('click', (button) => {
-                if(check_form()){
-                    if(window.confirm("Do you really want to update this user in database?")){
-                        send_data(button.target.dataset.item, 1)                        
-                    }
-                }else{
-                    window.alert("Invalid inputs!");
+            save_button.addEventListener('click', (button) => {                
+                if(window.confirm("Do you really want to update this user in database?")){
+                    send_data(button.target.dataset.item, 1)                        
                 }
 
             })
