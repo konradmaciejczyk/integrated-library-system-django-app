@@ -15,9 +15,13 @@
             <form method="GET" action="{% url 'user_side-search' %}">
                 <div id="search_tool">
                     <input type="text" autocomplete="off" name="title" placeholder="Search in resources" onfocus="this.placeholder=''" onblur="this.placeholder='Search in resources'"/>                    
-                    <input type="submit" value="&#xe800;" style="font-family:fontello"/>                   
-                </div> 
-                <input id="author_bar" name="author" type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
+                    <input type="submit" value="&#xe800;" style="font-family:fontello"/> 
+                    <ul id="title_hint_list"></ul>                  
+                </div>
+                <div class="author_bar">
+                    <input id="author_bar" name="author" type="text" autocomplete="off" placeholder="Enter author name" onfocus="this.placeholder=''" onblur="this.placeholder='Enter author name'">
+                    <ul id="author_hint_list"></ul>  
+                </div>
                 <fieldset>
                     <label><input type="checkbox" id="item_type" name="book">Books</label>
                     <label><input type="checkbox" id="item_type" name="movie">Movies/Films</label>
@@ -36,6 +40,8 @@
         <a class="go_to_working_side" href="{% url 'worker_side-home' %}">Go to librarian hub</a>
     {% endif %}
     <footer>2021-2022 by <a href="https://www.github.com/konradmaciejczyk" rel="author" target="_blank" title="github profile">Konrad Maciejczyk</a>, University of Silesia</footer>
+    {{titles|json_script:"titles"}}
+    {{authors|json_script:"authors"}}
     <script type="text/javascript" src="{% static 'user_side/basic_algorithms.js' %}"></script>
     <script type="text/javascript">
         checkbox_controller = new CheckboxController('#item_type');
@@ -49,8 +55,93 @@
                 cart.style.transform = 'scale(0)';
             }
         }
-
         initiate_cart();
+
+        const titles = JSON.parse(document.getElementById('titles').textContent);
+        const authors = JSON.parse(document.getElementById('authors').textContent);
+        const search_bar = document.getElementsByName('title')[0];
+        const author_bar = document.getElementById('author_bar');
+        const title_list = document.getElementById('title_hint_list');
+        const author_list = document.getElementById('author_hint_list');
+
+        function find_title_matches(user_input){
+            let results = new Array();
+
+            for(let i=0; i<titles.length; i++){
+                if(titles[i].toLowerCase().match(user_input.toLowerCase())){                    
+                    if (results.length < 5){
+                        results.push(titles[i]);
+                    }
+                }
+            }
+            return results;
+        }
+
+        function find_author_matches(user_input){
+            let results = new Array();
+
+            for(let i=0; i<authors.length; i++){
+                if(authors[i].toLowerCase().match(user_input.toLowerCase())){
+                    if (results.length < 5){
+                        results.push(authors[i]);
+                    }
+                }
+            }
+            return results;
+        }
+
+        search_bar.addEventListener('input', (bar) => {
+            if (bar.target.value === ''){
+                title_list.innerHTML = '';
+            }else{
+                let results = find_title_matches(bar.target.value);
+                let html_content = ``;
+                
+                results.forEach((result) => {
+                    html_content = html_content + `<li class="title_result">${result}</li>`
+                })
+
+                title_list.innerHTML = html_content;
+
+                if(results.length > 0){
+                    let hints = document.querySelectorAll('.title_result');
+                    hints.forEach((hint) => {
+                        hint.addEventListener('click', (item) =>{
+                            console.log(item.target.value)
+                            search_bar.value = item.target.innerHTML;
+                            title_list.innerHTML = '';
+                        })
+                    })
+                }
+            }            
+        })
+
+        author_bar.addEventListener('input', (bar) => {
+            if (bar.target.value === ''){
+                author_list.innerHTML = '';
+            }else{
+                let results = find_author_matches(bar.target.value);
+                console.log(results);
+                let html_content = ``;
+                
+                results.forEach((result) => {
+                    html_content = html_content + `<li class="author_result">${result}</li>`
+                })
+
+                author_list.innerHTML = html_content;
+
+                if(results.length > 0){
+                    let hints = document.querySelectorAll('.author_result');
+                    hints.forEach((hint) => {
+                        hint.addEventListener('click', (item) =>{
+                            console.log(item.target.value)
+                            author_bar.value = item.target.innerHTML;
+                            author_list.innerHTML = '';
+                        })
+                    })
+                }
+            }            
+        })
         
 
     </script>

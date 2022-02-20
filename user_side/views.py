@@ -6,12 +6,13 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from user_side.forms import SearchForm, UpdateClientForm, UpdateUserForm
 from user_side.models import Client
-from worker_side.models import Availability, Book, Movie, SoundRecording
+from worker_side.models import Availability, Book, Movie, SoundRecording, Author, Director, Screenwriter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from accounts.models import User
 from django.contrib import messages
 from user_side.models import BookOrder, SoundRecordingOrder, MovieOrder, Status 
 from django.db.models import Value
+from accounts.decorators import is_normal_user
 
 def get_books(title, author, output, authors, availability):
     results =  Book.objects.raw("SELECT * FROM worker_side_book book JOIN (SELECT * FROM worker_side_author author JOIN worker_side_book_author book_author ON author.id=book_author.author_id) total ON total.book_id=book.id WHERE LOWER(book.title) LIKE LOWER(%s) AND LOWER(total.name) LIKE LOWER(%s)"+availability, ["%"+title+"%", author+"%"]) if author else  Book.objects.raw("SELECT * FROM worker_side_book book WHERE LOWER(title) LIKE LOWER(%s)"+availability, ["%"+title+"%"])
@@ -179,7 +180,7 @@ def search(request):
 def log_in(request):
     return render(request, "user_side/log_in.html")
 
-@login_required
+@is_normal_user
 def profile(request):
     client = Client.objects.get(user=request.user)
     if request.method == "GET":
@@ -219,6 +220,7 @@ def profile(request):
             messages.error(request, "The data you've sent is not correct. Check your inputs and try again.")
             return redirect('user_side-profile')   
 
+@is_normal_user
 def prolong(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -252,11 +254,14 @@ def prolong(request):
 
 def home(request):
     context = {
-        'cart_status': len(request.session['cart']) if 'cart' in request.session else 0
+        'cart_status': len(request.session['cart']) if 'cart' in request.session else 0,
+        'titles': list(set([book.title for book in Book.objects.all()] + [movie.title for movie in Movie.objects.all()] + [sr.title for sr in SoundRecording.objects.all()])),
+        'authors': list(set([author.name for author in Author.objects.all()] + [director.name for director in Director.objects.all()] + [screenwriter.name for screenwriter in Screenwriter.objects.all()]))
     }
 
     return render(request, "user_side/home.html", context)
 
+@is_normal_user
 def update_item(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -298,6 +303,7 @@ def update_item(request):
     else:
         return redirect('user_side-home')
 
+@is_normal_user
 def cart(request):
     logged_user = User.objects.get(email=request.user.email)
     logged_client = Client.objects.get(user = logged_user)

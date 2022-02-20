@@ -45,7 +45,7 @@ def fill_worker_side(conditions=True, availabilities=True, authors=True, publish
     None"""
 
     conditions_data = (('Good'), ('Damaged'))
-    availabilities_data = (('Available to borrow'), ('Library use only'))
+    availabilities_data = (('Available to borrow'), ('Library use only'), ('Not available'))
     authors_data = (("Terry Pratchett"), ("Adam Mickiewicz") , ("Henryk Sienkiewicz") , ("Stefan Żeromski"), ("Fyodor Dostoyevsky"), ("Stanisław Lem"))
     publishers_data = (("Prószyński i S-ka"), ("Wydawnictwo Literackie"), ("Wydawnictwo MG"))
     directors_data = (('Stanley Kubrik'), ("Christopher Nolan"), ("Denis Villeneuve"), ("Darren Aronofsky"), ("Guillermo del Toro"))

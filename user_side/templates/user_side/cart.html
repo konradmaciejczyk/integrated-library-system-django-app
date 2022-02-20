@@ -147,10 +147,8 @@
         for(let i=0; i< add_to_cart.length; i++){
             add_to_cart[i].addEventListener('click', function(){
                 if (this.checked){
-                    update_cart(1);
                     update_user_order(add_to_cart[i].dataset.item, 1);
                 }else{
-                    update_cart(2);
                     update_user_order(add_to_cart[i].dataset.item, 2);
                 }
             })

@@ -183,6 +183,7 @@ main #box_searching #search_tool {
   height: 50px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
 }
 main #box_searching #search_tool input[type=text] {
   width: 87%;
@@ -190,6 +191,13 @@ main #box_searching #search_tool input[type=text] {
   float: left;
   border-radius: 5px 0 0 5px;
   font-size: 20px;
+}
+main #box_searching #search_tool input[type=text]:focus {
+  font-weight: 300;
+}
+main #box_searching #search_tool input[type=text]:not(:focus) {
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
 }
 main #box_searching #search_tool input[type=submit] {
   width: 13%;
@@ -203,6 +211,57 @@ main #box_searching #search_tool input[type=submit]:hover {
   background-color: #30516e;
   color: #F8F7F2;
   cursor: pointer;
+}
+main #box_searching #search_tool ul {
+  list-style: none;
+  position: absolute;
+  background-color: white;
+  color: #31655a;
+  border-radius: 0px 0px 5px 5px;
+  width: 100%;
+  z-index: 100;
+  top: 40px;
+}
+main #box_searching #search_tool ul li {
+  padding: 5px;
+  padding-left: 10px;
+  transition: background-color 0.4s, font-weight 0.4s;
+}
+main #box_searching #search_tool ul li:hover {
+  cursor: pointer;
+  background-color: silver;
+  font-weight: 500;
+}
+main #box_searching .author_bar {
+  position: relative;
+}
+main #box_searching .author_bar input[type=text]:focus {
+  font-weight: 300;
+}
+main #box_searching .author_bar input[type=text]:not(:focus) {
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
+}
+main #box_searching .author_bar ul {
+  list-style: none;
+  position: absolute;
+  background-color: white;
+  color: #31655a;
+  border-radius: 0px 0px 5px 5px;
+  width: 40%;
+  margin-left: 17.5%;
+  z-index: 100;
+  top: 32px;
+}
+main #box_searching .author_bar ul li {
+  padding: 5px;
+  padding-left: 10px;
+  transition: background-color 0.4s, font-weight 0.4s;
+}
+main #box_searching .author_bar ul li:hover {
+  cursor: pointer;
+  background-color: silver;
+  font-weight: 500;
 }
 main #box_searching #author_bar {
   display: block;
@@ -220,6 +279,10 @@ main #box_searching fieldset {
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+}
+
+.hint_list {
+  position: relative;
 }
 
 .go_to_working_side {
@@ -307,6 +370,9 @@ footer {
     width: 80vw;
     height: 40px;
   }
+  main #box_searching #search_tool ul {
+    top: 35px;
+  }
   main #box_searching #author_bar {
     width: 80vw;
     margin-left: 8%;
@@ -315,6 +381,25 @@ footer {
   main #box_searching fieldset {
     grid-template-columns: repeat(1, minmax(0, 1fr));
     width: 80vw;
+  }
+  main #box_searching .author_bar {
+    position: relative;
+  }
+  main #box_searching .author_bar ul {
+    width: 80vw;
+    margin-left: 8%;
+    z-index: 100;
+    top: 25px;
+  }
+  main #box_searching .author_bar ul li {
+    padding: 5px;
+    padding-left: 10px;
+    transition: background-color 0.4s, font-weight 0.4s;
+  }
+  main #box_searching .author_bar ul li:hover {
+    cursor: pointer;
+    background-color: silver;
+    font-weight: 500;
   }
   main #box_logging {
     margin-top: 5vh;
