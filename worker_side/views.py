@@ -168,7 +168,7 @@ def placed_orders(request):
             Sincerly,
             Online Library Catalog team
             """.format(client_name, item_type, item_title)
-            #send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
+            send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
             return JsonResponse(["OK!", item+'-'+itemID], safe=False)
         except:
             return  JsonResponse("ERROR!", safe=False)

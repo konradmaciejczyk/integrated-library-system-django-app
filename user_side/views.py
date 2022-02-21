@@ -116,9 +116,9 @@ def search(request):
             data = form.cleaned_data
 
             
-            # if data['title'] == '' and data['author'] == '':
-            #     context = {'number_of_results': 0, 'fields':{'title': data['title'], 'author': data['author'], 'filters': "books"}}
-            #     return render(request, "user_side/search.html", context)
+            if data['title'] == '' and data['author'] == '':
+                context = {'number_of_results': 0, 'fields':{'title': data['title'], 'author': data['author'], 'filters': "books"}}
+                return render(request, "user_side/search.html", context)
 
             sets = []
             output = []
