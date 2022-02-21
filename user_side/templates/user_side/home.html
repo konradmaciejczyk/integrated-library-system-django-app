@@ -107,7 +107,6 @@
                     let hints = document.querySelectorAll('.title_result');
                     hints.forEach((hint) => {
                         hint.addEventListener('click', (item) =>{
-                            console.log(item.target.value)
                             search_bar.value = item.target.innerHTML;
                             title_list.innerHTML = '';
                         })
@@ -121,7 +120,6 @@
                 author_list.innerHTML = '';
             }else{
                 let results = find_author_matches(bar.target.value);
-                console.log(results);
                 let html_content = ``;
                 
                 results.forEach((result) => {
@@ -134,7 +132,6 @@
                     let hints = document.querySelectorAll('.author_result');
                     hints.forEach((hint) => {
                         hint.addEventListener('click', (item) =>{
-                            console.log(item.target.value)
                             author_bar.value = item.target.innerHTML;
                             author_list.innerHTML = '';
                         })

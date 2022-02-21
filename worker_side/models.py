@@ -55,7 +55,8 @@ class Book(models.Model):
     due_date = models.DateField(null=True, verbose_name="Return date")
 
     def save(self):
-        super().save()
+        super().save()        
+        
         img = Image.open(self.cover.path)
 
         if img.height > 500 or img.width > 332:

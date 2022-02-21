@@ -44,7 +44,7 @@ def register_user(request):
             Online Library Catalog team
             """.format(data_to_summary['first_name'], data_to_summary['password'])
             to = form.cleaned_data['email']
-            send_mail(subject, message, 'conrad2048@gmail.com', (to,))
+            #send_mail(subject, message, 'conrad2048@gmail.com', (to,))
 
             return render(request, template_name="worker_side/register_summary.html", context = data_to_summary)
         else:
@@ -168,7 +168,7 @@ def placed_orders(request):
             Sincerly,
             Online Library Catalog team
             """.format(client_name, item_type, item_title)
-            send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
+            #send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
             return JsonResponse(["OK!", item+'-'+itemID], safe=False)
         except:
             return  JsonResponse("ERROR!", safe=False)
@@ -495,7 +495,7 @@ def edit_client(request):
                 Sincerly,
                 Online Library Catalog team
                 """.format(client_name, new_password)
-                send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
+                #send_mail(subject, message, 'conrad2048@gmail.com', (client_email,))
             messages.success(request, "Client data updated successfully.")
             return redirect("worker_side-modify_client")
         else:
