@@ -83,7 +83,7 @@ def fill_worker_side(conditions=True, availabilities=True, authors=True, publish
     ('0345336275', 'Foundation', 'Isaac Asimov - Foundation', 1983, 'pages: 285', 1, 1, 'Ballantine Books', 'books_covers/foundation_1.jpg', 'Isaac Asimov'),)
     movies_data = (('Stanley Kubrik', 'Stanley Kubrik', 'A Clockwork Orange', 'Stanley Kubrik - A Clockwork Orange', 1971, 'Based on Anthony Burgess book.', 1, 1, 'movies_covers/clockwork_orange_1.png'), 
     ('Stanley Kubrik', 'Stanley Kubrik', '2001: a space odyssey', 'Stanley Kubrik - 2001: a space odyssey', 1968, 'Based on Arthur C. Clarke book.', 1, 1, 'movies_covers/space_odyssey_1.jpg'),
-    ('Andriej Tarkowsi', 'Andriej Tarkowski, Fridrikh Gorenshtein', 'Solaris', 'Andriej Tarkowski - Solaris', 1972, 'Based on Stanisław Lem\'s book.', 1, 1, 'movies_covers/solaris_1.jpg'),
+    ('Andriej Tarkowski', 'Andriej Tarkowski, Fridrikh Gorenshtein', 'Solaris', 'Andriej Tarkowski - Solaris', 1972, 'Based on Stanisław Lem\'s book.', 1, 1, 'movies_covers/solaris_1.jpg'),
     ('Darren Aronofsky', 'Darren Aronofsky', 'Pi', 'Darren Aronofsky - Pi', 1997, 'length: 1h 24min', 1, 1, 'movies_covers/pi_1.jpg'),
     ('Orson Welles', 'Herman J. Mankiewicz, Orson Welles', 'Citizen Kane', 'Orson Welles - Citizen Kane', 1941, 'length: 1h 59min', 1, 2, 'movies_covers/citizen_kane_1.jpg'),
     ('Christopher Nolan', 'Christopher Nolan, Jonathan Nolan', 'Interstellar', 'Christopher Nolan - Interstellar', 2014, 'length: 2h 49min', 1, 1, 'movies_covers/interstellar_1.jpg'),

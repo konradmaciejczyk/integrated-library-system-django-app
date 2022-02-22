@@ -11,7 +11,7 @@ class Client(models.Model):
     date_of_birth = models.DateField(verbose_name="Date of birth")
     citizenship = models.ForeignKey(Citizenship, default=226, verbose_name="Citizenship", on_delete=models.CASCADE)
     occupation = models.ForeignKey(Occupation, default=4, on_delete=models.CASCADE, verbose_name="Occupation")
-    corr_address = models.CharField(max_length=50, verbose_name="Correspondence address")
+    corr_address = models.CharField(max_length=100, verbose_name="Correspondence address")
     id_type = models.ForeignKey(IDType, on_delete=models.CASCADE, verbose_name="ID type")
     id_number = models.CharField(max_length=15, verbose_name="ID number")
     registration_date = models.DateTimeField(default=timezone.now, verbose_name="Registration date")
