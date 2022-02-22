@@ -1,6 +1,6 @@
 {% extends 'worker_side/base.html' %}
 {% load static %}
-{% block title %}Modify client - Online Library Catalog for librarian{% endblock title %}
+{% block title %}Edit client's data - Online Library Catalog for librarian{% endblock title %}
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'worker_side/css/modify_client.css' %}" media="screen"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -13,7 +13,7 @@
         {% endfor %}
     {% endif %}
     <main>
-        <h1>Modify client</h1>
+        <h1>Edit client's data</h1>
         <div class="search_bar">
             <input type="text" placeholder="Enter client\'s email address" onfocus="this.placeholder='';" onblur="this.placeholder='Enter client\'s email address';" id="email"></input>
         </div>
@@ -98,9 +98,6 @@
                         </div>
                         <div class="field"><label>Is account active? </label>
                             <input type="checkbox" name="account_active" ${is_active} autocomplete="off">
-                        </div>
-                        <div class="field"><label>Reset password: </label>
-                            <input type="checkbox" name="account_active" name="password_reset" autocomplete="off">
                         </div>
                     </form>
                     <div class="buttons">

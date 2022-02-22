@@ -599,7 +599,6 @@ class ModifyClientForm(forms.Form):
     id_number = forms.CharField(required=True)
     phone_number = forms.CharField(required=True)
     account_active = forms.BooleanField(required=False)
-    password_reset = forms.BooleanField(required=False)
 
     #@transaction.atomic
     def save(self):
@@ -614,10 +613,6 @@ class ModifyClientForm(forms.Form):
         user.is_active = self.cleaned_data['account_active']
 
         new_password = None
-        if self.cleaned_data['password_reset']:
-            new_password=password_generator(8)
-            user.set_password(new_password)
-        user.save()
 
         client.date_of_birth = self.cleaned_data['date_of_birth']
 

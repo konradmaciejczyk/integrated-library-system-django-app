@@ -450,7 +450,7 @@ def modify_client(request):
     if request.method == "POST":
         data = json.loads(request.body)
         user = User.objects.get(email=data['email'])
-        #user.delete()
+        user.delete()
         
         return JsonResponse(["OK!"], safe=False)
     else:
