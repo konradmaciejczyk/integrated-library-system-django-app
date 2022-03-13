@@ -305,7 +305,7 @@ def fill_user_side(statuses = True, clients = True, workers = True):
         user.save()
         print("Worker account created: email: {}, password: {}".format(user.email, password))
 
-def fill_whole_database():
+def fill_database():
     fill_accounts()
     fill_worker_side()
     fill_user_side()
