@@ -1,19 +1,17 @@
 # Integrated Library System - Django web application
 ## Table of content
-### &ensp;&ensp;&ensp;&ensp;&ensp;1. What are Integrated Library Systems (ILS)?
-### &ensp;&ensp;&ensp;&ensp;&ensp;2. Online demo version
-### &ensp;&ensp;&ensp;&ensp;&ensp;3. About this project
-### &ensp;&ensp;&ensp;&ensp;&ensp;4. Entity Relationship Diagram
-### &ensp;&ensp;&ensp;&ensp;&ensp;5. Technologies used
-### &ensp;&ensp;&ensp;&ensp;&ensp;6. Application set up
-### &ensp;&ensp;&ensp;&ensp;&ensp;7. Ideas for further project development  
+* &ensp;&ensp;[What are Integrated Library Systems (ILS)?](#about-ils)
+* &ensp;&ensp;[Online demo version](#online-demo)
+* &ensp;&ensp;[About this project](#about-project)
+* &ensp;&ensp;[Entity Relationship Diagram](#erd)
+* &ensp;&ensp;[Technologies used](#technologies)
+* &ensp;&ensp;[Application set up](#set-up)
+* &ensp;&ensp;[Ideas for further project development](#ideas)
 
-## 1. What are Integrated Library Systems (ILS)?
+## <a name="about-ils"></a>What are Integrated Library Systems (ILS)?
 Integrated Library System is a software used for a library to track items owned, orders made and patrons who have borrowed. An ILS usually is constituted of a relational database and software to interact with database. Such system are usually separated into two parts: one for patrons and one for staff. Usually such systems offer online catalog (OPAC) with the help of, patreons can search through library reources and place orders. It also allows staff to have control over item circulation and perfrom CRUD (*Create, Retrieve, Update, Delete*) operations on library database such as: register new patreons, edit personal data of existing ones, add new items to catalog and edit bibliographic descriptions of exisiting items.
 
-If you want to learn more about ILS and this project you can read more about it in my bachelor thesis by clicking this [link](#) (only in polish).
-
-## 2. Online demo version
+## <a name="online-demo"></a>Online demo version
 Live demo version hosted on Heroku is available [over here](https://online-library-catalog.herokuapp.com/).  
 **Note**: Hosted version is missing email notification. Also Heroku itself does not support file storage, so uploaded covers will be deleted once Heroku freezes the app due to longer inactivity. Also because of Heroku app freezing, first GET request can take a bit longer than usual (5 to 10 seconds).
   
@@ -29,7 +27,7 @@ Account with **worker's** permissions:
  
  Use given login credentails to sign in to hosted web app.
 
- ## 3. About this project
+ ## <a name="about-project"></a>About this project
  The web-app described here was part of my bachelor thesis. The goal was to create an application similar to Integrated Library Systems like KOHA or EverGreen. I've chosen to make it as web application with Django framework and name it "Online Library Catalog".
  The project is meant to be used both by patreons and workers. The features implemented are described in work context diagram below:
  ![](readme_res/work_context_diagram.png)
@@ -38,11 +36,11 @@ Patreons and staff members have restricted access to some of parts of applicatio
 - staff members cannot order items;
 - personal website containing personal informations and orders status does not exist for staff members since workers cannot order and borrow items; 
 
-## 4. Entity Relationship Diagram 
+## <a name="erd"></a>Entity Relationship Diagram 
 All relations to be included in database are illustrated with ERD below:
 ![](readme_res/erd.png)
 
-## 5. Technologies used
+## <a name="technologies"></a>Technologies used
 - HTML, CSS, SASS;
 - JavaScript;
 - Python and Django framework;
@@ -51,7 +49,7 @@ All relations to be included in database are illustrated with ERD below:
 Application can be dockerized using Dockerfile and docker-compose.yml files prepared in repo.  
 Repo contains also gulpfile.js in order to use browsersync and SASS compiler as a part of Gulp.js. 
 
-## 6. Application set up
+## <a name="set-up"></a>Application set up
 **Note:** The following instructions were performed on Ubuntu OS.  
 
 Make sure that both Python and pip are installed on your local machine (at least 3.8 for Python and 20 for pip versions recommended).  
@@ -64,7 +62,7 @@ to install all Python libraries needed for this project and then:
 sudo apt install postgresql postgresql-contrib
 ```
 to install PostgreSQL server.  
-**Note:** It's not necessary to use PostgreSQL. Django is compatible with most of RDBMSs on the market, so it's up to you which database server you are going to use. You can also use SQLite, which is default RDMS and comes with Django framework. For more informations check [documentation](https://docs.djangoproject.com/en/4.0/ref/databases/). 
+**Note:** It's not necessary to use PostgreSQL. Django is compatible with most of RDBMSs on the market, so it's up to you which database server you are going to use. You can also use SQLite, which is default RDBMS and comes with Django framework. For more informations check [documentation](https://docs.djangoproject.com/en/4.0/ref/databases/). 
 
 Update *settings.py* file according to you database and SMTP server choise. For [database](https://docs.djangoproject.com/en/4.0/ref/databases/) setup and [SMTP](https://docs.djangoproject.com/en/4.0/topics/email/) setup visit Django documentation.  
 
@@ -92,8 +90,7 @@ to fill database with data prepared.
 Along with that two accounts will be created. Both the same as those in *Online demo version section*.
 
 ## Setting up the project with Docker and Docker Compose
-It's the easiest way to set this app for working.  
-**Important!**  Make sure you are on docker-deployment branch!  
+It's the easiest way to set this app for working.
 
 If you have Docker with Docker Compose installed on your machine just simply run: 
 ```
@@ -106,8 +103,8 @@ docker exec -it online-library-catalog /bin/bash
 ```
 and then follow the same steps with data filling procedure described earlier.  
 
-### Regardless of deployment choice, once set up is completed, application should be available at *localhost:8000* in your browser.
+#### Regardless of deployment choice, once set up is completed, application should be available at *localhost:8000* in your browser.
 
-## 7. Ideas for further development
+## <a name="ideas"></a>Ideas for further development
 * This application is missing some cyclic operations like sending emails to patreons with reminder about return dates. It can be done with Celery (Distributed Task Queue) and Flower(Celery monitoring tool);
 * Unit testing;
