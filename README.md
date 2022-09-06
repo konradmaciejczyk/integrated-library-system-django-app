@@ -9,11 +9,11 @@
 * &ensp;&ensp;[Ideas for further project development](#ideas)
 
 ## <a name="about-ils"></a>What are Integrated Library Systems (ILS)?
-Integrated Library System is a software used for a library to track items owned, orders made and patrons who have borrowed. An ILS usually is constituted of a relational database and software to interact with database. Such system are usually separated into two parts: one for patrons and one for staff. Usually such systems offer online catalog (OPAC) with the help of, patreons can search through library reources and place orders. It also allows staff to have control over item circulation and perfrom CRUD (*Create, Retrieve, Update, Delete*) operations on library database such as: register new patreons, edit personal data of existing ones, add new items to catalog and edit bibliographic descriptions of exisiting items.
+Integrated Library System is a software used for a library to track items owned, orders made and patrons who have borrowed. An ILS usually is constituted of a relational database and software to interact with database. Such system are usually separated into two parts: one for patrons and one for staff. Usually such systems offer online catalog (OPAC) with the help of patreons can search through library resources and place orders. It also allows staff to have control over item circulation and perform CRUD (*Create, Retrieve, Update, Delete*) operations on library database such as: new patreons registering, editing personal data of existing ones, adding new items to catalog and editing bibliographic descriptions of items existing in database.
 
 ## <a name="online-demo"></a>Online demo version
-Live demo version hosted on Heroku is available [over here](https://online-library-catalog.herokuapp.com/).  
-**Note**: Hosted version is missing email notification. Also Heroku itself does not support file storage, so uploaded covers will be deleted once Heroku freezes the app due to longer inactivity. Also because of Heroku app freezing, first GET request can take a bit longer than usual (5 to 10 seconds).
+Live demo version hosted on pythonanywhere.com is available [over here](http://conradmac97.pythonanywhere.com/).  
+**Note**: Hosted version is missing email notification.
   
 For the purpose of the demostration two account were made:  
 
@@ -25,10 +25,10 @@ Account with **worker's** permissions:
  - **e-mail**: &ensp;&ensp;&ensp;&ensp;&ensp;  alice@example.com
  - **password**:&ensp;&ensp;&ensp;akotmaale  
  
- Use given login credentails to sign in to hosted web app.
+ Use given login credentials to sign in to hosted web app.
 
  ## <a name="about-project"></a>About this project
- The web-app described here was part of my bachelor thesis. The goal was to create an application similar to Integrated Library Systems like KOHA or EverGreen. I've chosen to make it as web application with Django framework and name it "Online Library Catalog".
+ The web-app described here was part of my bachelor thesis. The goal was to create an application similar to Integrated Library Systems like KOHA or EverGreen. I've decided to make it as web application with Django framework and name it "Online Library Catalog".
  The project is meant to be used both by patreons and workers. The features implemented are described in work context diagram below:
  ![](readme_res/work_context_diagram.png)
 Patreons and staff members have restricted access to some of parts of applications and features e.g.:
@@ -83,11 +83,11 @@ python3 manage.py shell
 ```
 and then paste the following lines of code:
 ```
-from exemplary_data.database_filling import fill_database
+from examplary_data.database_filling import fill_database
 fill_database()
 ```
 to fill database with data prepared.  
-Along with that two accounts will be created. Both the same as those in *Online demo version section*.
+Along with that two accounts will be created. Both the same as those in *online demo version section*.
 
 ## Setting up the project with Docker and Docker Compose
 It's the easiest way to set this app for working.
@@ -107,4 +107,3 @@ and then follow the same steps with data filling procedure described earlier.
 
 ## <a name="ideas"></a>Ideas for further development
 * This application is missing some cyclic operations like sending emails to patreons with reminder about return dates. It can be done with Celery (Distributed Task Queue) and Flower(Celery monitoring tool);
-* Unit testing;
