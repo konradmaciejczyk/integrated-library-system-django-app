@@ -1,5 +1,5 @@
 # Integrated Library System - Django web application
-## Table of content
+## Table of contents
 * &ensp;&ensp;[What are Integrated Library Systems (ILS)?](#about-ils)
 * &ensp;&ensp;[Online demo version](#online-demo)
 * &ensp;&ensp;[About this project](#about-project)
